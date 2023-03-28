@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 
 //Create function component inside of react; in our TodoList we render the text "#e7f4fd"
 export default function CredField() {
+  const [username, setUsername] = useState("")
+
+    function handleUsernameChange (e) {
+        setUsername(e.target.value)
+    }
+
+
     return (
         <div>
             <form>
@@ -13,7 +20,9 @@ export default function CredField() {
                                 <p>Wrong Credentials</p>
                             </div>*/}
                     <label className="text-gray-700">Username</label>
-                    <input className="w-full py-2 bg-gray-100 text-gray-500 px-1 mb-4" type="email"></input>
+                    <input className="w-full py-2 bg-gray-100 text-gray-500 px-1 mb-4" type="email" onChange={(e) => {
+                        handleUsernameChange(e)
+                        }}></input>
                     <label className="text-gray-700">Password</label>
                     <input className="w-full py-2 bg-gray-100 text-gray-500 px-1 mb-4" type="password"></input>
                     <button className="bg-blue-400 w-full text-gray-100 py-2 rounded hover:bg-blue-500 transition-colors" type="submit">Login</button>
