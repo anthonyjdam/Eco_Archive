@@ -1,0 +1,16 @@
+CREATE TABLE `eco_archive`.`customer` (
+  `UserID` INT NOT NULL AUTO_INCREMENT,
+  `Username` VARCHAR(255) NOT NULL,
+  `FName` VARCHAR(255) NOT NULL,
+  `LName` VARCHAR(255) NOT NULL,
+  `Password` VARCHAR(255) NOT NULL,
+  `AccountBal` DECIMAL(15,2) NOT NULL DEFAULT 0.00,
+  `DonationAmt` DECIMAL(15,2) NOT NULL DEFAULT 0.00,
+  `City` VARCHAR(255) NOT NULL,
+  `Province` VARCHAR(2) NOT NULL,
+  `AddressNumber` VARCHAR(255) NOT NULL,
+  `Street` VARCHAR(255) NOT NULL,
+  `ApartmentNumber` VARCHAR(255) NULL,
+  PRIMARY KEY (`UserID`),
+  UNIQUE INDEX `Username_UNIQUE` (`Username` ASC) VISIBLE,
+  UNIQUE INDEX `UserID_UNIQUE` (`UserID` ASC) VISIBLE);
