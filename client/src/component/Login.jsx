@@ -3,6 +3,8 @@ import AdminField from "./AdminField";
 import EmployeeField from "./EmployeeField";
 import CustomerField from "./CustomerField";
 import logo from "../logo-Copy.png";
+import CredFieldSignUpCustomer from "./CredFieldSignUpCustomer";
+
 
 
 
@@ -33,7 +35,6 @@ export default function Login() {
                     </main>
                 </body>
             </div>
-
         </>
 
     )
