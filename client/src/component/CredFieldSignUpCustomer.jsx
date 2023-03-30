@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function CredFieldSignUpCustomer() {
   return (
@@ -90,6 +91,12 @@ function CredFieldSignUpCustomer() {
         >
           Sign up
         </button>
+        <div className="my-4 flex justify-center gap-1">
+          <span className="text-xs w-1/3 text-gray-400">
+            Already have an account?
+          </span>
+          <Link to="/" className="text-xs hover:text-blue-400 transition-colors">Log in</Link>
+        </div>
       </form>
     </div>
   );

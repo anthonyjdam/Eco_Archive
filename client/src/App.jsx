@@ -1,20 +1,22 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import Login from './component/Login'
-import AdminSidebar from './component/AdminSidebar'
-import SignUpCustomer from './component/SignUpCustomer'
+import { useState } from "react";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import Login from "./component/Login";
+import AdminSidebar from "./component/AdminSidebar";
+import SignUpCustomer from "./component/SignUpCustomer";
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      <Login />
-      {/* <AdminSidebar /> */}
-      {/* <SignUpCustomer /> */}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/signup" element={<SignUpCustomer />}></Route>
+          <Route path="/admin" element={<AdminSidebar />}></Route>
+        </Routes>
+      </BrowserRouter>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

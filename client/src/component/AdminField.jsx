@@ -11,7 +11,7 @@ export default function AdminField() {
                                 <p>Wrong Credentials</p>
                             </div>*/}
                 <label className="text-gray-700">Username</label>
-                <input className="w-full py-2 bg-gray-100 text-gray-500 px-1 mb-4" type="text"></input>
+                <input className="w-full py-2 bg-gray-100 text-gray-500 px-1 mb-4" type="email"></input>
                 <label className="text-gray-700">Password</label>
                 <input className="w-full py-2 bg-gray-100 text-gray-500 px-1 mb-4" type="password"></input>
                 <button className="bg-blue-400 w-full text-gray-100 py-2 rounded hover:bg-blue-500 transition-colors" type="submit">Login</button>
