@@ -7,14 +7,17 @@ import CustomerDashboard from "./component/CustomerPages/CustomerDashboard";
 import PickUp from "./component/CustomerPages/PickUp";
 import DropOff from "./component/CustomerPages/DropOff";
 import CustomerSettings from "./component/CustomerPages/CustomerSettings";
+import AdminDashboard from "./component/AdminPages/AdminDashboard";
+import AdminSidebar from "./component/AdminPages/AdminSidebar";
+
 
 function App() {
 
   return (
     <>
-      <BrowserRouter>
+      {/* <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<AdminDashboard />} />
           <Route path="/signup" element={<SignUpCustomer />}></Route>
           <Route path="/admin" element={<AdminSidebar />}></Route>
           <Route path="/admin" element={<AdminSidebar />}></Route>
@@ -23,7 +26,9 @@ function App() {
           <Route path="/dropOff" element={<DropOff />}></Route>
           <Route path="/customerSettings" element={<CustomerSettings />}></Route>
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter> */}
+
+      <AdminDashboard/>
     </>
   );
 }
