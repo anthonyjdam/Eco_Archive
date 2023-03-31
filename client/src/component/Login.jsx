@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import AdminField from "./AdminField";
 import EmployeeField from "./EmployeeField";
 import CustomerField from "./CustomerField";
-import logo from "../logo-Copy.png";
+import logo from "../newlogo.png";
 import CredFieldSignUpCustomer from "./CredFieldSignUpCustomer";
 import { Link } from "react-router-dom";
 
