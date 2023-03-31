@@ -1,7 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 function CredFieldSignUpCustomer() {
+  const [customerFirstName, setCustomerFirstName] = useState("")
+  const [customerLastName, setCustomerLastName] = useState("")
+  const [customerUsername, setCustomerUsername] = useState("")
+  const [customerPassword, setCustomerPassword] = useState("")
+  const [customerAddressline, setCustomerAddressline] = useState("")
+  const [customerCity, setCustomerCity] = useState("")
+  const [customerProvince, setCustomerProvince] = useState("")
+  const [customerPostalCode, setCustomerPostalCode] = useState("")
+
+
+
   return (
     <div>
       <form>
@@ -19,6 +30,10 @@ function CredFieldSignUpCustomer() {
             <input
               className="w-full py-2 bg-gray-100 text-gray-500 px-1 mb-4"
               type="text"
+              value={customerFirstName}
+              onChange={(e) => {
+                setCustomerFirstName(e.target.value)
+              }}
             ></input>
           </div>
           <div>
@@ -26,6 +41,10 @@ function CredFieldSignUpCustomer() {
             <input
               className="w-full py-2 bg-gray-100 text-gray-500 px-1 mb-4"
               type="text"
+              value={customerLastName}
+              onChange={(e) => {
+                setCustomerLastName(e.target.value)
+              }}
             ></input>
           </div>
         </div>
@@ -33,19 +52,28 @@ function CredFieldSignUpCustomer() {
         <input
           className="w-full py-2 bg-gray-100 text-gray-500 px-1 mb-4"
           type="text"
+          value={customerUsername}
           onChange={(e) => {
-            handleUsernameChange(e);
+            setCustomerUsername(e.target.value);
           }}
         ></input>
         <label className="text-gray-700">Password</label>
         <input
           className="w-full py-2 bg-gray-100 text-gray-500 px-1 mb-4"
           type="password"
+          value={customerPassword}
+          onChange={(e) => {
+            setCustomerPassword(e.target.value);
+          }}
         ></input>
         <label className="text-gray-700">Address line</label>
         <input
           className="w-full py-2 bg-gray-100 text-gray-500 px-1 mb-4"
           type="text"
+          value={customerAddressline}
+          onChange={(e) => {
+            setCustomerAddressline(e.target.value);
+          }}
         ></input>
         <div className="flex gap-4">
           <div>
@@ -53,6 +81,10 @@ function CredFieldSignUpCustomer() {
             <input
               className="w-full py-2 bg-gray-100 text-gray-500 px-1 mb-4"
               type="text"
+              value={customerCity}
+              onChange={(e) => {
+                setCustomerCity(e.target.value);
+              }}
             ></input>
           </div>
           <div>
@@ -60,6 +92,10 @@ function CredFieldSignUpCustomer() {
             <select
               className="w-full py-2 bg-gray-100 text-gray-500 px-1 mb-4"
               type="text"
+              value={customerProvince}
+              onChange={(e) => {
+                setCustomerProvince(e.target.value)
+              }}
             >
               <option></option>
               <option>AB</option>
@@ -82,6 +118,10 @@ function CredFieldSignUpCustomer() {
             <input
               className="w-full py-2 bg-gray-100 text-gray-500 px-1 mb-4"
               type="text"
+              value={customerPostalCode}
+              onChange={(e) => {
+                setCustomerPostalCode(e.target.value);
+              }}
             ></input>
           </div>
         </div>
