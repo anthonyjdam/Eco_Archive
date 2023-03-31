@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import Login from "./component/Login";
+import Login from "./component/Login/Login";
 import SignUpCustomer from "./component/SignUpCustomer";
 import CustomerDashboard from "./component/CustomerPages/CustomerDashboard";
 import PickUp from "./component/CustomerPages/PickUp";
