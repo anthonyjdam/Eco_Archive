@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import AdminField from "./AdminField";
 import EmployeeField from "./EmployeeField";
 import CustomerField from "./CustomerField";
-import logo from "../newlogo.png";
-import CredFieldSignUpCustomer from "./CredFieldSignUpCustomer";
+import logo from "../../newlogo.png";
+import CredFieldSignUpCustomer from "../CredFieldSignUpCustomer";
 import { Link } from "react-router-dom";
 
 //style={{ backgroundColor: "rgb(231, 244, 253, 0.60)" }}
@@ -18,6 +18,7 @@ export default function Login() {
 
   return (
     <>
+
       <div>
         <main className="flex items-center justify-center h-screen bg-gradient-to-t from-indigo-50 to-sky-200">
           <div className="bg-white w-96 px-12 pt-12 pb-4 rounded-xl shadow-md">

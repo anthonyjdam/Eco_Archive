@@ -94,6 +94,8 @@ const logOut = (
   </svg>
 );
 
+
+
 function CustomerSidebar() {
   return (
     <div className="sidebar fixed h-screen md:visible md:w-48 lg:w-64 shrink-0 top-0 left-0 flex flex-col justify-between p-10">

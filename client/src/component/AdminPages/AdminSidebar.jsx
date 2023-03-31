@@ -1,4 +1,6 @@
 import React from 'react'
+import logo from "../../newlogo.png";
+
 
 /**<h1 className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-600">
                                 Logout
@@ -9,6 +11,10 @@ export default function AdminSidebar() {
         <div>
             <nav>
                 <div className="fixed top-0 bottom-0 lg:left-0 p-0 w-48 overflow-y-auto text-center bg-gray-900">
+                <div className="title flex items-center gap-3 flex-grow-0 mt-5 ml-1">
+                    <img src={logo} className="h-auto w-8" />
+                    <h2 className="font-bold text-2xl text-white">Eco_Archive</h2>
+                </div>
                     <button className="p-2.5 mt-3 w-full flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-400 text-white">
                         <label className="font-semibold">
                             Employees
