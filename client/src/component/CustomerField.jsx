@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios"
 //Create function component inside of react; in our TodoList we render the text "#e7f4fd"
 export default function CustomerField() {
   const [customerUsername, setCustomerUsername] = useState("");
@@ -13,6 +14,17 @@ export default function CustomerField() {
     setCustomerPasssword(e.target.value);
   }
 
+  async function handleLoginSubmit(e) {
+    e.preventDefault()    // Need this to prevent the default action that html form does
+                          // By default the page will reload on submit, we don't want this
+    const response = await axios.post("http://localhost:5000/api/processLogin", {
+      userType: "customer", // This property would be set to customer/employee/admin so server knows whos logging in
+      username: customerUsername,
+      customerPasssword: customerPasssword,
+    })
+    console.log(response)
+  }
+
   return (
     <div>
       <div className="flex items-center justify-center mb-4">
@@ -20,7 +32,7 @@ export default function CustomerField() {
           CUSTOMER LOGIN
         </p>
       </div>
-      <form>
+      <form onSubmit={(e) => {handleLoginSubmit(e)}}>
         {/*<div className="bg-red-500 px-3 py-3 rounded text-gray-100 mb-5">
                                 <p>Wrong Credentials</p>
                             </div>*/}
