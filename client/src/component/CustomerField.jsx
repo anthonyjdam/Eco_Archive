@@ -20,7 +20,7 @@ export default function CustomerField() {
     const response = await axios.post("http://localhost:5000/api/processLogin", {
       userType: "customer", // This property would be set to customer/employee/admin so server knows whos logging in
       username: customerUsername,
-      customerPasssword: customerPasssword,
+      password: customerPasssword,
     })
     console.log(response)
   }
