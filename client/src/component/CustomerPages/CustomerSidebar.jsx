@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import logo from "../../logo-Copy.png";
+import logo from "../../newlogo.png";
 
 // Credits: Hero Icons
 

@@ -3,9 +3,14 @@ import { Link } from "react-router-dom";
 //Create function component inside of react; in our TodoList we render the text "#e7f4fd"
 export default function CustomerField() {
   const [customerUsername, setCustomerUsername] = useState("");
+  const [customerPasssword, setCustomerPasssword] = useState("");
 
   function handleUsernameChange(e) {
     setCustomerUsername(e.target.value);
+  }
+
+  function handlePasswordChange(e) {
+    setCustomerPasssword(e.target.value);
   }
 
   return (
@@ -32,6 +37,10 @@ export default function CustomerField() {
         <input
           className="w-full py-2 bg-gray-100 text-gray-500 px-1 mb-4"
           type="password"
+          value={customerPasssword}
+          onChange={(e) => {
+            handlePasswordChange(e);
+          }}
         ></input>
         <div className="mb-4 flex justify-center gap-1">
           <span className="text-xs w-1/3 text-gray-400 flex-grow text-right">Don't have an account yet?</span>
