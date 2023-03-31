@@ -5,7 +5,7 @@ import AdminTable from './AdminTable'
 export default function AdminDashboard() {
     return (
         <>
-            
+
             {/* Sidebar */}
             <div className="sticky flex-auto w-48 shadow-md z-50 ">
                 <aside >
@@ -14,8 +14,6 @@ export default function AdminDashboard() {
             </div>
 
             <main className="lg:pl-48 min-h-screen bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-50 via-indigo-100 to-emerald-50 ">
-
-
 
                 {/* Top Bar */}
                 <div className='flex-auto'>
