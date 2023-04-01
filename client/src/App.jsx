@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import Login from "./component/Login/Login";
-import SignUpCustomer from "./component/SignUpCustomer";
+import Login from "./component/LoginPages/Login";
+import SignUpCustomer from "./component/SignInPages/SignUpCustomer";
 import CustomerDashboard from "./component/CustomerPages/CustomerDashboard";
 import PickUp from "./component/CustomerPages/PickUp";
 import DropOff from "./component/CustomerPages/DropOff";

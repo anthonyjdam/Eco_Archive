@@ -1,6 +1,7 @@
 import React from 'react'
 import AdminSidebar from './AdminSidebar'
 import AdminTable from './AdminTable'
+import AdminProfileBar from './AdminProfileBar'
 
 export default function AdminDashboard() {
     return (
@@ -16,14 +17,7 @@ export default function AdminDashboard() {
             <main className="lg:pl-48 min-h-screen bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-50 via-indigo-100 to-emerald-50 ">
 
                 {/* Top Bar */}
-                <div className='flex-auto'>
-                    <header className="flex-none items-center opacity-[85%] w-full justify-between h-12 top-0 mx-auto shadow-lg bg-white">
-                        <div>
-                            <p className="text-gray-900 text-md font-bold text-right pr-5">userid</p>
-
-                        </div>
-                    </header>
-                </div>
+                <AdminProfileBar />
 
                 {/* Iventory Summary */}
                 <div className="flex-auto bottom-0 overflow-y-auto lg:pr-4 lg:pt-8">
