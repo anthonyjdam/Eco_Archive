@@ -6,13 +6,10 @@ import AdminProfileBar from './AdminProfileBar'
 export default function AdminDashboard() {
     return (
         <>
-
             {/* Sidebar */}
-            <div className="sticky flex-auto w-48 shadow-md z-50 ">
-                <aside >
-                    <AdminSidebar />
-                </aside>
-            </div>
+            <aside>
+                <AdminSidebar />
+            </aside>
 
             <main className="lg:pl-48 min-h-screen bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-50 via-indigo-100 to-emerald-50 ">
 
@@ -22,7 +19,7 @@ export default function AdminDashboard() {
                 {/* Iventory Summary */}
                 <div className="flex-auto bottom-0 overflow-y-auto lg:pr-4 lg:pt-8">
                     <div>
-                        <div className="bg-white rounded-md opacity-[85%] shawdow-lg m-3">
+                        <div className="bg-white rounded-md opacity-[85%] shawdow-lg pt-2 pb-2">
                             <h2 className=" text-2xl text-blue-300 font-bold pl-5 mb-3">Inventory</h2>
                             <hr className='pb-2'></hr>
                             <div className="pl-5">
@@ -60,10 +57,7 @@ export default function AdminDashboard() {
 
                         </form>
                     </div>
-
                 </div>
-
-
             </main>
 
 

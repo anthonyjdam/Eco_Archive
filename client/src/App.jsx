@@ -6,6 +6,8 @@ import PickUp from "./component/CustomerPages/PickUp";
 import DropOff from "./component/CustomerPages/DropOff";
 import CustomerSettings from "./component/CustomerPages/CustomerSettings";
 import AdminDashboard from "./component/AdminPages/AdminDashboard";
+import AdminEditCustomer from "./component/AdminPages/AdminEdit/AdminEditCustomer";
+import AdminEditMaterial from "./component/AdminPages/AdminEditMaterial";
 
 
 function App() {
@@ -21,6 +23,7 @@ function App() {
           <Route path="/pickUp" element={<PickUp />}></Route>
           <Route path="/dropOff" element={<DropOff />}></Route>
           <Route path="/customerSettings" element={<CustomerSettings />}></Route>
+          <Route path="/editmaterial" element={<AdminEditMaterial/>}></Route>
         </Routes>
       </BrowserRouter>
 
