@@ -5,7 +5,7 @@ function CustomerDashboard() {
   return (
     <div>
       <CustomerSidebar />
-      <div className="content md:ml-48 lg:ml-64 bg-[#f4f4f7] p-10">
+      <div className="content md:ml-48 lg:ml-64 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-50 via-indigo-100 to-emerald-50 p-10">
         <div className="transactions w-full h-96 bg-white rounded-2xl p-8">
           <div className="border-b-2 pb-4">
             <h3 className="text-lg font-bold">Transactions</h3>
