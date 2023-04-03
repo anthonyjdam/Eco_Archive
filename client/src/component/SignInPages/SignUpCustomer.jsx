@@ -1,6 +1,6 @@
 import React from "react";
 import CredFieldSignUpCustomer from "./CredFieldSignUpCustomer";
-import logo from "../newlogo.png";
+import logo from "../../newlogo.png";
 
 function SignUpCustomer() {
   return (
