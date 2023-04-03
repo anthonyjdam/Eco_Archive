@@ -3,7 +3,7 @@ import AdminField from "./AdminField";
 import EmployeeField from "./EmployeeField";
 import CustomerField from "./CustomerField";
 import logo from "../../newlogo.png";
-import CredFieldSignUpCustomer from "../CredFieldSignUpCustomer";
+import CredFieldSignUpCustomer from "../SignInPages/CredFieldSignUpCustomer";
 import { Link } from "react-router-dom";
 
 //style={{ backgroundColor: "rgb(231, 244, 253, 0.60)" }}
