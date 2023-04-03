@@ -12,22 +12,40 @@ function CredFieldSignUpCustomer() {
   const [customerProvince, setCustomerProvince] = useState("")
   const [customerPostalCode, setCustomerPostalCode] = useState("")
 
-  async function handleSignupSubmit (e) {
+  const [fieldError, setFieldError] = useState(false);  // State for showing the error message
+
+  async function handleSignupSubmit(e) {
     e.preventDefault()
-    const response = await axios.post("http://localhost:5000/api/processSignup", {
+    setFieldError(false)
+
+    const submitObject = {
       firstName: customerFirstName,
       lastName: customerLastName,
       username: customerUsername,
-      password: customerPassword, 
+      password: customerPassword,
       addressLine: customerAddressline,
       city: customerCity,
       province: customerProvince,
       postalCode: customerPostalCode,
-    })
+    }
 
-    console.log(response)
+    let doNotSend = false;  // Boolean flag to check if all the fields are filled
+
+    for (const field in submitObject) {
+      if (submitObject[field] === "") { // Check for any empty fields
+        setFieldError(true);
+        doNotSend = true;
+        break;
+      }
+    }
+
+    if (!doNotSend) { // If all fields are filled then you can proceed to send the POST req
+      const response = await axios.post("http://localhost:5000/api/processSignup", submitObject)
+    }
+    
   }
 
+  
   return (
     <div>
       <form onSubmit={(e) => handleSignupSubmit(e)}>
@@ -36,9 +54,9 @@ function CredFieldSignUpCustomer() {
             SIGN UP
           </p>
         </div>
-        {/* <div className="bg-red-500 px-3 py-3 rounded text-gray-100 mb-5">
-                                <p>Please fill out all fields</p>
-                            </div> */}
+        {fieldError && <div className="bg-red-500 px-3 py-3 rounded text-gray-100 mb-5">
+          <p>Please fill out all fields</p>
+        </div>}
         <div className="flex gap-4">
           <div>
             <label className="text-gray-700">First Name</label>
