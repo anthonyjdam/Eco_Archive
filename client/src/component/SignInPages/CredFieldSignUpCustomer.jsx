@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 function CredFieldSignUpCustomer() {
   const [customerFirstName, setCustomerFirstName] = useState("")
@@ -11,11 +12,25 @@ function CredFieldSignUpCustomer() {
   const [customerProvince, setCustomerProvince] = useState("")
   const [customerPostalCode, setCustomerPostalCode] = useState("")
 
+  async function handleSignupSubmit (e) {
+    e.preventDefault()
+    const response = await axios.post("http://localhost:5000/api/processSignup", {
+      firstName: customerFirstName,
+      lastName: customerLastName,
+      username: customerUsername,
+      password: customerPassword, 
+      addressLine: customerAddressline,
+      city: customerCity,
+      province: customerProvince,
+      postalCode: customerPostalCode,
+    })
 
+    console.log(response)
+  }
 
   return (
     <div>
-      <form>
+      <form onSubmit={(e) => handleSignupSubmit(e)}>
         <div className="flex items-center justify-center mb-4">
           <p className=" text-gray-400 text-lg tracking-wide font-bold mb-6">
             SIGN UP

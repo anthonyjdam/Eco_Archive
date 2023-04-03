@@ -43,7 +43,16 @@ app.post("/api/processLogin", (req, res) => {
 })
 
 
+// Sign Up endpoint
+app.post("/api/processSignup", (req, res) => {
+    console.log(req.body)
+
+
+    res.send("signup endpointhit")
+})
 
 
 
-app.listen(PORT);
+app.listen(PORT, () => {
+    console.log(`Serving running on port ${PORT}`)
+});
