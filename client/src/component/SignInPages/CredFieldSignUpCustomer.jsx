@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 function CredFieldSignUpCustomer() {
   const [customerFirstName, setCustomerFirstName] = useState("")
@@ -11,19 +12,51 @@ function CredFieldSignUpCustomer() {
   const [customerProvince, setCustomerProvince] = useState("")
   const [customerPostalCode, setCustomerPostalCode] = useState("")
 
+  const [fieldError, setFieldError] = useState(false);  // State for showing the error message
 
+  async function handleSignupSubmit(e) {
+    e.preventDefault()
+    setFieldError(false)
 
+    const submitObject = {
+      firstName: customerFirstName,
+      lastName: customerLastName,
+      username: customerUsername,
+      password: customerPassword,
+      addressLine: customerAddressline,
+      city: customerCity,
+      province: customerProvince,
+      postalCode: customerPostalCode,
+    }
+
+    let doNotSend = false;  // Boolean flag to check if all the fields are filled
+
+    for (const field in submitObject) {
+      if (submitObject[field] === "") { // Check for any empty fields
+        setFieldError(true);
+        doNotSend = true;
+        break;
+      }
+    }
+
+    if (!doNotSend) { // If all fields are filled then you can proceed to send the POST req
+      const response = await axios.post("http://localhost:5000/api/processSignup", submitObject)
+    }
+    
+  }
+
+  
   return (
     <div>
-      <form>
+      <form onSubmit={(e) => handleSignupSubmit(e)}>
         <div className="flex items-center justify-center mb-4">
           <p className=" text-gray-400 text-lg tracking-wide font-bold mb-6">
             SIGN UP
           </p>
         </div>
-        {/* <div className="bg-red-500 px-3 py-3 rounded text-gray-100 mb-5">
-                                <p>Please fill out all fields</p>
-                            </div> */}
+        {fieldError && <div className="bg-red-500 px-3 py-3 rounded text-gray-100 mb-5">
+          <p>Please fill out all fields</p>
+        </div>}
         <div className="flex gap-4">
           <div>
             <label className="text-gray-700">First Name</label>
