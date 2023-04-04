@@ -1,6 +1,8 @@
 import React from 'react'
 import AdminSidebar from './AdminSidebar'
 import AdminProfileBar from './AdminProfileBar'
+import AdminTable from './AdminTable'
+
 
 export default function AdminDashboard() {
     return (
