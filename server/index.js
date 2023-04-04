@@ -9,13 +9,13 @@ const PORT = 5000;
 app.use(express.json());
 app.use(cors());
 
-// const db = mysql.createConnection({
-//   host: 'localhost',
-//   port: '33061',
-//   user: 'root',
-//   password: 'password',
-//   database: 'eco_archive'
-// });
+const db = mysql.createConnection({
+  host: 'localhost',
+  port: '33061',
+  user: 'root',
+  password: 'password',
+  database: 'eco_archive'
+});
 
 // db.connect((err) => {
 //   if (err) {
@@ -24,6 +24,8 @@ app.use(cors());
 //   }
 //   console.log("connected as id " + db.threadId);
 // });
+
+
 
 /*
  *   TODO: add the endpoints here
@@ -34,12 +36,25 @@ app.use(cors());
 app.post("/api/processLogin", (req, res) => {
     console.log(req.body)
     
-    // SELECT password FROM req.body.userType WHERE username = req.body.username
+    db.query(`SELECT Password FROM ${req.body.userType} WHERE Username = ?`, [req.body.username], (error, results, fields) => {
+        if (error) {
+            console.log(error);
+        } else if (results) {
+            console.log(results);
 
-    // if (req.body.password ===        )   res.send("login success")
-    // else res.send("login fail")
 
-    res.send("login endpoint hit")
+            if (results.length === 0) {
+                res.send("Unauthorized");
+            } else if (results[0].Password === req.body.password) {
+                res.status(200).send({
+                    message: "Authorized",
+                    username: req.body.username,
+                })
+            }
+        }
+    })
+
+
 })
 
 
