@@ -27,10 +27,10 @@ function App() {
           <Route path="/dropOff" element={<DropOff />}></Route>
           <Route path="/customerSettings" element={<CustomerSettings />}></Route>
           <Route path="/employeeDashboard" element={<EmployeeDashboard />}></Route>
-          <Route path="/editmaterial" element={<AdminEditMaterial/>}></Route>
-          {/* <Route path="/editemployee" element={<AdminEditEmployee/>}></Route> */}
-          {/* <Route path="/editcustomer" element={<AdminEditCustomer/>}></Route> */}
-          <Route path="/editcharity" element={<AdminEditCharities/>}></Route>
+          <Route path="/editmaterial" element={<AdminEditMaterial />}></Route>
+          <Route path="/editemployee" element={<AdminEditEmployee />}></Route>
+          <Route path="/editcustomer" element={<AdminEditCustomer />}></Route>
+          <Route path="/editcharity" element={<AdminEditCharities />}></Route>
         </Routes>
       </BrowserRouter>
 
