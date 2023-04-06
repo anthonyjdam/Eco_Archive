@@ -1,10 +1,35 @@
-import React from 'react'
+import React, { useState } from 'react'
 import AdminSidebar from './AdminSidebar'
 import AdminProfileBar from "./AdminProfileBar"
 import AdminTable from './AdminTable'
 
+// glassRate = 3;
 
-export default function AdminEditMaterial() {
+function AdminEditMaterial() {
+
+  //State variables
+  const [glassRate, setGlassRate] = useState("0.25");
+  const [PlasticRate, setPlasticRate] = useState("0.10");
+  const [AluminiumRate, setAluminiumRate] = useState("0.15");
+
+  const [fieldError, setFieldError] = useState(false);
+
+  console.log(glassRate);
+  console.log(PlasticRate);
+  console.log(AluminiumRate);
+
+
+  const handleNonNumberInput = (input) => {
+    if (isNaN(input)) {
+      setFieldError(true)
+      return false;
+    }
+    setFieldError(false)
+    return true;
+  }
+
+
+
   return (
 
     <>
@@ -33,17 +58,59 @@ export default function AdminEditMaterial() {
                     <form>
                       <h3 className='font-semibold'>Glass</h3>
                       <lable>$</lable>
-                      <input placeholder={0.35} className='border-2 border-gray-100 focus:border-blue-200 rounded-lg pl-3' type="number"></input>
+                      <input
+                        placeholder={glassRate}
+                        className='border-2 border-gray-100 focus:border-blue-200 rounded-lg pl-3'
+                        type="text"
+                        value={glassRate}
+                        onChange={(e) => {
+                          const isValid = handleNonNumberInput(e.target.value);
+                          if (isValid) {
+                            setGlassRate(e.target.value);
+                          }
+                        }}
+
+                      ></input>
                       <br className='mb-3'></br>
                       <h3 className='font-semibold'>Plastic</h3>
                       <lable>$</lable>
-                      <input placeholder={0.25} className='border-2 border-gray-100 focus:border-blue-200 rounded-lg pl-3'></input>
+                      <input
+                        placeholder={PlasticRate}
+                        className='border-2 border-gray-100 focus:border-blue-200 rounded-lg pl-3'
+                        type="text"
+                        value={PlasticRate}
+                        onChange={(e) => {
+                          const isValid = handleNonNumberInput(e.target.value);
+                          if (isValid) {
+                            setPlasticRate(e.target.value);
+                          }
+                        }}
+
+                      ></input>
                       <br className='mb-3'></br>
                       <h3 className='font-semibold'>Aluminium</h3>
                       <lable>$</lable>
-                      <input placeholder={0.75} className='border-2 border-gray-100 focus:border-blue-200 rounded-lg pl-3'></input>
+                      <input
+                        placeholder={AluminiumRate}
+                        className='border-2 border-gray-100 focus:border-blue-200 rounded-lg pl-3'
+                        type="text"
+                        value={AluminiumRate}
+                        onChange={(e) => {
+                          const isValid = handleNonNumberInput(e.target.value);
+                          if (isValid) {
+                            setAluminiumRate(e.target.value);
+                          }
+                        }
+                        }
+
+                      ></input>
                       <br className='mb-3'></br>
                     </form>
+                  </div>
+                  <div className='pl-3 pb-5 flex'>{fieldError &&
+                    <div className="text-red-500 ">
+                      <p className='text-sm'>Please enter a number value</p>
+                    </div>}
                   </div>
                 </div>
               </div>
@@ -59,3 +126,5 @@ export default function AdminEditMaterial() {
 
   )
 }
+
+export default AdminEditMaterial;
