@@ -13,22 +13,23 @@ export default function AdminTable() {
                             </div>
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Product name
+                            Last Name
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Color
+                            First Name
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Category
+                            Username
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Price
+                            Position
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Action
                         </th>
                     </tr>
                 </thead>
+
                 <tbody>
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <td class="w-4 p-4">
@@ -38,16 +39,16 @@ export default function AdminTable() {
                             </div>
                         </td>
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Apple MacBook Pro 17"
+                            Phan
                         </th>
                         <td class="px-6 py-4">
-                            Silver
+                            Tom
                         </td>
                         <td class="px-6 py-4">
-                            Laptop
+                            Casper
                         </td>
                         <td class="px-6 py-4">
-                            $2999
+                            Admin
                         </td>
                         <td class="px-6 py-4">
                             <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
@@ -61,16 +62,15 @@ export default function AdminTable() {
                             </div>
                         </td>
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Microsoft Surface Pro
+                            Raymond
                         </th>
-                        <td class="px-6 py-4">
-                            White
+                        <td class="px-6 py-4">                            Jack
                         </td>
                         <td class="px-6 py-4">
-                            Laptop PC
+                            Olive
                         </td>
                         <td class="px-6 py-4">
-                            $1999
+                            Employee
                         </td>
                         <td class="px-6 py-4">
                             <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
