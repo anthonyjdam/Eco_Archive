@@ -3,20 +3,21 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 function CredFieldSignUpCustomer() {
-  const [customerFirstName, setCustomerFirstName] = useState("")
-  const [customerLastName, setCustomerLastName] = useState("")
-  const [customerUsername, setCustomerUsername] = useState("")
-  const [customerPassword, setCustomerPassword] = useState("")
-  const [customerAddressline, setCustomerAddressline] = useState("")
-  const [customerCity, setCustomerCity] = useState("")
-  const [customerProvince, setCustomerProvince] = useState("")
-  const [customerPostalCode, setCustomerPostalCode] = useState("")
+  const [customerFirstName, setCustomerFirstName] = useState("");
+  const [customerLastName, setCustomerLastName] = useState("");
+  const [customerUsername, setCustomerUsername] = useState("");
+  const [customerPassword, setCustomerPassword] = useState("");
+  const [customerAddressline, setCustomerAddressline] = useState("");
+  const [customerCity, setCustomerCity] = useState("");
+  const [customerProvince, setCustomerProvince] = useState("");
+  const [customerPostalCode, setCustomerPostalCode] = useState("");
 
-  const [fieldError, setFieldError] = useState(false);  // State for showing the error message
+  const [fieldError, setFieldError] = useState(false); // State for showing the error message
+  const [fieldErrorMessage, setFieldErrorMessage] = useState(""); // Error message
 
   async function handleSignupSubmit(e) {
-    e.preventDefault()
-    setFieldError(false)
+    e.preventDefault();
+    setFieldError(false);
 
     const submitObject = {
       firstName: customerFirstName,
@@ -27,25 +28,35 @@ function CredFieldSignUpCustomer() {
       city: customerCity,
       province: customerProvince,
       postalCode: customerPostalCode,
-    }
+    };
 
-    let doNotSend = false;  // Boolean flag to check if all the fields are filled
+    let doNotSend = false; // Boolean flag to check if all the fields are filled
 
     for (const field in submitObject) {
-      if (submitObject[field] === "") { // Check for any empty fields
+      if (submitObject[field] === "") {
+        // Check for any empty fields
+        setFieldErrorMessage("Please fill out all fields");
         setFieldError(true);
         doNotSend = true;
         break;
       }
     }
 
-    if (!doNotSend) { // If all fields are filled then you can proceed to send the POST req
-      const response = await axios.post("http://localhost:5000/api/processSignup", submitObject)
+    if (!doNotSend) {
+      // If all fields are filled then you can proceed to send the POST req
+      const response = await axios.post(
+        "http://localhost:5000/api/processSignup",
+        submitObject
+      );
+      if (response.data === "Sign up successful") {
+        redirect("/customerDashboard");
+      } else if (response.data === "ER_DUP_ENTRY") {
+        setFieldErrorMessage("Username already exists. Please try again.")
+        setFieldError(true);
+      }
     }
-    
   }
 
-  
   return (
     <div>
       <form onSubmit={(e) => handleSignupSubmit(e)}>
@@ -54,9 +65,11 @@ function CredFieldSignUpCustomer() {
             SIGN UP
           </p>
         </div>
-        {fieldError && <div className="bg-red-500 px-3 py-3 rounded text-gray-100 mb-5">
-          <p>Please fill out all fields</p>
-        </div>}
+        {fieldError && (
+          <div className="bg-red-500 px-3 py-3 rounded text-gray-100 mb-5">
+            <p>{fieldErrorMessage}</p>
+          </div>
+        )}
         <div className="flex gap-4">
           <div>
             <label className="text-gray-700">First Name</label>
@@ -65,7 +78,7 @@ function CredFieldSignUpCustomer() {
               type="text"
               value={customerFirstName}
               onChange={(e) => {
-                setCustomerFirstName(e.target.value)
+                setCustomerFirstName(e.target.value);
               }}
             ></input>
           </div>
@@ -76,7 +89,7 @@ function CredFieldSignUpCustomer() {
               type="text"
               value={customerLastName}
               onChange={(e) => {
-                setCustomerLastName(e.target.value)
+                setCustomerLastName(e.target.value);
               }}
             ></input>
           </div>
@@ -127,7 +140,7 @@ function CredFieldSignUpCustomer() {
               type="text"
               value={customerProvince}
               onChange={(e) => {
-                setCustomerProvince(e.target.value)
+                setCustomerProvince(e.target.value);
               }}
             >
               <option></option>
@@ -168,7 +181,12 @@ function CredFieldSignUpCustomer() {
           <span className="text-xs w-1/3 text-gray-400">
             Already have an account?
           </span>
-          <Link to="/" className="text-xs hover:text-blue-400 transition-colors">Log in</Link>
+          <Link
+            to="/"
+            className="text-xs hover:text-blue-400 transition-colors"
+          >
+            Log in
+          </Link>
         </div>
       </form>
     </div>
