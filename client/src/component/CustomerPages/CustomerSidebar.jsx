@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import logo from "../../newlogo.png";
+import userContext from "../userContext";
 
 // Credits: Hero Icons
 
@@ -97,6 +98,9 @@ const logOut = (
 
 
 function CustomerSidebar() {
+
+  const { setCurrentUser } = useContext(userContext);
+
   return (
     <div className="sidebar fixed h-screen md:visible md:w-48 lg:w-64 shrink-0 top-0 left-0 flex flex-col justify-between p-10">
       <div className="tophalf flex flex-col gap-14">
@@ -141,6 +145,7 @@ function CustomerSidebar() {
           <NavLink
             to="/"
             className="flex gap-2 p-2 rounded-md active:bg-[#f3f4fd] hover:bg-[#f3f4fd] hover:text-black transition-all text-gray-800"
+            onClick={() => setCurrentUser("")}
           >
             {logOut}
             Log out

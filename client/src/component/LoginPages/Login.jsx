@@ -1,20 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import AdminField from "./AdminField";
 import EmployeeField from "./EmployeeField";
 import CustomerField from "./CustomerField";
 import logo from "../../newlogo.png";
-import CredFieldSignUpCustomer from "../SignInPages/CredFieldSignUpCustomer";
-import { Link } from "react-router-dom";
 
 //style={{ backgroundColor: "rgb(231, 244, 253, 0.60)" }}
 //Create function component inside of react; in our TodoList we render the text "#e7f4fd"
 export default function Login() {
-    const [whichUser, setWhichUser] = useState({
-        isCustomer:true,
-        isEmployee:false,
-        isAdmin:false,
-    });
-  
+  const [whichUser, setWhichUser] = useState({
+    isCustomer: true,
+    isEmployee: false,
+    isAdmin: false,
+  });
+
 
   return (
     <>
@@ -26,18 +24,18 @@ export default function Login() {
               <img src={logo} className="h-20"></img>
             </div>
             {whichUser.isEmployee && <EmployeeField />}
-            {whichUser.isAdmin && <AdminField/>}
+            {whichUser.isAdmin && <AdminField />}
             {whichUser.isCustomer && <CustomerField />}
             <div className="flex items-center justify-center mt-10">
               <button
                 className="text-xs w-1/3 text-gray-400 py-2  hover:text-blue-400 transition-colors"
                 type="appInfo"
                 onClick={() => {
-                    setWhichUser({
-                        isCustomer:true,
-                        isEmployee:false,
-                        isAdmin:false,
-                    })
+                  setWhichUser({
+                    isCustomer: true,
+                    isEmployee: false,
+                    isAdmin: false,
+                  })
                 }}
               >
                 Customer Login
@@ -46,11 +44,11 @@ export default function Login() {
                 className="text-xs w-1/3 text-gray-400 py-2  hover:text-blue-400 transition-colors"
                 type="employeeLogi"
                 onClick={() => {
-                    setWhichUser({
-                        isCustomer:false,
-                        isEmployee:true,
-                        isAdmin:false,
-                    })
+                  setWhichUser({
+                    isCustomer: false,
+                    isEmployee: true,
+                    isAdmin: false,
+                  })
                 }}
               >
                 Employee Login
@@ -59,11 +57,11 @@ export default function Login() {
                 className="text-xs w-1/3 text-gray-400 py-2  hover:text-blue-400 transition-colors"
                 type="adminLogin"
                 onClick={() => {
-                    setWhichUser({
-                        isCustomer:false,
-                        isEmployee:false,
-                        isAdmin:true,
-                    })
+                  setWhichUser({
+                    isCustomer: false,
+                    isEmployee: false,
+                    isAdmin: true,
+                  })
                 }}
               >
                 Admin Login
@@ -72,6 +70,7 @@ export default function Login() {
           </div>
         </main>
       </div>
+
     </>
   );
 }
