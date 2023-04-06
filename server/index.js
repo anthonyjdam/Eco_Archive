@@ -13,7 +13,7 @@ const db = mysql.createConnection({
   host: "localhost",
   port: "33061",
   user: "root",
-  password: "password",
+  password: "password", // Set to cheetos for Maira
   database: "eco_archive",
 });
 

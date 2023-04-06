@@ -29,8 +29,7 @@ function CustomerDashboard() {
               {/* TODO: GET request from the server to get the current NGO's */}
             </select>
             <div>
-              <label>Enter amount:</label>
-              <input className="w-48 ml-2 border-2 border-gray-400 rounded"></input>
+              <input className="w-48 ml-2 border-2 border-gray-400 rounded" placeholder="Enter amount"></input>
             </div>
             <button
               type="submit"

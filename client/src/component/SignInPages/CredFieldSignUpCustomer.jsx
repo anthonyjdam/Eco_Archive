@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function CredFieldSignUpCustomer() {
@@ -14,6 +14,8 @@ function CredFieldSignUpCustomer() {
 
   const [fieldError, setFieldError] = useState(false); // State for showing the error message
   const [fieldErrorMessage, setFieldErrorMessage] = useState(""); // Error message
+
+  const redirect = useNavigate();
 
   async function handleSignupSubmit(e) {
     e.preventDefault();
@@ -54,6 +56,8 @@ function CredFieldSignUpCustomer() {
         setFieldErrorMessage("Username already exists. Please try again.")
         setFieldError(true);
       }
+
+      
     }
   }
 
