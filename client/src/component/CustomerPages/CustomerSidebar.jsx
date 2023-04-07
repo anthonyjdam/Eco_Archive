@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import logo from "../../newlogo.png";
+import userContext from "../userContext";
 
 // Credits: Hero Icons
 
@@ -94,15 +95,40 @@ const logOut = (
   </svg>
 );
 
+const xmark = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="w-6 h-6"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M6 18L18 6M6 6l12 12"
+    />
+  </svg>
+);
 
-
-function CustomerSidebar() {
+function CustomerSidebar({ nav, setNav }) {
+  const { setCurrentUser } = useContext(userContext);
   return (
-    <div className="sidebar fixed h-screen md:visible md:w-48 lg:w-64 shrink-0 top-0 left-0 flex flex-col justify-between p-10">
+    <div
+      className={
+        nav
+          ? "fixed top-0 left-0 h-screen shrink-0 flex flex-col w-64 justify-between p-10 bg-white z-10"
+          : "hidden lg:fixed lg:top-0 lg:left-0 lg:h-screen lg:shrink-0 lg:flex lg:flex-col lg:w-64 lg:justify-between lg:p-10 lg:bg-white z-10"
+      }
+    >
       <div className="tophalf flex flex-col gap-14">
-        <div className="title flex items-center gap-3 flex-grow-0">
-          <img src={logo} className="h-auto w-8" />
-          <h2 className="font-bold text-2xl">Eco_Archive</h2>
+        <div className="flex flex-col gap-4">
+          <div className="lg:hidden flex justify-end" onClick={() => setNav(false)}>{xmark}</div>
+          <div className="title flex items-center gap-3 flex-grow-0">
+            <img src={logo} className="h-auto w-8" />
+            <h1 className="font-bold text-2xl">Eco_Archive</h1>
+          </div>
         </div>
         <nav className="flex flex-col gap-4">
           <h3 className="text-gray-300 text-left text-sm ml-3">MAIN MENU</h3>
@@ -141,6 +167,7 @@ function CustomerSidebar() {
           <NavLink
             to="/"
             className="flex gap-2 p-2 rounded-md active:bg-[#f3f4fd] hover:bg-[#f3f4fd] hover:text-black transition-all text-gray-800"
+            onClick={() => setCurrentUser("")}
           >
             {logOut}
             Log out
