@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CustomerSidebar from "./CustomerSidebar";
 import logo from "../../newlogo.png";
+import userContext from "../userContext";
+import axios from "axios";
 
 const hamburger = (
   <svg
@@ -19,14 +21,25 @@ const hamburger = (
   </svg>
 );
 
-
-
 function CustomerDashboard() {
   const [nav, setNav] = useState(false);
+  const { currentUser } = useContext(userContext);
+  const [customerBalance, setCustomerBalance] = useState(0);
+  const [customerDonationAmt, setCustomerDonationAmt] = useState(0);
+
+  // On page load get info about the customer
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/api/customer/${currentUser}`)
+      .then((response) => {
+        setCustomerBalance(response.data[0].AccountBal);
+        setCustomerDonationAmt(response.data[0].DonationAmt);
+      });
+  }, []);
 
   return (
     <div>
-      <CustomerSidebar nav={nav} setNav={setNav}/>
+      <CustomerSidebar nav={nav} setNav={setNav} />
 
       {nav ? (
         <div
@@ -50,6 +63,14 @@ function CustomerDashboard() {
           <img src={logo} className="h-auto w-6 xs:w-10" />
           <h1 className="font-bold text-base xs:text-3xl">Eco_Archive</h1>
         </div>
+        <div className="w-full bg-white rounded-2xl p-10 flex items-center md:justify-between flex-col md:flex-row">
+          <h2 className="font-medium text-3xl">{`Welcome, ${currentUser}`}</h2>
+          <span className="text-xl">
+            {customerBalance % Math.floor(customerBalance) === 0
+              ? `Balance: $${customerBalance}.00`
+              : `Balance: $${customerBalance}`}
+          </span>
+        </div>
         <div className="transactions w-full h-96 bg-white rounded-2xl p-8">
           <div className="border-b-2 pb-4">
             <h3 className="text-lg font-bold">Transactions</h3>
@@ -66,7 +87,11 @@ function CustomerDashboard() {
           <div className="border-b-2 pb-4">
             <h3 className="text-lg font-bold">Overall Contributions</h3>
           </div>
-          <div className="text-center py-8 font-bold text-3xl">${"1,234"}</div>
+          <div className="text-center py-8 font-medium text-2xl">
+            {customerDonationAmt % Math.floor(customerDonationAmt) === 0
+              ? `Total contrabutions: $${customerDonationAmt}.00`
+              : `Total contrabutions: $${customerDonationAmt}`}
+          </div>
           <form className="flex flex-col lg:flex-row items-center gap-4 justify-center">
             <select className="w-48 border-2 border-gray-400 rounded p-2">
               <option className="text-gray-400">Select NGO</option>

@@ -81,7 +81,24 @@ app.post("/api/processSignup", (req, res) => {
       }
     }
   );
+});
 
+app.get("/api/customer/:username", (req, res) => {
+  console.log(req.params.username);
+
+  db.query(
+    `SELECT * FROM customer WHERE Username = ?`,
+    [req.params.username],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
+        console.log(results)
+        res.json(results)
+      }
+    }
+  );
 });
 
 app.listen(PORT, () => {
