@@ -31,24 +31,24 @@ const db = mysql.createConnection({
 
 // Login endpoint
 app.post("/api/processLogin", (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
 
   db.query(
-    `SELECT Password FROM ${req.body.userType} WHERE Username = ?`,
-    [req.body.username],
-    (error, results, fields) => {
+    `SELECT Password FROM ?? WHERE Username = ?`,
+    [req.body.userType, req.body.username],
+    (error, results) => {
       if (error) {
         console.log(error);
+        res.status(500).end();
       } else if (results) {
         console.log(results);
 
         if (results.length === 0) {
-          res.send("Unauthorized");
         } else if (results[0].Password === req.body.password) {
-          res.status(200).send({
-            message: "Authorized",
-            username: req.body.username,
-          });
+          console.log(results[0]);
+          res.status(200).json(results[0]);
+        } else {
+          res.status(401).end();
         }
       }
     }
@@ -71,7 +71,7 @@ app.post("/api/processSignup", (req, res) => {
       req.body.province,
       req.body.postalCode,
     ],
-    (error, results, fields) => {
+    (error, results) => {
       if (error) {
         console.log(error.code);
         res.send(error.code);
@@ -94,8 +94,8 @@ app.get("/api/customer/:username", (req, res) => {
         console.log(error);
         res.status(404).end();
       } else if (results) {
-        console.log(results)
-        res.json(results)
+        console.log(results);
+        res.json(results);
       }
     }
   );

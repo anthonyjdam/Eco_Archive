@@ -29,6 +29,7 @@ function CustomerDashboard() {
 
   // On page load get info about the customer
   useEffect(() => {
+    console.log(currentUser);
     axios
       .get(`http://localhost:5000/api/customer/${currentUser}`)
       .then((response) => {

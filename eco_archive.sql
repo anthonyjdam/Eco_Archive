@@ -1,7 +1,6 @@
--- Create the customer table
 SET foreign_key_checks = 0;
+-- Create the customer table
 DROP TABLE IF EXISTS `customer`;
-SET foreign_key_checks = 1;
 
 CREATE TABLE `customer` (
   `Username` varchar(255) NOT NULL,
@@ -25,41 +24,74 @@ CREATE TABLE `customer` (
 
 
 -- Create the admin table
-SET foreign_key_checks = 0;
+
 DROP TABLE IF EXISTS `administrator`;
-SET foreign_key_checks = 1;
 
 CREATE TABLE `administrator` (
-  `AdminUsername` varchar(255) NOT NULL,
-  `AdminPassword` varchar(255) NOT NULL,
+  `Username` varchar(255) NOT NULL,
+  `Password` varchar(255) NOT NULL,
   `BranchName` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`AdminUsername`),
+  PRIMARY KEY (`Username`),
   KEY `BranchName_idx` (`BranchName`) /*!80000 INVISIBLE */,
   CONSTRAINT `fk_AdminAccess` FOREIGN KEY (`BranchName`) REFERENCES `inventory` (`BranchName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
+-- Dump data for the admin table
+LOCK TABLES `administrator` WRITE;
+INSERT INTO `administrator` (`Username`, `Password`, `BranchName`) VALUES ('admin', 'admin', 'University'), ('janedoe', 'doejane', 'Sage Hill');
+UNLOCK TABLES;
+
+
 
 -- Create the recycling_depot table
-SET foreign_key_checks = 0;
+
 DROP TABLE IF EXISTS `recycling_depot`;
-SET foreign_key_checks = 1;
 
 CREATE TABLE `recycling_depot` (
   `BranchName` varchar(255) NOT NULL,
-  `AdminUsername` varchar(255) NOT NULL,
+  `Username` varchar(255) NOT NULL,
   `Location` varchar(255) NOT NULL,
   PRIMARY KEY (`BranchName`),
-  KEY `fk_AdminManager_idx` (`AdminUsername`),
-  CONSTRAINT `fk_AdminManager` FOREIGN KEY (`AdminUsername`) REFERENCES `administrator` (`AdminUsername`)
+  KEY `fk_AdminManager_idx` (`Username`),
+  CONSTRAINT `fk_AdminManager` FOREIGN KEY (`Username`) REFERENCES `administrator` (`Username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dump data into the recycling_depot table
+LOCK TABLES `recycling_depot` WRITE;
+INSERT INTO `recycling_depot` (`BranchName`, `Username`, `Location`) VALUES ('University', 'admin', '2500 University Dr NW, Calgary, AB T2N 1N4'), ('Sage Hill', 'janedoe', '70 Sage Hill Plaza NW, Calgary, AB T3R 0S4');
+UNLOCK TABLES;
+
+
+
+-- Create the inventory table
+
+DROP TABLE IF EXISTS `inventory`;
+
+CREATE TABLE `inventory` (
+  `BranchName` varchar(255) NOT NULL,
+  `LifetimePaper` int NOT NULL DEFAULT '0',
+  `LifetimeGlass` int NOT NULL DEFAULT '0',
+  `LifetimeMetal` int NOT NULL DEFAULT '0',
+  `LifetimePlastic` int NOT NULL DEFAULT '0',
+  `ConcurrentPaper` int NOT NULL DEFAULT '0',
+  `ConcurrentGlass` int NOT NULL DEFAULT '0',
+  `ConcurrentMetal` int NOT NULL DEFAULT '0',
+  `ConcurrentPlastic` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`BranchName`),
+  CONSTRAINT `fk_InventoryDepot` FOREIGN KEY (`BranchName`) REFERENCES `recycling_depot` (`BranchName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dump data into the inventory table
+LOCK TABLES `inventory` WRITE;
+INSERT INTO `inventory` VALUES ('University', '1000', '1000', '1000', '1000', '500', '500', '500', '500'), ('Sage Hill', '0', '0', '0', '0', '0', '0', '0', '0');
+UNLOCK TABLES;
 
 
 
 -- Create the shipment_facility table
-SET foreign_key_checks = 0;
+
 DROP TABLE IF EXISTS `shipment_facility`;
-SET foreign_key_checks = 1;
 
 CREATE TABLE `shipment_facility` (
   `FacilityName` varchar(255) NOT NULL,
@@ -67,28 +99,36 @@ CREATE TABLE `shipment_facility` (
   PRIMARY KEY (`FacilityName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+-- Dump data into the shipment_facility table
+LOCK TABLES `shipment_facility` WRITE;
+INSERT INTO `shipment_facility` (`FacilityName`, `Location`) VALUES ('EasyShip', 'Calgary'), ('NotEasyShip', 'Edmonton');
+UNLOCK TABLES;
+
 
 
 -- Create the ngo table
-SET foreign_key_checks = 0;
+
 DROP TABLE IF EXISTS `ngo`;
-SET foreign_key_checks = 1;
 
 CREATE TABLE `ngo` (
   `NGOName` varchar(255) NOT NULL,
   `AmountRaised` decimal(15,2) NOT NULL DEFAULT '0.00',
-  `AdminUsername` varchar(255) NOT NULL,
+  `Username` varchar(255) NOT NULL,
   PRIMARY KEY (`NGOName`),
-  KEY `fk_AdminNGO` (`AdminUsername`),
-  CONSTRAINT `fk_AdminNGO` FOREIGN KEY (`AdminUsername`) REFERENCES `administrator` (`AdminUsername`)
+  KEY `fk_AdminNGO` (`Username`),
+  CONSTRAINT `fk_AdminNGO` FOREIGN KEY (`Username`) REFERENCES `administrator` (`Username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dump data into the ngo table
+LOCK TABLES `ngo` WRITE;
+INSERT INTO `ngo` VALUES ('Doctors Without Borders', '1111.11', 'admin'), ('Immune Deficiency Foundation', '9999.99','admin');
+UNLOCK TABLES;
 
 
 
 -- Create the donates table
-SET foreign_key_checks = 0;
+
 DROP TABLE IF EXISTS `donates`;
-SET foreign_key_checks = 1;
 
 CREATE TABLE `donates` (
   `Username` varchar(255) NOT NULL,
@@ -103,26 +143,33 @@ CREATE TABLE `donates` (
 
 
 -- Create the recyclable table
-SET foreign_key_checks = 0;
+
 DROP TABLE IF EXISTS `recyclable`;
-SET foreign_key_checks = 1;
 
 CREATE TABLE `recyclable` (
   `RecyclableName` varchar(255) NOT NULL,
   `MaterialType` varchar(255) NOT NULL,
   `MaterialRate` decimal(15,2) NOT NULL,
-  `AdminUsername` varchar(255) NOT NULL,
+  `Username` varchar(255) NOT NULL,
   PRIMARY KEY (`RecyclableName`),
-  KEY `fk_AdminRecyclable` (`AdminUsername`),
-  CONSTRAINT `fk_AdminRecyclable` FOREIGN KEY (`AdminUsername`) REFERENCES `administrator` (`AdminUsername`)
+  KEY `fk_AdminRecyclable` (`Username`),
+  CONSTRAINT `fk_AdminRecyclable` FOREIGN KEY (`Username`) REFERENCES `administrator` (`Username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+-- Dump data into the recyclable table
+LOCK TABLES `recyclable` WRITE;
+INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('Beer bottles', 'Glass', '0.75', 'janedoe');
+INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('Aluminium soda cans', 'Metal', '0.40', 'admin');
+INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('2L Milk cartons', 'Paper', '0.25', 'admin');
+INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('4L Milk jugs', 'Plastic', '0.45', 'janedoe');
+INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('Wine bottles', 'Glass', '1.15', 'admin');
+INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('Plastic water bottles', 'Plastic', '0.20', 'admin');
+UNLOCK TABLES;
 
 
 -- Create the accepts table
-SET foreign_key_checks = 0;
+
 DROP TABLE IF EXISTS `accepts`;
-SET foreign_key_checks = 1;
 
 CREATE TABLE `accepts` (
   `BranchName` varchar(255) NOT NULL,
@@ -136,9 +183,8 @@ CREATE TABLE `accepts` (
 
 
 -- Create the employee_workstation table
-SET foreign_key_checks = 0;
+
 DROP TABLE IF EXISTS `employee_workstation`;
-SET foreign_key_checks = 1;
 
 CREATE TABLE `employee_workstation` (
   `BranchName` varchar(255) NOT NULL,
@@ -150,29 +196,10 @@ CREATE TABLE `employee_workstation` (
 
 
 
--- Create the inventory table
-SET foreign_key_checks = 0;
-DROP TABLE IF EXISTS `inventory`;
-SET foreign_key_checks = 1;
-
-CREATE TABLE `inventory` (
-  `BranchName` varchar(255) NOT NULL,
-  `LifetimePaper` int NOT NULL DEFAULT '0',
-  `LifetimeGlass` int NOT NULL DEFAULT '0',
-  `LifetimeMetal` int NOT NULL DEFAULT '0',
-  `ConcurrentPaper` int NOT NULL DEFAULT '0',
-  `ConcurrentGlass` int NOT NULL DEFAULT '0',
-  `ConcurrentMetal` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`BranchName`),
-  CONSTRAINT `fk_InventoryDepot` FOREIGN KEY (`BranchName`) REFERENCES `recycling_depot` (`BranchName`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-
 
 -- Create the transaction table
-SET foreign_key_checks = 0;
+
 DROP TABLE IF EXISTS `transaction`;
-SET foreign_key_checks = 1;
 
 CREATE TABLE `transaction` (
   `Username` varchar(255) NOT NULL,
@@ -191,19 +218,24 @@ CREATE TABLE `transaction` (
 
 
 -- Create the ship table
-SET foreign_key_checks = 0;
+
 DROP TABLE IF EXISTS `ship`;
-SET foreign_key_checks = 1;
 
 CREATE TABLE `ship` (
   `FacilityName` varchar(255) NOT NULL,
   `BranchName` varchar(255) NOT NULL,
-  `AdminUsername` varchar(255) NOT NULL,
+  `Username` varchar(255) NOT NULL,
   `ShipmentDate` datetime NOT NULL,
-  PRIMARY KEY (`FacilityName`,`BranchName`,`AdminUsername`),
+  PRIMARY KEY (`FacilityName`,`BranchName`,`Username`),
   KEY `fk_InventoryShip_idx` (`BranchName`),
-  KEY `fk_AdminShip` (`AdminUsername`),
-  CONSTRAINT `fk_AdminShip` FOREIGN KEY (`AdminUsername`) REFERENCES `administrator` (`AdminUsername`),
+  KEY `fk_AdminShip` (`Username`),
+  CONSTRAINT `fk_AdminShip` FOREIGN KEY (`Username`) REFERENCES `administrator` (`Username`),
   CONSTRAINT `fk_FacilityShip` FOREIGN KEY (`FacilityName`) REFERENCES `shipment_facility` (`FacilityName`),
   CONSTRAINT `fk_InventoryShip` FOREIGN KEY (`BranchName`) REFERENCES `inventory` (`BranchName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
+
+
+SET foreign_key_checks = 1;
