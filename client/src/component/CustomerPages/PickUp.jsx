@@ -48,7 +48,10 @@ function PickUp() {
           <img src={logo} className="h-auto w-6 xs:w-10" />
           <h1 className="font-bold text-base xs:text-3xl">Eco_Archive</h1>
         </div>
-        Pickup
+        <div className="w-full bg-white rounded-2xl p-10 flex items-center flex-col">
+          <h2>Request Pick Up</h2>
+          
+        </div>
       </div>
     </div>
   );

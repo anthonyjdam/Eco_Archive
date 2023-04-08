@@ -23,7 +23,7 @@ const hamburger = (
 
 function CustomerDashboard() {
   const [nav, setNav] = useState(false);
-  const { currentUser } = useContext(userContext);
+  const { currentUser, setCurrentUser } = useContext(userContext);
   const [customerBalance, setCustomerBalance] = useState(0);
   const [customerDonationAmt, setCustomerDonationAmt] = useState(0);
 
@@ -81,7 +81,6 @@ function CustomerDashboard() {
             <h4 className="w-1/4">Amount</h4>
           </div>
           {/* TODO: GET request to get the lets say 3-5 most recent transactions */}
-          {/* TODO: Figure out how to use Usecontext to set the current user */}
         </div>
         <div className="contributions w-full bg-white rounded-2xl p-8">
           <div className="border-b-2 pb-4">
