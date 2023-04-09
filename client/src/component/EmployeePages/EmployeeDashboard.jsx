@@ -1,10 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { AiOutlineClose, AiOutlineLogout, AiOutlineMenu, AiOutlineProfile } from "react-icons/ai"
 import EmployeeTable from './EmployeeTable'
+import userContext from "../userContext";
+import { NavLink } from "react-router-dom";
+
 
 function EmployeeDashboard() {
 
   const [nav, setNav] = useState(false)
+  const { setCurrentUser } = useContext(userContext);
+
 
   return (
     <main className="w-full lg:pl-1 min-h-screen bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-50 via-indigo-100 to-emerald-50 ">
@@ -41,9 +46,15 @@ function EmployeeDashboard() {
             <li className='text-xl py-4 flex'>
               <AiOutlineProfile size={25} className='mr-4' /> Profile
             </li>
+            <NavLink
+            to="/"
+            className="flex gap-2 p-2 rounded-md active:bg-[#f3f4fd] hover:bg-[#f3f4fd] hover:text-black transition-all text-gray-800"
+            onClick={() => setCurrentUser("")}
+          >
             <li className='text-xl py-4 flex'>
               <AiOutlineLogout size={25} className='mr-4' /> Log Out
             </li>
+          </NavLink>
           </ul>
         </nav>
 

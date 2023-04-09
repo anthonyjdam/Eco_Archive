@@ -101,6 +101,12 @@ app.get("/api/customer/:username", (req, res) => {
   );
 });
 
+
+// app.get("/api/", () => {
+//   console.log("running on port 3001");
+// })
+
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

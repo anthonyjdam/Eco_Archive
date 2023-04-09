@@ -13,6 +13,8 @@ import AdminEditEmployee from "./component/AdminPages/AdminEditEmployee";
 import AdminEditCharities from "./component/AdminPages/AdminEditCharities";
 import userContext from "./component/userContext";
 import { useState } from "react";
+import DropOffService from "./component/EmployeePages/DropOffService";
+import PickUpService from "./component/EmployeePages/PickUpService";
 
 
 function App() {
@@ -36,6 +38,10 @@ function App() {
             {/* <Route path="/editemployee" element={<AdminEditEmployee/>}></Route> */}
             {/* <Route path="/editcustomer" element={<AdminEditCustomer/>}></Route> */}
             <Route path="/editcharity" element={<AdminEditCharities />}></Route>
+            <Route path="/dropoffService" element={<DropOffService />}></Route>
+            <Route path="/pickupService" element={<PickUpService />}></Route>
+
+
           </Routes>
         </userContext.Provider>
       </BrowserRouter>
