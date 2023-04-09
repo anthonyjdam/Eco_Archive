@@ -2,14 +2,102 @@ import React, { useState } from 'react'
 import AdminSidebar from './AdminSidebar'
 import AdminProfileBar from "./AdminProfileBar"
 import AdminTable from './AdminTable'
+import axios from 'axios';
 
-// glassRate = 3;
 
 function AdminEditEmployee() {
 
-  //State variables
-  // const [empFName, setEmpFName] = useState("")
-  // const [empLName, setEmpLName] = useState("")
+  //Constants
+  const pageRoute = "http://localhost:5000/api/processSearchEmployee";
+
+  //Employee state variables
+  const [empFName, setEmpFName] = useState("");
+  const [empLName, setEmpLName] = useState("");
+  const [empUsername, setEmpUsername] = useState("");
+  const [empPassword, setEmpPassword] = useState("");
+  const [data, setData] = useState([]);
+
+  const [count, setCount] = useState(0);
+  const [search, setSearch] = useState("");
+
+  //TODO: Error Checking
+  //TODO: Romove Table row on new search
+  //TODO: Disallow duplicate searches
+
+  //Other state variables
+
+  const handleReload = () => {
+    setCount(count + 1);
+  }
+
+  async function handleEmpSearch(e) {
+    e.preventDefault();
+    // setData([]);
+
+    //Split the username delimited by a space
+    // const [yo, momma] = search.split(" ");
+
+    // setEmpFName(yo)
+    // setEmpLName(momma)
+
+    console.log("Search " + search);
+    console.log("First name " + empFName);
+    console.log("Last name " + empLName);
+
+    const searchObject = {
+      userType: "employee",
+      firstName: empFName,
+      lastName: empLName
+    }
+
+    // console.log(userType);
+    // console.log(empFName);
+
+
+    const response = await axios.post("http://localhost:5000/api/selectEmpWithName", searchObject);// returns an array of matching employee names
+    console.log(response);
+    const responseData = response.data;
+    // console.log(data);
+    // console.log(data.length);
+
+
+
+    /**
+     * If there is one or more employees found, 
+     * iterate through the ARRAY of employees containing that name
+     */
+    if (responseData.length > 0) {
+      // for (let i = 0; i < responseData.length; i++) {
+      //   console.log("Enter loop")
+      //   const element = responseData[i];
+      //   console.log(element);
+      //   handleAddData(element);
+      //   console.log(element.LName);
+      // }
+      setData([]);
+      setData(data.concat(responseData));
+
+    }
+    else {
+      console.log("No results found")
+    }
+  }
+
+  /**
+   *  Uses the spread operator to create a new array 
+   *  that includes all the previous elements of the data array, 
+   *  as well as a new element newData at the end
+   * 
+   * @param {object} newData 
+   */
+  function handleAddData(newData) {
+    console.log("HANDLE DATA");
+    console.log(data);
+    console.log(newData);
+    setData([data.concat(newData)]);
+    console.log(data.length);
+    console.log(data);
+  }
 
 
   return (
@@ -85,29 +173,46 @@ function AdminEditEmployee() {
               </div>
             </div>
 
-            {/* Table Container */}
+            {/* Employee Table Container */}
             <div>
               <div className="text-left relative flex-auto m-3">
 
-                <div className="bg-white rounded-t-lg opacity-[85%] shawdow-lg p-3">
+                <div className="bg-gray-50 rounded-t-lg opacity-[85%] shawdow-lg p-3">
 
                   <div className='flex items-center justify-between'>
                     {/* Search User Button */}
                     <div className='relative'>
-                      <div className='flex relative items-start justify-start'>
-                        <input className='flex p-1 pl-20 rounded-lg w-44 bg-gray-200 hover:bg-gray-300 transition-all text-gray-800'>
-                        </input>
-                        <div className='flex absolute items-start place-self-center'>
-                          <button className='flex p-1.5 rounded-lg active:bg-blue-300 hover:bg-blue-200 hover:text-black transition-all text-gray-800'>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                            </svg>
-                            <label className="font-semibold text-sm">
-                              Search
-                            </label>
-                          </button>
+                      <form onSubmit={(e) => {
+                        // setData([]);
+                        console.log("DATTATATTATDA");
+                        console.log(data);
+                        console.log("DATTATATTATDA");
+                        handleReload;
+                        handleEmpSearch(e);
+                      }}>
+                        <div className='flex relative items-start justify-start'>
+                          <input className='flex p-1 pl-20 rounded-lg w-44 bg-gray-200 hover:bg-gray-300 transition-all text-gray-800'
+                            type="text"
+                            value={search}
+                            onChange={(e) => {
+                              const [first, last] = e.target.value.split(" ");
+                              setEmpFName(first);
+                              setEmpLName(last);
+                              setSearch(e.target.value);
+                            }}
+                          ></input>
+                          <div className='flex absolute items-start place-self-center'>
+                            <button className='flex p-1.5 rounded-lg active:bg-blue-300 hover:bg-blue-200 hover:text-black transition-all text-gray-800'>
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                              </svg>
+                              <label className="font-semibold text-sm">
+                                Search
+                              </label>
+                            </button>
+                          </div>
                         </div>
-                      </div>
+                      </form>
                     </div>
 
                     <div className='flex items-end justify-end gap-1'>
@@ -131,7 +236,7 @@ function AdminEditEmployee() {
                 </div>
 
                 {/* Admin Table */}
-                <AdminTable />
+                <AdminTable data={data} />
 
               </div>
             </div>

@@ -21,10 +21,10 @@ function AdminEditMaterial() {
 
   const handleNonNumberInput = (input) => {
     if (isNaN(input)) {
-      setFieldError(true)
+      setFieldError(true);
       return false;
     }
-    setFieldError(false)
+    setFieldError(false);
     return true;
   }
 
