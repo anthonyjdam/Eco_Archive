@@ -118,8 +118,8 @@ function CustomerSidebar({ nav, setNav }) {
     <div
       className={
         nav
-          ? "fixed top-0 left-0 h-screen shrink-0 flex flex-col w-64 justify-between p-10 bg-white z-10"
-          : "hidden lg:fixed lg:top-0 lg:left-0 lg:h-screen lg:shrink-0 lg:flex lg:flex-col lg:w-64 lg:justify-between lg:p-10 lg:bg-white z-10"
+          ? "fixed top-0 left-0 h-screen shrink-0 flex flex-col w-64 justify-between p-8 bg-white z-10"
+          : "hidden lg:fixed lg:top-0 lg:left-0 lg:h-screen lg:shrink-0 lg:flex lg:flex-col lg:w-64 lg:justify-between lg:p-8 lg:bg-white z-10"
       }
     >
       <div className="tophalf flex flex-col gap-14">

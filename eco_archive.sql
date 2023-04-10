@@ -180,6 +180,20 @@ CREATE TABLE `accepts` (
   CONSTRAINT `fk_BranchAccepts` FOREIGN KEY (`BranchName`) REFERENCES `inventory` (`BranchName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+-- Dump data into the accepts table
+LOCK TABLES `accepts` WRITE;
+INSERT INTO `accepts` (`BranchName`,`RecyclableName`) VALUES ('Sage Hill','2L Milk cartons');
+INSERT INTO `accepts` (`BranchName`,`RecyclableName`) VALUES ('Sage Hill', '4L Milk jugs');
+INSERT INTO `accepts` (`BranchName`,`RecyclableName`) VALUES ('Sage Hill', 'Aluminium soda cans');
+INSERT INTO `accepts` (`BranchName`,`RecyclableName`) VALUES ('Sage Hill', 'Beer bottles');
+INSERT INTO `accepts` (`BranchName`,`RecyclableName`) VALUES ('Sage Hill', 'Plastic water bottles');
+INSERT INTO `accepts` (`BranchName`,`RecyclableName`) VALUES ('University','2L Milk cartons');
+INSERT INTO `accepts` (`BranchName`,`RecyclableName`) VALUES ('University', '4L Milk jugs');
+INSERT INTO `accepts` (`BranchName`,`RecyclableName`) VALUES ('University', 'Aluminium soda cans');
+INSERT INTO `accepts` (`BranchName`,`RecyclableName`) VALUES ('University', 'Beer bottles');
+INSERT INTO `accepts` (`BranchName`,`RecyclableName`) VALUES ('University', 'Plastic water bottles');
+INSERT INTO `accepts` (`BranchName`,`RecyclableName`) VALUES ('University', 'Wine bottles');
+UNLOCK TABLES;
 
 
 -- Create the employee_workstation table
