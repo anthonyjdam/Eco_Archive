@@ -51,7 +51,7 @@ function CustomerDashboard() {
         ""
       )}
 
-      <div className="content flex flex-col gap-8 lg:ml-64 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-50 via-indigo-100 to-emerald-50 p-10 min-h-screen">
+      <div className="content flex flex-col gap-8 lg:ml-64 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-50 via-indigo-100 to-emerald-50 p-8 min-h-screen">
         <div className="header flex items-center h-12 py-8 gap-4 lg:hidden ">
           <button
             className="bg-white rounded-2xl p-4 hover:scale-110 transition-transform"

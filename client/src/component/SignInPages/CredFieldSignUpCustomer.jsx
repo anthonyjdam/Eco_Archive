@@ -141,7 +141,7 @@ function CredFieldSignUpCustomer() {
           <div>
             <label className="text-gray-700">Province</label>
             <select
-              className="w-full py-2 bg-gray-100 text-gray-500 px-1 mb-4"
+              className="w-full py-2 bg-gray-100 text-gray-500 px-1 mb-4 max-h-80 overflow-y-auto"
               type="text"
               value={customerProvince}
               onChange={(e) => {

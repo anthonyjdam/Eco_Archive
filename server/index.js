@@ -83,6 +83,7 @@ app.post("/api/processSignup", (req, res) => {
   );
 });
 
+// API endpoint for getting a specific customer
 app.get("/api/customer/:username", (req, res) => {
   console.log(req.params.username);
 
@@ -101,6 +102,40 @@ app.get("/api/customer/:username", (req, res) => {
   );
 });
 
+// API endpoint for getting all recycling depots in the database
+app.get("/api/recycling_depot", (req, res) => {
+  db.query(`SELECT * FROM recycling_depot`, (error, results) => {
+    if (error) {
+      console.log(error);
+      res.status(404).end();
+    } else if (results) {
+      console.log(results);
+      res.json(results);
+    }
+  });
+});
+
+// API endpoint for getting the list of recyclables accepted by a specific recycling depot
+// Returns a list of recyclables that includes all the columns of the recyclables
+app.get("/api/accepted_recyclable/:depotName", (req, res) => {
+  console.log(req.params.depotName);
+
+  db.query(
+    `SELECT recyclable.* 
+    FROM recyclable, accepts 
+    WHERE accepts.BranchName = ? AND accepts.RecyclableName = recyclable.RecyclableName`,
+    [req.params.depotName],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
+        console.log(results);
+        res.json(results);
+      }
+    }
+  );
+});
 
 app.post("/api/selectEmpWithName", (req, res) => {
   console.log(req.body);

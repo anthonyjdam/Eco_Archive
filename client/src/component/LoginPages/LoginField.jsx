@@ -69,7 +69,6 @@ export default function LoginField({ userType }) {
         .catch((error) => {
           if (error.response) {
             if (error.response.status === 401) {
-              console.log("here");
               setFieldErrorMessage("Invalid Credentials");
               setFieldError(true);
             }
