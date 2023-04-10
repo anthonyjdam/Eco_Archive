@@ -15,7 +15,7 @@ export default function AdminDashboard() {
                 </aside>
             </div>
 
-            <main className="min-h-screen bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-50 via-indigo-100 to-emerald-50 ">
+            <main className=" min-h-screen bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-50 via-indigo-100 to-emerald-50 ">
 
                 {/* Top Bar */}
                 <AdminProfileBar />
@@ -24,8 +24,8 @@ export default function AdminDashboard() {
                     {/* Iventory Summary */}
                     <div className="flex-auto bottom-0 overflow-y-auto lg:pr-4 lg:pt-8">
                         <div>
-                            <div className="bg-white rounded-md opacity-[85%] shawdow-lg m-3">
-                                <h2 className=" text-2xl text-blue-300 font-bold pl-5 mb-3">Inventory</h2>
+                            <div className="bg-white rounded-lg opacity-[85%] shawdow-lg m-3">
+                                <h2 className=" text-2xl text-blue-300 font-bold pl-5 pt-2 pb-2">Inventory</h2>
                                 <hr className='pb-2'></hr>
                                 <div className="pl-5">
                                     <h3 className="font-semibold text-md text-gray-700">Concurrent Total</h3>

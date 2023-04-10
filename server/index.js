@@ -102,9 +102,46 @@ app.get("/api/customer/:username", (req, res) => {
 });
 
 
+app.post("/api/selectEmpWithName", (req, res) => {
+  console.log(req.body);
+
+  /*Create query variable*/
+  const sql = (
+    `SELECT *
+    FROM ??
+    WHERE LName LIKE ? AND FName LIKE ?`
+  ); //search employee query
+  const placeHolder = [req.body.userType, `%${req.body.lastName}%`, `%${req.body.firstName}%`]; //placeholders into '?' and '??' parameters
+  const query = mysql.format(sql, placeHolder);//insert the placeholders into the query
+
+  console.log(query);
+  console.log(typeof req.body.firstName +
+    typeof req.body.lastName)
+
+  // try {
+    //Query to the database
+    db.query(query, (error, results) => {
+      if (results) {
+        res.status(200).send(results);
+      }
+      else if (error) {
+        console.log("Error " + error);
+        res.status(500).end();
+      }
+    });
+//   } 
+//   catch (error) {
+//     console.log("Error " + error);
+//     res.status(500).send({error});
+//   }
+});
+
+
+
 // app.get("/api/", () => {
 //   console.log("running on port 3001");
 // })
+
 
 
 app.listen(PORT, () => {

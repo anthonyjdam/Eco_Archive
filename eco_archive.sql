@@ -1,6 +1,7 @@
 SET foreign_key_checks = 0;
 -- Create the customer table
 DROP TABLE IF EXISTS `customer`;
+DROP TABLE IF EXISTS `employee`;
 
 CREATE TABLE `customer` (
   `Username` varchar(255) NOT NULL,
@@ -20,6 +21,29 @@ CREATE TABLE `customer` (
   LOCK TABLES `customer` WRITE;
   INSERT INTO `customer` VALUES ("anthonyjdam", "Anthony", "Dam", "hello", 1000.00, 0.00, "123 Anthony St NW", "Calgary", "AB", "T1T1T1"), ("jRaimuu", "Liam", "Sarjeant", "eco", 6969.00, 0.00, "123 Liam St NW", "Calgary", "AB", "A1B2C3"), ("mairakhan419", "Maira", "Khan", "archive", 696969.00, 0.00, "123 Maira St NW", "Calgary", "AB", "D4E5F6");
   UNLOCK TABLES;
+
+
+
+
+  CREATE TABLE `employee` (
+  `Username` varchar(255) NOT NULL,
+  `LName` varchar(255) NOT NULL,
+  `FName` varchar(255) NOT NULL,
+  `Password` varchar(255) NOT NULL,
+  PRIMARY KEY (`Username`)
+  );
+
+  -- Dump data into employee table
+  LOCK TABLES `employee` WRITE;
+  INSERT INTO `employee` VALUES 
+  ("mairakhan419", "Khan", "Mirah", "cheeto"), 
+  ("anthonyjdam", "Dam", "Anthony", "password"), 
+  ("jRaimuu", "Sarjeant", "Liam", "someReallyLongPassword"), 
+  ("Casper", "Phan", "Tom", "54321"), 
+  ("Ghost", "Phantano", "Tommy", "12345");
+  UNLOCK TABLES;
+
+
 
 
 
@@ -239,3 +263,4 @@ CREATE TABLE `ship` (
 
 
 SET foreign_key_checks = 1;
+
