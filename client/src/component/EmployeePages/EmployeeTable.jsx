@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from "react-router-dom";
 
 
@@ -9,7 +9,7 @@ const dummyData =  [
         customer_name: 'Ahmed',
         service_date: '2022-05-17T03:24:00',
         service_time: '3:00pm',
-        current_service_status: 'Pick-up'
+        current_service_status: 'Glass'
     },
     {
         customer_id: '956',
@@ -37,6 +37,16 @@ const dummyData =  [
 
 
 export default function EmployeeTable() {
+
+    // const [userData, setUserdata] = useState([]);
+    
+    // useEffect( ()=>{
+    //     const getUserdata= async()=>{
+    //         const reqData= await fetch("")
+    //     }
+    // })
+
+
   return (
     <div className='bg-white px-4 pt-3 pb-4 rounded-sm border border-gray-400 flex-1'>
         <strong className='text-gray-700 font-medium '>Transactions in Process</strong>
@@ -47,8 +57,8 @@ export default function EmployeeTable() {
                         <td>Customer ID</td>
                         <td>Customer Name</td>
                         <td>Service Date</td>
-                        <td>Service Time</td>
-                        <td>Service Status</td>
+                        {/* <td>Service Time</td> */}
+                        <td>Service Type</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,8 +66,8 @@ export default function EmployeeTable() {
                     <tr key={order.customer_id} class="odd:bg-white even:bg-slate-50">
                         <td>#{order.customer_id}</td>
                         <td className='text-green-600'><Link to={`/customer/${order.customer_name}`} className='flex hover:underline'>{order.customer_name}</Link></td>
-                        <td>{new Date(order.service_date).toLocaleDateString()}</td>
-                        <td>{order.service_time}</td>
+                        <td>{new Date(order.service_date).toDateString()}</td>
+                        {/* <td>{order.service_time}</td> */}
                         <td>{order.current_service_status}</td>
 
                     </tr>
