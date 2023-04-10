@@ -44,6 +44,7 @@ app.post("/api/processLogin", (req, res) => {
         console.log(results);
 
         if (results.length === 0) {
+          res.status(401).end();
         } else if (results[0].Password === req.body.password) {
           console.log(results[0]);
           res.status(200).json(results[0]);
