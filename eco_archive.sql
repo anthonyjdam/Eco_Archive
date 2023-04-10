@@ -221,6 +221,7 @@ CREATE TABLE `transaction` (
   `RecyclableName` varchar(255) NOT NULL,
   `AmountOfMaterialsGiven` int DEFAULT NULL,
   `DateTime` datetime DEFAULT NULL,
+  `ServiceType` varchar(255) NOT NULL,
   PRIMARY KEY (`Username`,`BranchName`,`RecyclableName`),
   KEY `fk_RecyclableTransaction_idx` (`RecyclableName`),
   KEY `fk_WorkstationTransaction_idx` (`BranchName`),
