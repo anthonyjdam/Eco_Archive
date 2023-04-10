@@ -13,7 +13,7 @@ const db = mysql.createConnection({
   host: "localhost",
   port: "33061",
   user: "root",
-  password: "password",
+  password: "password", // Set to cheetos for Maira
   database: "eco_archive",
 });
 
@@ -31,24 +31,24 @@ const db = mysql.createConnection({
 
 // Login endpoint
 app.post("/api/processLogin", (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
 
   db.query(
-    `SELECT Password FROM ${req.body.userType} WHERE Username = ?`,
-    [req.body.username],
-    (error, results, fields) => {
+    `SELECT Password FROM ?? WHERE Username = ?`,
+    [req.body.userType, req.body.username],
+    (error, results) => {
       if (error) {
         console.log(error);
+        res.status(500).end();
       } else if (results) {
         console.log(results);
 
         if (results.length === 0) {
-          res.send("Unauthorized");
         } else if (results[0].Password === req.body.password) {
-          res.status(200).send({
-            message: "Authorized",
-            username: req.body.username,
-          });
+          console.log(results[0]);
+          res.status(200).json(results[0]);
+        } else {
+          res.status(401).end();
         }
       }
     }
@@ -71,7 +71,7 @@ app.post("/api/processSignup", (req, res) => {
       req.body.province,
       req.body.postalCode,
     ],
-    (error, results, fields) => {
+    (error, results) => {
       if (error) {
         console.log(error.code);
         res.send(error.code);
@@ -81,8 +81,26 @@ app.post("/api/processSignup", (req, res) => {
       }
     }
   );
-
 });
+
+app.get("/api/customer/:username", (req, res) => {
+  console.log(req.params.username);
+
+  db.query(
+    `SELECT * FROM customer WHERE Username = ?`,
+    [req.params.username],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
+        console.log(results);
+        res.json(results);
+      }
+    }
+  );
+});
+
 
 app.post("/api/selectEmpWithName", (req, res) => {
   console.log(req.body);
@@ -117,6 +135,12 @@ app.post("/api/selectEmpWithName", (req, res) => {
 //     res.status(500).send({error});
 //   }
 });
+
+
+
+// app.get("/api/", () => {
+//   console.log("running on port 3001");
+// })
 
 
 

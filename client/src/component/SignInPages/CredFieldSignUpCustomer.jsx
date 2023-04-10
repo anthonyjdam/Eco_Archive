@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import userContext from "../userContext";
 
 function CredFieldSignUpCustomer() {
   const [customerFirstName, setCustomerFirstName] = useState("");
@@ -14,6 +15,9 @@ function CredFieldSignUpCustomer() {
 
   const [fieldError, setFieldError] = useState(false); // State for showing the error message
   const [fieldErrorMessage, setFieldErrorMessage] = useState(""); // Error message
+
+  const { setCurrentUser } = useContext(userContext);
+  const redirect = useNavigate();
 
   async function handleSignupSubmit(e) {
     e.preventDefault();
@@ -49,6 +53,7 @@ function CredFieldSignUpCustomer() {
         submitObject
       );
       if (response.data === "Sign up successful") {
+        setCurrentUser(customerUsername);
         redirect("/customerDashboard");
       } else if (response.data === "ER_DUP_ENTRY") {
         setFieldErrorMessage("Username already exists. Please try again.")

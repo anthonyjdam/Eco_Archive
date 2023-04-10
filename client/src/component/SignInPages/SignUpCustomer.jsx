@@ -11,7 +11,7 @@ function SignUpCustomer() {
         </main> */}
         <main className="flex items-center justify-center h-screen bg-gradient-to-t from-indigo-50 to-sky-200">
           <div className="bg-white w-[32rem] px-12 pt-12 pb-4 rounded-xl shadow-md">
-            <div className="flex items-center justify-center mb-4">
+            <div className="flex items-center justify-center">
               <img
                 src={logo}
                 className="h-20"
