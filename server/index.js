@@ -137,6 +137,11 @@ app.get("/api/accepted_recyclable/:depotName", (req, res) => {
   );
 });
 
+// app.get("/api/", () => {
+//   console.log("running on port 3001");
+// })
+
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
