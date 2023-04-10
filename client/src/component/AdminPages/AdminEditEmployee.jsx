@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AdminSidebar from './AdminSidebar'
 import AdminProfileBar from "./AdminProfileBar"
 import AdminTable from './AdminTable'
 import axios from 'axios';
+
+//TODO: useEffect to acheive the clearAll button
+//TODO: reimploment unique rows
 
 
 function AdminEditEmployee() {
@@ -26,9 +29,12 @@ function AdminEditEmployee() {
 
   //Other state variables
 
+
   const handleReload = () => {
     setCount(count + 1);
   }
+
+  
 
   async function handleEmpSearch(e) {
     e.preventDefault();
@@ -61,7 +67,6 @@ function AdminEditEmployee() {
     // console.log(data.length);
 
 
-
     /**
      * If there is one or more employees found, 
      * iterate through the ARRAY of employees containing that name
@@ -74,13 +79,17 @@ function AdminEditEmployee() {
       //   handleAddData(element);
       //   console.log(element.LName);
       // }
-      setData([]);
+      // setData([]);
+      const newData = [];
+      setData(newData);
       setData(data.concat(responseData));
 
     }
     else {
       console.log("No results found")
     }
+    
+    
   }
 
   /**
@@ -228,6 +237,19 @@ function AdminEditEmployee() {
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                         </svg>
+                      </button>
+                    </div>
+
+                    <div className="flex justify-end p-4">
+                      <button
+                        onClick={() => {
+                          let arr = [];
+                          setData(arr)
+                          console.log("Clear " + data.length);
+                        }}
+                        className="px-4 py-2 font-medium text-white bg-red-600 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                      >
+                        Clear All
                       </button>
                     </div>
 
