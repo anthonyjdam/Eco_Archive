@@ -58,6 +58,7 @@ function PickUp() {
   const [nav, setNav] = useState(false);
   const [recycling_depots, setRecycling_depots] = useState([]);
   const [selected_depot, setSelected_depot] = useState("");
+  const [date, setDate] = useState("")
   const [accepted_recyclables, setAccepted_recyclables] = useState([]);
   const [showResults, setShowResults] = useState(false);
   const [searchString, setSearchString] = useState("");
@@ -149,6 +150,10 @@ function PickUp() {
       1
     );
     setPickUpList(remainingRecyclables);
+  }
+
+  function handlePickUpSubmit() {
+
   }
 
   return (
