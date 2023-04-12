@@ -1,3 +1,5 @@
+
+
 SET foreign_key_checks = 0;
 -- Create the customer table
 DROP TABLE IF EXISTS `customer`;
@@ -25,7 +27,7 @@ CREATE TABLE `customer` (
 
 
 
-  CREATE TABLE `employee` (
+ CREATE TABLE `employee` (
   `Username` varchar(255) NOT NULL,
   `LName` varchar(255) NOT NULL,
   `FName` varchar(255) NOT NULL,
@@ -230,18 +232,14 @@ DROP TABLE IF EXISTS `employee_workstation`;
 
 CREATE TABLE `employee_workstation` (
   `BranchName` varchar(255) NOT NULL,
-  -- `WorkstationID` int NOT NULL,
   `Username` varchar(255) NOT NULL,
-  PRIMARY KEY (`Username`,`BranchName`),
-  KEY `fk_BranchWorkstation_idx` (`BranchName`),
-  KEY `fk_employeeUser_idx` (`Username`),
-  CONSTRAINT `fk_BranchWorkstation` FOREIGN KEY (`BranchName`) REFERENCES `recycling_depot` (`BranchName`),
-  CONSTRAINT `fk_employeeUser` FOREIGN KEY (`Username`) REFERENCES `employee` (`Username`)
+  PRIMARY KEY (`BranchName`,`Username`),
+  KEY `fk_BranchName_idx` (`BranchName`),
+  KEY `fk_Username_idx` (`Username`),  
+  CONSTRAINT `fk_BranchWorkstation` FOREIGN KEY (`BranchName`) REFERENCES `recycling_depot` (`BranchName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
--- LOCK TABLES `employee_workstation` WRITE;
--- INSERT INTO `employee_workstation` VALUES ('University', 'mairakhan419')
 
 
 -- Create the transaction table
@@ -256,6 +254,7 @@ CREATE TABLE `transaction` (
   `DateTime` datetime NOT NULL,
   `ServiceType` varchar(255) NOT NULL,
   `AmountEarned` decimal(15,2) DEFAULT NULL,
+  `Status` varchar(255) DEFAULT 'PENDING', 
   PRIMARY KEY (`Username`,`BranchName`,`RecyclableName`,`DateTime`),
   KEY `fk_RecyclableTransaction_idx` (`RecyclableName`),
   KEY `fk_BranchTransaction_idx` (`BranchName`),
@@ -264,10 +263,6 @@ CREATE TABLE `transaction` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
--- dump data into transaction table
-LOCK TABLES `transaction` WRITE;
-INSERT INTO `transaction` VALUES ('anthonyjdam', 'University', '4L Milk jugs', 6, "2015-12-25T15:32:06.427", 'Pick Up'), ('anthonyjdam', 'Sage Hill', '4L Milk jugs', 10, "2016-12-25T15:32:06.427", 'Pick Up'), ('jRaimuu', 'University', '4L Milk jugs', 6, "2019-12-25T19:32:06.427", 'Drop Off');
-UNLOCK TABLES;
 
 -- Create the ship table
 
@@ -291,4 +286,3 @@ CREATE TABLE `ship` (
 
 
 SET foreign_key_checks = 1;
-

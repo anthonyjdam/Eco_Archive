@@ -56,6 +56,28 @@ app.post("/api/processLogin", (req, res) => {
   );
 });
 
+app.post("/api/complete", (req, res) => {
+  console.log(req.body);
+  db.query(
+    `UPDATE transaction
+    SET Status = ? 
+    WHERE Username = ? AND BranchName = ? AND DateTime = ?`,
+    [req.body.status, 
+      req.body.username, 
+      req.body.branchname, 
+      req.body.datetime
+    ],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).end();
+      } else if (results) {
+        console.log(results);
+      }
+    }
+  );
+})
+
 
 
 // Sign Up endpoint
@@ -137,7 +159,7 @@ app.get("/api/employee/:username", (req, res) => {
 //   });
 // });
 
-app.post("/api/employee", (req, res) => {
+app.post("/api/employee/:username", (req, res) => {
   // console.log(req.body);
 
   db.query(
@@ -328,9 +350,11 @@ app.get("/api/get_transaction/:username", (req, res) => {
   // console.log(req.params.username);
 
   db.query(
-    `SELECT transaction.* 
+    `SELECT transaction.Username, transaction.BranchName, transaction.AmountOfMaterialsGiven, transaction.DateTime, transaction.ServiceType, transaction.AmountEarned, transaction.Status
     FROM transaction, employee 
-    WHERE employee.Username = ? AND employee.BranchName = transaction.BranchName`, 
+    WHERE employee.Username = ? AND transaction.BranchName = employee.BranchName
+    GROUP BY transaction.Username, transaction.BranchName, transaction.AmountOfMaterialsGiven, transaction.DateTime, transaction.ServiceType, transaction.AmountEarned, transaction.Status;
+    `, 
     [req.params.username],
     (error, results) => {
     if (error) {
@@ -342,11 +366,6 @@ app.get("/api/get_transaction/:username", (req, res) => {
     }
   });
 });
-
-//inserting logged in employee info into workstation table, after customer logs in 
-
-
-
 
 
 

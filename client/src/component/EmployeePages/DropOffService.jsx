@@ -1,5 +1,5 @@
 // import ServiceRequestTable from './ServiceRequestTable'
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -33,6 +33,9 @@ const depot = [{
 
 
 export default function DropOffService() {
+
+    // const location = useLocation();
+    // const customer = location.state.customer;
 
     // On page load get a list of all the recycling depots
     // useEffect(() => {
