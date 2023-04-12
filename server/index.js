@@ -13,7 +13,7 @@ const db = mysql.createConnection({
   host: "localhost",
   port: "33061",
   user: "root",
-  password: "password", // Set to cheetos for Maira
+  password: "Ch33tos!", // Set to cheetos for Maira
   database: "eco_archive",
 });
 
@@ -55,6 +55,30 @@ app.post("/api/processLogin", (req, res) => {
     }
   );
 });
+
+app.post("/api/complete", (req, res) => {
+  console.log(req.body);
+  db.query(
+    `UPDATE transaction
+    SET Status = ? 
+    WHERE Username = ? AND BranchName = ? AND DateTime = ?`,
+    [req.body.status, 
+      req.body.username, 
+      req.body.branchname, 
+      req.body.datetime
+    ],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).end();
+      } else if (results) {
+        console.log(results);
+      }
+    }
+  );
+})
+
+
 
 // Sign Up endpoint
 app.post("/api/processSignup", (req, res) => {
@@ -102,6 +126,59 @@ app.get("/api/customer/:username", (req, res) => {
     }
   );
 });
+
+
+// API endpoint for getting employee
+app.get("/api/employee/:username", (req, res) => {
+  console.log(req.params.username);
+
+  db.query(
+    `SELECT * FROM employee WHERE Username = ?`,
+    [req.params.username],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
+        console.log(results);
+        res.json(results);
+      }
+    }
+  );
+});
+
+
+// app.post("/api/employee/:username", (req,res) => {
+//   const {Username, BranchName} = req.body;
+//   const sqlInsert = 
+//     "INSERT INTO employee_workstation (Username, BranchName) VALUES (?, ?)";
+//   db.query(sqlInsert, [Username, BranchName], (error, result) => {
+//     if(error) {
+//       console.log(error);
+//     }
+//   });
+// });
+
+app.post("/api/employee/:username", (req, res) => {
+  // console.log(req.body);
+
+  db.query(
+    "INSERT INTO employee_workstation (BranchName, Username) VALUES (?, ?)",
+    [
+      req.body.branchname,
+      req.body.username
+    ],
+    (error, results) => {
+      if (error) {
+        console.log(error.code);
+        res.send(error.code);
+      } else if (results) {
+        console.log(results);
+      }
+    }
+  );
+});
+
 
 // API endpoint for getting all recycling depots in the database
 app.get("/api/recycling_depot", (req, res) => {
@@ -278,6 +355,31 @@ app.post("/api/donate", (req, res) => {
     }
   );
 });
+
+
+// API endpoint for getting all transaction in the database with current employee branch 
+app.get("/api/get_transaction/:username", (req, res) => {
+  // console.log(req.params.username);
+
+  db.query(
+    `SELECT transaction.Username, transaction.BranchName, transaction.AmountOfMaterialsGiven, transaction.DateTime, transaction.ServiceType, transaction.AmountEarned, transaction.Status
+    FROM transaction, employee 
+    WHERE employee.Username = ? AND transaction.BranchName = employee.BranchName
+    GROUP BY transaction.Username, transaction.BranchName, transaction.AmountOfMaterialsGiven, transaction.DateTime, transaction.ServiceType, transaction.AmountEarned, transaction.Status;
+    `, 
+    [req.params.username],
+    (error, results) => {
+    if (error) {
+      console.log(error);
+      res.status(404).end();
+    } else if (results) {
+      console.log(results);
+      res.json(results);
+    }
+  });
+});
+
+
 
 app.post("/api/selectEmpWithName", (req, res) => {
   console.log(req.body);

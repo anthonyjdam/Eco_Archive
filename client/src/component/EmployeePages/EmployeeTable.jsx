@@ -1,75 +1,111 @@
-import React from 'react'
-import { Link } from "react-router-dom";
+import React, { useEffect, useState, useContext } from 'react'
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import userContext from "../userContext";
 
-
-
-const dummyData =  [
-    {
-        customer_id: '123',
-        customer_name: 'Ahmed',
-        service_date: '2022-05-17T03:24:00',
-        service_time: '3:00pm',
-        current_service_status: 'Pick-up'
-    },
-    {
-        customer_id: '956',
-        customer_name: 'Bindi',
-        service_date: '2022-05-14T05:24:00',
-        service_time: '4:00pm',
-        current_service_status: 'Drop-off'
-    },
-    {
-        customer_id: '789',
-        customer_name: 'Momo',
-        service_date: '2022-05-17T07:24:00',
-        service_time: '2:00pm',
-        current_service_status: 'Pick-up'
-    },
-    {
-        customer_id: '109',
-        customer_name: 'Timi',
-        service_date: '2022-05-17T02:24:00',
-        service_time: '8:00pm',
-        current_service_status: 'Pick-up'
-    },
-    
-]
 
 
 export default function EmployeeTable() {
-  return (
-    <div className='bg-white px-4 pt-3 pb-4 rounded-sm border border-gray-400 flex-1'>
-        <strong className='text-gray-700 font-medium '>Transactions in Process</strong>
-        <div className='border-x border-gray-200 rounded-sm mt-3'>
-            <table className='w-full text-gray-700'>
-                <thead class="bg-gray-50 border-b-2 border-gray-200">
-                    <tr className='font-semibold'>
-                        <td>Customer ID</td>
-                        <td>Customer Name</td>
-                        <td>Service Date</td>
-                        <td>Service Time</td>
-                        <td>Service Status</td>
-                    </tr>
-                </thead>
-                <tbody>
-                {dummyData.map((order)=> (
-                    <tr key={order.customer_id} class="odd:bg-white even:bg-slate-50">
-                        <td>#{order.customer_id}</td>
-                        <td className='text-green-600'><Link to={`/customer/${order.customer_name}`} className='flex hover:underline'>{order.customer_name}</Link></td>
-                        <td>{new Date(order.service_date).toLocaleDateString()}</td>
-                        <td>{order.service_time}</td>
-                        <td>{order.current_service_status}</td>
 
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+    const [transactionData, setTransactionData] = useState([]);
+
+    const { currentUser, setCurrentUser } = useContext(userContext);
+    const [employeeBranch, setEmployeeBranch] = useState("");
+
+    // const navigate = useNavigate();
+
+    // function handleTransaction(pathway){
+    //     navigate(pathway, {state: {transactionData : transactionData}})
+    // }
+
+    const submitLogin = {
+        branchname: "",
+        username: ""
+    }
+
+
+    // On page load get info about the employee
+    useEffect(() => {
+        axios.get(`http://localhost:5000/api/employee/${currentUser}`)
+            .then((response) => {
+                setEmployeeBranch(response.data[0].BranchName);
+
+                submitLogin.branchname = response.data[0].BranchName;
+                submitLogin.username = currentUser;
+                console.log(submitLogin);
+
+                axios.post(
+                    `http://localhost:5000/api/employee/${currentUser}`,
+                    submitLogin
+                );
+            }
+            );
+    }, []);
+
+
+    useEffect(() => {
+        axios.get(`http://localhost:5000/api/get_transaction/${currentUser}`)
+            .then((response) => {
+                setTransactionData(response.data);
+            })
+            .catch((error) => {
+                if (error.response) {
+                    if (error.response.status === 404) {
+                        setTransactionData([]);
+                    }
+                }
+            });
+    }, []);
+
+
+    return (
+        <div className='bg-white px-4 pt-3 pb-4 rounded-lg border border-gray-400 flex-1'>
+            <strong className='text-gray-700 font-medium '>Transactions in Process</strong>
+            <div className='border-x border-gray-200 rounded-sm mt-3'>
+                <table className='w-full text-gray-700'>
+                    <thead className="bg-gray-50 border-b-2 border-gray-200">
+                        <tr className='font-semibold'>
+                            <th>Customer ID</th>
+                            <th>Branch Name</th>
+                            <th>Service Date</th>
+                            <th>Service Type</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody className='text-center'>
+                        {transactionData.map((item) => {
+                            const isType1 = item.ServiceType === 'dropoff';
+                            const linkPathname = isType1 ? '/dropOffService' : '/pickUpService';
+                            return (
+                                <tr key={item.Username} class="odd:bg-white even:bg-slate-50">
+                                    <th name='test' className='font-mono font-normal text-align-center text-sky-700' scope="row">
+                                        <Link 
+                                            to=
+                                                {linkPathname} state={{ customer : item}}
+                                        
+                                            className='hover:underline'
+                                        >
+                                            {item.Username}
+                                        </Link>
+
+
+                                    </th>
+                                    <td className='text-align-center'>{item.BranchName}</td>
+                                    <td className='text-align-center'>{new Date(item.DateTime).toDateString()}</td>
+                                    <td className='text-align-center'>{item.ServiceType}</td>
+                                    <td className={`text-align-center font-bold text-sm ${item.Status === 'PENDING' ? 'text-red-700' : 'text-green-600'}`}>
+                                        {item.Status}
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
- )
+    )
 }
 
 
 
-    
- 
+
