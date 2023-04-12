@@ -44,6 +44,7 @@ app.post("/api/processLogin", (req, res) => {
         console.log(results);
 
         if (results.length === 0) {
+          res.status(401).end();
         } else if (results[0].Password === req.body.password) {
           console.log(results[0]);
           res.status(200).json(results[0]);
@@ -137,6 +138,117 @@ app.get("/api/accepted_recyclable/:depotName", (req, res) => {
   );
 });
 
+
+// API endpoint for submitting a pickup request
+app.post("/api/pickup", (req, res) => {
+  console.log(req.body);
+
+  db.query(
+    `INSERT INTO transaction (Username, BranchName, RecyclableName, AmountOfMaterialsGiven, DateTime, ServiceType) VALUES (?, ?, ?, ?, ?, ?)`,
+    [
+      req.body.username,
+      req.body.branchName,
+      req.body.recyclableName,
+      req.body.amountOfMaterialsGiven,
+      req.body.dateTime,
+      "pickup",
+    ],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).end();
+      } else if (results) {
+        console.log(results);
+        res.status(200).end();
+      }
+    }
+  );
+});
+
+// API endpoint for getting 3 most recent transactions for a specific customer
+app.get("/api/transaction/:username", (req, res) => {
+  console.log(req.params.username);
+
+  db.query(
+    `SELECT * FROM transaction WHERE Username = ? AND AmountEarned IS NOT NULL ORDER BY DateTime DESC LIMIT 3`,
+    [req.params.username],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
+        console.log(results);
+        res.json(results);
+      }
+    }
+  );
+});
+
+// API endpoint for getting all the NGOs in the database
+app.get("/api/ngo", (req, res) => {
+  db.query(`SELECT * FROM ngo`, (error, results) => {
+    if (error) {
+      console.log(error);
+      res.status(404).end();
+    } else if (results) {
+      console.log(results);
+      res.json(results);
+    }
+  });
+});
+
+// API endpoint for making a donation to a specific NGO
+app.post("/api/donate", (req, res) => {
+  // Update amountRaised for the NGO after the donation
+  db.query(
+    `UPDATE ngo SET AmountRaised = AmountRaised + ?  WHERE NGOName = ?`,
+    [req.body.donationAmt, req.body.selectedNGO],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).end();
+      } else if (results) {
+        console.log(results);
+      }
+    }
+  );
+
+  // Update the contribution of the customer after the donation
+  db.query(
+    `UPDATE customer SET DonationAmt = DonationAmt + ?, AccountBal = AccountBal - ? WHERE Username = ?`,
+    [req.body.donationAmt, req.body.donationAmt, req.body.username],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).end();
+      } else if (results) {
+        console.log(results);
+      }
+    }
+  );
+
+  // Add row in the donates table
+  db.query(
+    `INSERT INTO donates (Username, NGOName, DonationAmount) VALUES (?, ?, ?)`,
+    [
+      req.body.username,
+      req.body.selectedNGO,
+      req.body.donationAmt
+    ],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).end();
+      } else if (results) {
+        console.log(results);
+        res.status(200).end();
+      }
+    }
+  );
+});
+
+
+
 app.post("/api/selectEmpWithName", (req, res) => {
   console.log(req.body);
 
@@ -173,10 +285,10 @@ app.post("/api/selectEmpWithName", (req, res) => {
 
 
 
+
 // app.get("/api/", () => {
 //   console.log("running on port 3001");
 // })
-
 
 
 app.listen(PORT, () => {

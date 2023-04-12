@@ -158,7 +158,8 @@ CREATE TABLE `donates` (
   `Username` varchar(255) NOT NULL,
   `NGOName` varchar(255) NOT NULL,
   `DonationAmount` decimal(15,2) NOT NULL,
-  PRIMARY KEY (`Username`,`NGOName`),
+  `DonationDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`Username`,`NGOName`,`DonationDate`),
   KEY `fk_DonationNGO_idx` (`NGOName`),
   CONSTRAINT `fk_CustomerDonate` FOREIGN KEY (`Username`) REFERENCES `customer` (`Username`),
   CONSTRAINT `fk_DonationNGO` FOREIGN KEY (`NGOName`) REFERENCES `ngo` (`NGOName`)
@@ -244,14 +245,14 @@ CREATE TABLE `transaction` (
   `BranchName` varchar(255) NOT NULL,
   `RecyclableName` varchar(255) NOT NULL,
   `AmountOfMaterialsGiven` int DEFAULT NULL,
-  `DateTime` datetime DEFAULT NULL,
+  `DateTime` datetime NOT NULL,
   `ServiceType` varchar(255) NOT NULL,
-  PRIMARY KEY (`Username`,`BranchName`,`RecyclableName`),
+  `AmountEarned` decimal(15,2) DEFAULT NULL,
+  PRIMARY KEY (`Username`,`BranchName`,`RecyclableName`,`DateTime`),
   KEY `fk_RecyclableTransaction_idx` (`RecyclableName`),
-  KEY `fk_WorkstationTransaction_idx` (`BranchName`),
-  CONSTRAINT `fk_CustomerTransaction` FOREIGN KEY (`Username`) REFERENCES `customer` (`Username`),
-  CONSTRAINT `fk_RecyclableTransaction` FOREIGN KEY (`RecyclableName`) REFERENCES `recyclable` (`RecyclableName`),
-  CONSTRAINT `fk_WorkstationTransaction` FOREIGN KEY (`BranchName`) REFERENCES `employee_workstation` (`BranchName`)
+  KEY `fk_BranchTransaction_idx` (`BranchName`),
+  CONSTRAINT `fk_BranchTransaction` FOREIGN KEY (`BranchName`) REFERENCES `recycling_depot` (`BranchName`),
+  CONSTRAINT `fk_CustomerTransaction` FOREIGN KEY (`Username`) REFERENCES `customer` (`Username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 

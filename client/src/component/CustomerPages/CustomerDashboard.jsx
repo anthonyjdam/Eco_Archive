@@ -25,7 +25,14 @@ function CustomerDashboard() {
   const [nav, setNav] = useState(false);
   const { currentUser, setCurrentUser } = useContext(userContext);
   const [customerBalance, setCustomerBalance] = useState(0);
-  const [customerDonationAmt, setCustomerDonationAmt] = useState(0);
+  const [customerContributions, setCustomerContributions] = useState(0);
+  const [recentTransactions, setRecentTransactions] = useState([]);
+  const [ngos, setNgos] = useState([]);
+  const [donationAmt, setDonationAmt] = useState("");
+  const [selectedNGO, setSelectedNGO] = useState("");
+  const [showSuccessRequest, setShowSuccessRequest] = useState(false);
+  const [fieldError, setFieldError] = useState(false); // State for showing the error message
+  const [fieldErrorMessage, setFieldErrorMessage] = useState(""); // Error message
 
   // On page load get info about the customer
   useEffect(() => {
@@ -34,9 +41,57 @@ function CustomerDashboard() {
       .get(`http://localhost:5000/api/customer/${currentUser}`)
       .then((response) => {
         setCustomerBalance(response.data[0].AccountBal);
-        setCustomerDonationAmt(response.data[0].DonationAmt);
+        setCustomerContributions(response.data[0].DonationAmt);
       });
+
+    // Get info about the recent transactions
+    axios
+      .get(`http://localhost:5000/api/transaction/${currentUser}`)
+      .then((response) => {
+        setRecentTransactions(response.data);
+      });
+
+    // Get all the NGOs
+    axios.get(`http://localhost:5000/api/ngo`).then((response) => {
+      setNgos(response.data);
+    });
   }, []);
+
+  function handleDonationSubmit(e) {
+    e.preventDefault();
+    setFieldError(false);
+    setShowSuccessRequest(false);
+
+    if (donationAmt === "" || selectedNGO === "") {
+      setFieldError(true);
+      setFieldErrorMessage("Please select an NGO and enter a donation amount");
+    } else if (+donationAmt > customerBalance) {
+      setFieldError(true);
+      setFieldErrorMessage("Insufficient funds");
+    } else {
+      axios
+        .post(`http://localhost:5000/api/donate`, {
+          username: currentUser,
+          selectedNGO: selectedNGO,
+          donationAmt: +donationAmt,
+        })
+        .then((response) => {
+          setCustomerContributions(customerContributions + +donationAmt);
+          setCustomerBalance(customerBalance - +donationAmt);
+          setDonationAmt("");
+          setSelectedNGO("");
+          setShowSuccessRequest(true);
+        })
+        .catch((error) => {
+          if (error.response) {
+            if (error.response.status === 500) {
+              setFieldError(true);
+              setFieldErrorMessage("Donation error");
+            }
+          }
+        });
+    }
+  }
 
   return (
     <div>
@@ -77,9 +132,35 @@ function CustomerDashboard() {
             <h3 className="text-lg font-bold">Transactions</h3>
           </div>
           <div className="columnHeaders pt-2 flex justify-between text-gray-400">
-            <h4 className="w-1/2">Transaction Number</h4>
+            <h4 className="w-1/3">Depot</h4>
             <h4 className="w-1/4">Date</h4>
             <h4 className="w-1/4">Amount</h4>
+          </div>
+          <div className="flex flex-col gap-4">
+            {recentTransactions.length > 0 ? (
+              recentTransactions.map((transaction, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="transactionRow flex justify-between"
+                  >
+                    <span className="w-1/3">{transaction.BranchName}</span>
+                    <span className="w-1/4">
+                      {transaction.DateTime.slice(5, 10)}
+                    </span>
+                    <span className="w-1/4">
+                      {transaction.AmountEarned %
+                        Math.floor(transaction.AmountEarned) ===
+                      0
+                        ? `$${transaction.AmountEarned}.00`
+                        : `$${transaction.AmountEarned}`}
+                    </span>
+                  </div>
+                );
+              })
+            ) : (
+              <div>No Transactions</div>
+            )}
           </div>
           {/* TODO: GET request to get the lets say 3-5 most recent transactions */}
         </div>
@@ -88,21 +169,56 @@ function CustomerDashboard() {
             <h3 className="text-lg font-bold">Overall Contributions</h3>
           </div>
           <div className="text-center py-8 font-medium text-2xl">
-            {customerDonationAmt % Math.floor(customerDonationAmt) === 0
-              ? `Total contrabutions: $${customerDonationAmt}.00`
-              : `Total contrabutions: $${customerDonationAmt}`}
+            {customerContributions % Math.floor(customerContributions) === 0
+              ? `Total contrabutions: $${customerContributions}.00`
+              : `Total contrabutions: $${customerContributions}`}
           </div>
-          <form className="flex flex-col lg:flex-row items-center gap-4 justify-center">
-            <select className="w-48 border-2 border-gray-400 rounded p-2">
-              <option className="text-gray-400">Select NGO</option>
+          <form
+            className="flex flex-col lg:flex-row items-center gap-4 justify-center"
+            onSubmit={(e) => {
+              handleDonationSubmit(e);
+            }}
+          >
+            <select
+              className="w-48 border-2 border-gray-400 rounded p-2"
+              value={selectedNGO}
+              onChange={(e) => {
+                setSelectedNGO(e.target.value);
+              }}
+            >
+              <option className="text-gray-400" value={""}>
+                Select NGO
+              </option>
+              {ngos.map((ngo) => {
+                return (
+                  <option key={ngo.NGOName} value={ngo.NGOName}>
+                    {ngo.NGOName}
+                  </option>
+                );
+              })}
               {/* TODO: GET request from the server to get the current NGO's */}
             </select>
             <div>
               <input
                 className="w-48 border-2 border-gray-400 rounded p-2"
                 placeholder="Enter amount"
+                value={donationAmt}
+                type="number"
+                onChange={(e) => {
+                  setDonationAmt(e.target.value);
+                }}
               ></input>
             </div>
+            {fieldError && (
+              <div className="bg-red-500 px-3 py-3 rounded text-gray-100 mb-5">
+                <p>{fieldErrorMessage}</p>
+              </div>
+            )}
+            {showSuccessRequest && (
+              <div className="bg-green-400 px-3 py-3 rounded text-gray-100 mb-5">
+                <p>Thank you for donating!</p>
+              </div>
+            )}
             <button
               type="submit"
               className="bg-blue-400 w-48 text-gray-100 py-2 rounded hover:bg-blue-500 transition-colors"
