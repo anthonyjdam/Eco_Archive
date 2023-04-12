@@ -157,6 +157,7 @@ app.post("/api/selectEmpWithName", (req, res) => {
     //Query to the database
     db.query(query, (error, results) => {
       if (results) {
+        console.log(results);
         res.status(200).send(results);
       }
       else if (error) {

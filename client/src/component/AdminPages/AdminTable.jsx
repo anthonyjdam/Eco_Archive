@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AdminTableRow from './AdminTableRow';
 
-function AdminTable({ data }) {
+function AdminTable({ data, deleteEmployee, onSelect }) {
   const [renderedData, setRenderedData] = useState([]);
 
   useEffect(() => {
@@ -9,9 +9,10 @@ function AdminTable({ data }) {
   }, [data]);
 
   const handleDelete = (index) => {
-    const newData = [...renderedData];
-    newData.splice(index, 1);
-    setRenderedData(newData);
+    // const newData = [...renderedData];
+    // newData.splice(index, 1);
+    // setRenderedData(newData);
+    // deleteEmployee(newData);
   };
 
   return (
@@ -42,8 +43,11 @@ function AdminTable({ data }) {
               key={row.Username}
               row={row}
               onDelete={() => handleDelete(row.Username)}
+              onSelect={onSelect}
             />
           ))}
+
+
         </tbody>
       </table>
     </div>

@@ -28,6 +28,13 @@ function AdminEditEmployee() {
   //TODO: Error Checking
   //TODO: Romove Table row on new search
 
+  const handleDelete = (index) => {
+    console.log(index);
+    const newData = [...data];
+    newData.splice(index, 1);
+    setData(newData);
+  };
+
 
   async function handleEmpSearch(e) {
     e.preventDefault();
@@ -43,6 +50,7 @@ function AdminEditEmployee() {
     }
 
     const response = await axios.post("http://localhost:5000/api/selectEmpWithName", searchObject);// returns an array of matching employee names
+    console.log("Sandwich");
     console.log(response);
     const responseData = response.data;
 
@@ -56,16 +64,18 @@ function AdminEditEmployee() {
     }
   }
 
-  async function handleRowSelection(e) {
-    e.preventDefault
+  async function handleRowSelection(empSelected) {
 
-    const selectedEmployees = empUsername.filter(emp => rowSelection.includes(emp)); //creates a new array that contains only the elements that are present in both empUsername and rowSelection  
+    const selectedEmployee = data.filter(emp => (emp.Username === empSelected)); //creates a new array that contains only the elements that are present in both empUsername and rowSelection  
+    setRowSelection(rowSelection.concat(selectedEmployee))
     
+    console.log("sandwich");
+    console.log("Username " + selectedEmployee);
+    console.log(rowSelection);
+    console.log(selectedEmployee);
 
-    console.log("Username " + selectedEmployees);
-
-    for (let i = 0; i < selectedEmployees.length; i++) {
-      console.log("Username: " + selectedEmployees[i]);
+    for (let i = 0; i < selectedEmployee.length; i++) {
+      console.log("Username: " + selectedEmployee[i]);
     }
 
     const searchObject = {
@@ -76,6 +86,14 @@ function AdminEditEmployee() {
 
 
 
+
+  }
+
+  async function handleRowDelete() {
+
+    // handleDelete();
+    const response = await axios.post("http://localhost:5000/api/deleteEmpWithUsername", searchObject);// returns an array of matching employee names
+    console.log(response);
 
   }
 
@@ -198,15 +216,22 @@ function AdminEditEmployee() {
                     </div>
 
                     <div className='flex items-end justify-end gap-1'>
-                      {/* Delete User Button */}
+                      {/* Update User Button */}
                       <button className='flex gap-2 p-1 pr-3 pl-3 rounded-lg bg-gray-200 active:bg-green-300 hover:bg-green-200 hover:text-black transition-all text-gray-800'>
                         <label className="font-semibold text-sm">
                           Update
                         </label>
                       </button>
 
-                      {/* Update User Button */}
-                      <button className='flex gap-2 p-1 pr-3 pl-3 rounded-lg bg-gray-200 active:bg-red-300 hover:bg-red-200 hover:text-black transition-all text-gray-800'>
+                      {/* Delete User Button */}
+                      <button
+                        className='flex gap-2 p-1 pr-3 pl-3 rounded-lg bg-gray-200 active:bg-red-300 hover:bg-red-200 hover:text-black transition-all text-gray-800'
+                        onClick={() => {
+                          let arr = [];
+                          setData(arr)
+                          console.log("Clear " + data.length);
+                        }}
+                      >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                         </svg>
@@ -218,15 +243,12 @@ function AdminEditEmployee() {
                 </div>
 
                 {/* Admin Table */}
-                <AdminTable data={data} />
-
-                {/* Select Row */}
-                <AdminTableRow
-                  onSelect={(rowInfo) => {
-                    setRowSelection(rowInfo);
-                    handleRowSelection(e);
-                  }}
+                <AdminTable
+                  data={data}
+                  deleteEmployee={handleRowDelete}
+                  onSelect={handleRowSelection}
                 />
+
 
               </div>
             </div>
