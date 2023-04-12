@@ -102,8 +102,10 @@ function PickUp() {
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState("");
 
+  const [responseMessage, setResponseMessage] = useState("");
+  const [showSuccessRequest, setShowSuccessRequest] = useState(false);
 
-  const { currentUser, setCurrentUser } = useContext(userContext);
+  const { currentUser } = useContext(userContext);
 
   // On page load get a list of all the recycling depots
   useEffect(() => {
@@ -213,6 +215,7 @@ function PickUp() {
   async function handlePickUpSubmit(e) {
     e.preventDefault();
     setFieldError(false);
+    setShowSuccessRequest(false);
 
     if (!date || time === "") {
       setFieldError(true);
@@ -220,7 +223,50 @@ function PickUp() {
       return;
     }
 
+    const formattedDate = `${date.getUTCFullYear()}-${
+      date.getUTCMonth() + 1
+    }-${date.getUTCDate()} ${time}`;
 
+    console.log(formattedDate);
+
+    // Loop through all the recyclables in the pick-up list
+    // make post request for each recyclable
+
+    try {
+      const responses = [];
+
+      for (let i = 0; i < pickUpList.length; i++) {
+        const pickUpSubmitObject = {
+          username: currentUser,
+          branchName: selected_depot,
+          recyclableName: pickUpList[i].RecyclableName,
+          amountOfMaterialsGiven: pickUpCounts[pickUpList[i].RecyclableName],
+          dateTime: formattedDate,
+        };
+
+        console.log(pickUpSubmitObject);
+
+        responses.push(
+          await axios.post(
+            "http://localhost:5000/api/pickup",
+            pickUpSubmitObject
+          )
+        );
+      }
+
+      for (let i = 0; i < responses.length; i++) {
+        if (responses[i].status === 500) {
+          setResponseMessage("Request failed");
+        }
+      }
+    } catch (error) {
+      setResponseMessage("Request failed");
+    }
+
+    if (responseMessage !== "Request failed") {
+      setShowSuccessRequest(true);
+      setResponseMessage("Pick Up Request Sent");
+    }
   }
 
   return (
@@ -236,7 +282,8 @@ function PickUp() {
         ""
       )}
 
-      <div className="content flex flex-col gap-8 lg:ml-64 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-50 via-indigo-100 to-emerald-50 p-8 min-h-[120vh]">
+
+      <div className="content flex flex-col gap-8 lg:ml-64 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-50 via-indigo-100 to-emerald-50 p-8 min-h-[140vh]">
         <div className="header flex items-center h-12 py-8 gap-4 lg:hidden ">
           <button
             className="bg-white rounded-2xl p-4 hover:scale-110 transition-transform"
@@ -288,14 +335,14 @@ function PickUp() {
             }}
           >
             <option value={""}>Select Time</option>
-            <option value="10:00">10:00</option>
-            <option value="11:00">11:00</option>
-            <option value="12:00">12:00</option>
-            <option value="13:00">13:00</option>
-            <option value="14:00">14:00</option>
-            <option value="15:00">15:00</option>
-            <option value="16:00">16:00</option>
-            <option value="17:00">17:00</option>
+            <option value="10:00:00">10:00</option>
+            <option value="11:00:00">11:00</option>
+            <option value="12:00:00">12:00</option>
+            <option value="13:00:00">13:00</option>
+            <option value="14:00:00">14:00</option>
+            <option value="15:00:00">15:00</option>
+            <option value="16:00:00">16:00</option>
+            <option value="17:00:00">17:00</option>
           </select>
         </div>
         {selected_depot !== "" && (
@@ -399,6 +446,11 @@ function PickUp() {
             {fieldError && (
               <div className="bg-red-500 px-3 py-3 rounded text-gray-100 mb-5">
                 <p>{fieldErrorMessage}</p>
+              </div>
+            )}
+            {showSuccessRequest && (
+              <div className="bg-green-400 px-3 py-3 rounded text-gray-100 mb-5">
+                <p>{responseMessage}</p>
               </div>
             )}
             <button
