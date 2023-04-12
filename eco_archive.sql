@@ -40,7 +40,10 @@ CREATE TABLE `customer` (
   ("anthonyjdam", "Dam", "Anthony", "password"), 
   ("jRaimuu", "Sarjeant", "Liam", "someReallyLongPassword"), 
   ("Casper", "Phan", "Tom", "54321"), 
-  ("Ghost", "Phantano", "Tommy", "12345");
+  ("Ghost", "Phantano", "Tommy", "12345"),
+  ("Specter", "Prankster", "Tina", "67890"),
+  ("Phantasma", "Perry", "Johnny", "54321"),
+  ("Polterguy", "Poltergeist", "Samantha", "24680");
   UNLOCK TABLES;
 
 

@@ -168,6 +168,14 @@ app.post("/api/pickup", (req, res) => {
 app.post("/api/dropoff", (req, res) => {
   console.log(req.body);
 
+
+  // try {
+    //Query to the database
+    db.query(query, (error, results) => {
+      if (results) {
+        console.log(results);
+        res.status(200).send(results);
+
   db.query(
     `INSERT INTO transaction (Username, BranchName, RecyclableName, DateTime, ServiceType) VALUES (?, ?, ?, ?, ?)`,
     [
@@ -203,6 +211,7 @@ app.get("/api/transaction/:username", (req, res) => {
       } else if (results) {
         console.log(results);
         res.json(results);
+
       }
     }
   );
