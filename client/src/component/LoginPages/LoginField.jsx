@@ -10,7 +10,7 @@ export default function LoginField({ userType }) {
   const [fieldError, setFieldError] = useState(false); // State for showing the error message
   const [fieldErrorMessage, setFieldErrorMessage] = useState(""); // Error message
 
-  const { setCurrentUser } = useContext(userContext);
+  const { currentUser, setCurrentUser } = useContext(userContext);
   const redirect = useNavigate();
 
   function handleUsernameChange(e) {
@@ -56,6 +56,7 @@ export default function LoginField({ userType }) {
         .then((response) => {
           
           setCurrentUser(username);
+          console.log(currentUser);
 
           if (userType.isCustomer) {
             redirect("/customerDashboard");

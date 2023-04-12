@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import CustomerSidebar from "./CustomerSidebar";
 import logo from "../../newlogo.png";
 import axios from "axios";
+import Datepicker from "tailwind-datepicker-react";
 
 const hamburger = (
   <svg
@@ -54,11 +55,39 @@ const minusCircle = (
   </svg>
 );
 
+// https://github.com/OMikkel/tailwind-datepicker-react
+const datePickerOptions = {
+	title: "Pick Up Date",
+	autoHide: true,
+	todayBtn: false,
+	clearBtn: true,
+	maxDate: new Date("2030-01-01"),
+	minDate: new Date("1950-01-01"),
+	theme: {
+		background: "",
+		todayBtn: "",
+		clearBtn: "",
+		icons: "",
+		text: "",
+		disabledText: "",
+		input: "",
+		inputIcon: "",
+		selected: "",
+	},
+	icons: {
+		// () => ReactElement | JSX.Element
+		prev: () => <span>Previous</span>,
+		next: () => <span>Next</span>,
+	},
+	datepickerClassNames: "top-12",
+	defaultDate: new Date("2022-01-01"),
+	language: "en",
+}
+
 function PickUp() {
   const [nav, setNav] = useState(false);
   const [recycling_depots, setRecycling_depots] = useState([]);
   const [selected_depot, setSelected_depot] = useState("");
-  const [date, setDate] = useState("")
   const [accepted_recyclables, setAccepted_recyclables] = useState([]);
   const [showResults, setShowResults] = useState(false);
   const [searchString, setSearchString] = useState("");
@@ -67,6 +96,9 @@ function PickUp() {
   const [pickUpCounts, setPickUpCounts] = useState({});
   const [fieldError, setFieldError] = useState(false); // State for showing the error message
   const [fieldErrorMessage, setFieldErrorMessage] = useState(""); // Error message
+  const [showDatePicker, setShowDatePicker] = useState(false); // State for showing the date picker
+
+  let date;
 
   // On page load get a list of all the recycling depots
   useEffect(() => {
@@ -103,7 +135,6 @@ function PickUp() {
     }
   }, [selected_depot]);
 
-
   function handleSeachChange(e) {
     const newList = accepted_recyclables.filter((recyclable) => {
       return recyclable.RecyclableName.toLowerCase().includes(
@@ -113,6 +144,15 @@ function PickUp() {
 
     setFiltered_recyclables(newList);
     setSearchString(e.target.value);
+  }
+
+  function handleDateChange(selectedDate) {
+    date = selectedDate;
+    console.log(date);
+  }
+
+  function handleClose(state) {
+    setShowDatePicker(state);
   }
 
   function handleCountChange(e, recyclableName) {
@@ -152,9 +192,7 @@ function PickUp() {
     setPickUpList(remainingRecyclables);
   }
 
-  function handlePickUpSubmit() {
-
-  }
+  function handlePickUpSubmit() {}
 
   return (
     <div>
@@ -202,6 +240,13 @@ function PickUp() {
               );
             })}
           </select>
+          {/* https://github.com/OMikkel/tailwind-datepicker-react */}
+          <Datepicker
+            options={datePickerOptions}
+            onChange={handleDateChange}
+            show={showDatePicker}
+            setShow={handleClose}
+          ></Datepicker>
         </div>
         {selected_depot !== "" && (
           <div className="w-full bg-white rounded-2xl px-8 py-6 flex items-center flex-col gap-6">
@@ -229,7 +274,7 @@ function PickUp() {
                         return (
                           <div
                             key={recyclable.RecyclableName}
-                            className="p-2 font-medium hover:bg-white"
+                            className="p-2 font-medium hover:bg-white hover:cursor-pointer"
                             onClick={() => {
                               handlePickUpListAdd(recyclable);
                             }}
@@ -278,6 +323,7 @@ function PickUp() {
                       onClick={() => {
                         handlePickUpListRemove(recyclable);
                       }}
+                      className="hover:cursor-pointer"
                     >
                       {minusCircle}
                     </div>
