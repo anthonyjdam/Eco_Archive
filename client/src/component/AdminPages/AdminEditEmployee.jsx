@@ -3,6 +3,7 @@ import AdminSidebar from './AdminSidebar'
 import AdminProfileBar from "./AdminProfileBar"
 import AdminTable from './AdminTable'
 import axios from 'axios';
+import AdminTableRow from './AdminTableRow';
 
 //TODO: useEffect to acheive the clearAll button
 //TODO: reimploment unique rows
@@ -18,33 +19,18 @@ function AdminEditEmployee() {
   const [empLName, setEmpLName] = useState("");
   const [empUsername, setEmpUsername] = useState("");
   const [empPassword, setEmpPassword] = useState("");
-  const [data, setData] = useState([]);
 
-  const [count, setCount] = useState(0);
+  //Functional State variables
+  const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
+  const [rowSelection, setRowSelection] = useState([]);
 
   //TODO: Error Checking
   //TODO: Romove Table row on new search
-  //TODO: Disallow duplicate searches
 
-  //Other state variables
-
-
-  const handleReload = () => {
-    setCount(count + 1);
-  }
-
-  
 
   async function handleEmpSearch(e) {
     e.preventDefault();
-    // setData([]);
-
-    //Split the username delimited by a space
-    // const [yo, momma] = search.split(" ");
-
-    // setEmpFName(yo)
-    // setEmpLName(momma)
 
     console.log("Search " + search);
     console.log("First name " + empFName);
@@ -56,56 +42,41 @@ function AdminEditEmployee() {
       lastName: empLName
     }
 
-    // console.log(userType);
-    // console.log(empFName);
-
-
     const response = await axios.post("http://localhost:5000/api/selectEmpWithName", searchObject);// returns an array of matching employee names
     console.log(response);
     const responseData = response.data;
-    // console.log(data);
-    // console.log(data.length);
 
-
-    /**
-     * If there is one or more employees found, 
-     * iterate through the ARRAY of employees containing that name
-     */
     if (responseData.length > 0) {
-      // for (let i = 0; i < responseData.length; i++) {
-      //   console.log("Enter loop")
-      //   const element = responseData[i];
-      //   console.log(element);
-      //   handleAddData(element);
-      //   console.log(element.LName);
-      // }
-      // setData([]);
       const newData = [];
       setData(newData);
       setData(data.concat(responseData));
-
     }
     else {
       console.log("No results found")
     }
-    
-    
   }
 
-  /**
-   *  Uses the spread operator to create a new array 
-   *  that includes all the previous elements of the data array, 
-   *  as well as a new element newData at the end
-   * 
-   * @param {object} newData 
-   */
-  function handleAddData(newData) {
-    console.log("HANDLE DATA");
-    console.log(data);
-    console.log(newData);
-    setData([data.concat(newData)]);
-    console.log(data.length);
-    console.log(data);
+  async function handleRowSelection(e) {
+    e.preventDefault
+
+    const selectedEmployees = empUsername.filter(emp => rowSelection.includes(emp)); //creates a new array that contains only the elements that are present in both empUsername and rowSelection  
+    
+
+    console.log("Username " + selectedEmployees);
+
+    for (let i = 0; i < selectedEmployees.length; i++) {
+      console.log("Username: " + selectedEmployees[i]);
+    }
+
+    const searchObject = {
+      userType: "employee",
+      firstName: empFName,
+      lastName: empLName
+    }
+
+
+
+
   }
 
 
@@ -192,11 +163,6 @@ function AdminEditEmployee() {
                     {/* Search User Button */}
                     <div className='relative'>
                       <form onSubmit={(e) => {
-                        // setData([]);
-                        console.log("DATTATATTATDA");
-                        console.log(data);
-                        console.log("DATTATATTATDA");
-                        handleReload;
                         handleEmpSearch(e);
                       }}>
                         <div className='flex relative items-start justify-start'>
@@ -211,7 +177,14 @@ function AdminEditEmployee() {
                             }}
                           ></input>
                           <div className='flex absolute items-start place-self-center'>
-                            <button className='flex p-1.5 rounded-lg active:bg-blue-300 hover:bg-blue-200 hover:text-black transition-all text-gray-800'>
+                            <button
+                              onClick={() => {
+                                let arr = [];
+                                setData(arr)
+                                console.log("Clear " + data.length);
+                              }}
+                              className='flex p-1.5 rounded-lg active:bg-blue-300 hover:bg-blue-200 hover:text-black transition-all text-gray-800'
+                            >
                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                               </svg>
@@ -240,25 +213,20 @@ function AdminEditEmployee() {
                       </button>
                     </div>
 
-                    <div className="flex justify-end p-4">
-                      <button
-                        onClick={() => {
-                          let arr = [];
-                          setData(arr)
-                          console.log("Clear " + data.length);
-                        }}
-                        className="px-4 py-2 font-medium text-white bg-red-600 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
-                      >
-                        Clear All
-                      </button>
-                    </div>
-
                   </div>
 
                 </div>
 
                 {/* Admin Table */}
                 <AdminTable data={data} />
+
+                {/* Select Row */}
+                <AdminTableRow
+                  onSelect={(rowInfo) => {
+                    setRowSelection(rowInfo);
+                    handleRowSelection(e);
+                  }}
+                />
 
               </div>
             </div>
