@@ -138,7 +138,6 @@ app.get("/api/accepted_recyclable/:depotName", (req, res) => {
   );
 });
 
-
 // API endpoint for submitting a pickup request
 app.post("/api/pickup", (req, res) => {
   console.log(req.body);
@@ -152,6 +151,31 @@ app.post("/api/pickup", (req, res) => {
       req.body.amountOfMaterialsGiven,
       req.body.dateTime,
       "pickup",
+    ],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).end();
+      } else if (results) {
+        console.log(results);
+        res.status(200).end();
+      }
+    }
+  );
+});
+
+// API endpoint for submitting a drop off appointment
+app.post("/api/dropoff", (req, res) => {
+  console.log(req.body);
+
+  db.query(
+    `INSERT INTO transaction (Username, BranchName, RecyclableName, DateTime, ServiceType) VALUES (?, ?, ?, ?, ?)`,
+    [
+      req.body.username,
+      req.body.branchName,
+      "PLACEHOLDER",
+      req.body.dateTime,
+      "dropoff",
     ],
     (error, results) => {
       if (error) {
@@ -230,11 +254,7 @@ app.post("/api/donate", (req, res) => {
   // Add row in the donates table
   db.query(
     `INSERT INTO donates (Username, NGOName, DonationAmount) VALUES (?, ?, ?)`,
-    [
-      req.body.username,
-      req.body.selectedNGO,
-      req.body.donationAmt
-    ],
+    [req.body.username, req.body.selectedNGO, req.body.donationAmt],
     (error, results) => {
       if (error) {
         console.log(error);
@@ -247,49 +267,43 @@ app.post("/api/donate", (req, res) => {
   );
 });
 
-
-
 app.post("/api/selectEmpWithName", (req, res) => {
   console.log(req.body);
 
   /*Create query variable*/
-  const sql = (
-    `SELECT *
+  const sql = `SELECT *
     FROM ??
-    WHERE LName LIKE ? AND FName LIKE ?`
-  ); //search employee query
-  const placeHolder = [req.body.userType, `%${req.body.lastName}%`, `%${req.body.firstName}%`]; //placeholders into '?' and '??' parameters
-  const query = mysql.format(sql, placeHolder);//insert the placeholders into the query
+    WHERE LName LIKE ? AND FName LIKE ?`; //search employee query
+  const placeHolder = [
+    req.body.userType,
+    `%${req.body.lastName}%`,
+    `%${req.body.firstName}%`,
+  ]; //placeholders into '?' and '??' parameters
+  const query = mysql.format(sql, placeHolder); //insert the placeholders into the query
 
   console.log(query);
-  console.log(typeof req.body.firstName +
-    typeof req.body.lastName)
+  console.log(typeof req.body.firstName + typeof req.body.lastName);
 
   // try {
-    //Query to the database
-    db.query(query, (error, results) => {
-      if (results) {
-        res.status(200).send(results);
-      }
-      else if (error) {
-        console.log("Error " + error);
-        res.status(500).end();
-      }
-    });
-//   } 
-//   catch (error) {
-//     console.log("Error " + error);
-//     res.status(500).send({error});
-//   }
+  //Query to the database
+  db.query(query, (error, results) => {
+    if (results) {
+      res.status(200).send(results);
+    } else if (error) {
+      console.log("Error " + error);
+      res.status(500).end();
+    }
+  });
+  //   }
+  //   catch (error) {
+  //     console.log("Error " + error);
+  //     res.status(500).send({error});
+  //   }
 });
-
-
-
 
 // app.get("/api/", () => {
 //   console.log("running on port 3001");
 // })
-
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

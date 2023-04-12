@@ -129,7 +129,7 @@ function CustomerDashboard() {
         </div>
         <div className="transactions w-full h-96 bg-white rounded-2xl p-8">
           <div className="border-b-2 pb-4">
-            <h3 className="text-lg font-bold">Transactions</h3>
+            <h3 className="text-lg font-bold"> Recent Transactions</h3>
           </div>
           <div className="columnHeaders pt-2 flex justify-between text-gray-400">
             <h4 className="w-1/3">Depot</h4>
