@@ -164,17 +164,20 @@ app.post("/api/pickup", (req, res) => {
   );
 });
 
+  // // try {
+  //   //Query to the database
+  //   db.query(query, (error, results) => {
+  //     if (results) {
+  //       console.log(results);
+  //       res.status(200).send(results);
+
+
 // API endpoint for submitting a drop off appointment
 app.post("/api/dropoff", (req, res) => {
   console.log(req.body);
 
 
-  // try {
-    //Query to the database
-    db.query(query, (error, results) => {
-      if (results) {
-        console.log(results);
-        res.status(200).send(results);
+
 
   db.query(
     `INSERT INTO transaction (Username, BranchName, RecyclableName, DateTime, ServiceType) VALUES (?, ?, ?, ?, ?)`,
