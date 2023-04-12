@@ -13,7 +13,7 @@ const db = mysql.createConnection({
   host: "localhost",
   port: "33061",
   user: "root",
-  password: "password", // Set to cheetos for Maira
+  password: "Ch33tos!", // Set to cheetos for Maira
   database: "eco_archive",
 });
 
@@ -54,6 +54,8 @@ app.post("/api/processLogin", (req, res) => {
     }
   );
 });
+
+
 
 // Sign Up endpoint
 app.post("/api/processSignup", (req, res) => {
@@ -102,6 +104,59 @@ app.get("/api/customer/:username", (req, res) => {
   );
 });
 
+
+// API endpoint for getting employee
+app.get("/api/employee/:username", (req, res) => {
+  console.log(req.params.username);
+
+  db.query(
+    `SELECT * FROM employee WHERE Username = ?`,
+    [req.params.username],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
+        console.log(results);
+        res.json(results);
+      }
+    }
+  );
+});
+
+
+// app.post("/api/employee/:username", (req,res) => {
+//   const {Username, BranchName} = req.body;
+//   const sqlInsert = 
+//     "INSERT INTO employee_workstation (Username, BranchName) VALUES (?, ?)";
+//   db.query(sqlInsert, [Username, BranchName], (error, result) => {
+//     if(error) {
+//       console.log(error);
+//     }
+//   });
+// });
+
+app.post("/api/employee", (req, res) => {
+  // console.log(req.body);
+
+  db.query(
+    "INSERT INTO employee_workstation (BranchName, Username) VALUES (?, ?)",
+    [
+      req.body.branchname,
+      req.body.username
+    ],
+    (error, results) => {
+      if (error) {
+        console.log(error.code);
+        res.send(error.code);
+      } else if (results) {
+        console.log(results);
+      }
+    }
+  );
+});
+
+
 // API endpoint for getting all recycling depots in the database
 app.get("/api/recycling_depot", (req, res) => {
   db.query(`SELECT * FROM recycling_depot`, (error, results) => {
@@ -136,6 +191,34 @@ app.get("/api/accepted_recyclable/:depotName", (req, res) => {
     }
   );
 });
+
+
+// API endpoint for getting all transaction in the database with current employee branch 
+app.get("/api/get_transaction/:username", (req, res) => {
+  // console.log(req.params.username);
+
+  db.query(
+    `SELECT transaction.* 
+    FROM transaction, employee 
+    WHERE employee.Username = ? AND employee.BranchName = transaction.BranchName`, 
+    [req.params.username],
+    (error, results) => {
+    if (error) {
+      console.log(error);
+      res.status(404).end();
+    } else if (results) {
+      console.log(results);
+      res.json(results);
+    }
+  });
+});
+
+//inserting logged in employee info into workstation table, after customer logs in 
+
+
+
+
+
 
 app.post("/api/selectEmpWithName", (req, res) => {
   console.log(req.body);
@@ -172,10 +255,6 @@ app.post("/api/selectEmpWithName", (req, res) => {
 });
 
 
-
-// app.get("/api/", () => {
-//   console.log("running on port 3001");
-// })
 
 
 

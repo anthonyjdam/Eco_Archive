@@ -30,19 +30,21 @@ CREATE TABLE `customer` (
   `LName` varchar(255) NOT NULL,
   `FName` varchar(255) NOT NULL,
   `Password` varchar(255) NOT NULL,
-  PRIMARY KEY (`Username`)
-  );
+  `BranchName` varchar(255) NOT NULL,
+
+  PRIMARY KEY (`Username`),
+  CONSTRAINT `fk_EmployeeBranch` FOREIGN KEY (`BranchName`) REFERENCES `recycling_depot` (`BranchName`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
   -- Dump data into employee table
   LOCK TABLES `employee` WRITE;
   INSERT INTO `employee` VALUES 
-  ("mairakhan419", "Khan", "Mirah", "cheeto"), 
-  ("anthonyjdam", "Dam", "Anthony", "password"), 
-  ("jRaimuu", "Sarjeant", "Liam", "someReallyLongPassword"), 
-  ("Casper", "Phan", "Tom", "54321"), 
-  ("Ghost", "Phantano", "Tommy", "12345");
+  ("mairakhan419", "Khan", "Mirah", "cheeto", "Sage Hill"), 
+  ("anthonyjdam", "Dam", "Anthony", "password", "University"), 
+  ("jRaimuu", "Sarjeant", "Liam", "someReallyLongPassword", "Sage Hill"), 
+  ("Casper", "Phan", "Tom", "54321", "University"), 
+  ("Ghost", "Phantano", "Tommy", "12345", "University");
   UNLOCK TABLES;
-
 
 
 
@@ -226,13 +228,18 @@ DROP TABLE IF EXISTS `employee_workstation`;
 
 CREATE TABLE `employee_workstation` (
   `BranchName` varchar(255) NOT NULL,
-  `WorkstationID` int NOT NULL,
-  `Username` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`BranchName`,`WorkstationID`),
-  CONSTRAINT `fk_BranchWorkstation` FOREIGN KEY (`BranchName`) REFERENCES `recycling_depot` (`BranchName`)
+  -- `WorkstationID` int NOT NULL,
+  `Username` varchar(255) NOT NULL,
+  PRIMARY KEY (`Username`,`BranchName`),
+  KEY `fk_BranchWorkstation_idx` (`BranchName`),
+  KEY `fk_employeeUser_idx` (`Username`),
+  CONSTRAINT `fk_BranchWorkstation` FOREIGN KEY (`BranchName`) REFERENCES `recycling_depot` (`BranchName`),
+  CONSTRAINT `fk_employeeUser` FOREIGN KEY (`Username`) REFERENCES `employee` (`Username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
+-- LOCK TABLES `employee_workstation` WRITE;
+-- INSERT INTO `employee_workstation` VALUES ('University', 'mairakhan419')
 
 
 -- Create the transaction table
@@ -255,6 +262,10 @@ CREATE TABLE `transaction` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
+-- dump data into transaction table
+LOCK TABLES `transaction` WRITE;
+INSERT INTO `transaction` VALUES ('anthonyjdam', 'University', '4L Milk jugs', 6, "2015-12-25T15:32:06.427", 'Pick Up'), ('anthonyjdam', 'Sage Hill', '4L Milk jugs', 10, "2016-12-25T15:32:06.427", 'Pick Up'), ('jRaimuu', 'University', '4L Milk jugs', 6, "2019-12-25T19:32:06.427", 'Drop Off');
+UNLOCK TABLES;
 
 -- Create the ship table
 
