@@ -24,6 +24,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
+
         <userContext.Provider value={{ currentUser, setCurrentUser }}>
           <Routes>
             <Route path="/" element={<Login />} />
@@ -37,11 +38,11 @@ function App() {
             <Route path="/editmaterial" element={<AdminEditMaterial />}></Route>
             {/* <Route path="/editemployee" element={<AdminEditEmployee/>}></Route> */}
             {/* <Route path="/editcustomer" element={<AdminEditCustomer/>}></Route> */}
+            <Route path="/editemployee" element={<AdminEditEmployee />}></Route>
+            <Route path="/editcustomer" element={<AdminEditCustomer />}></Route>
             <Route path="/editcharity" element={<AdminEditCharities />}></Route>
             <Route path="/dropoffService" element={<DropOffService />}></Route>
             <Route path="/pickupService" element={<PickUpService />}></Route>
-
-
           </Routes>
         </userContext.Provider>
       </BrowserRouter>

@@ -21,10 +21,10 @@ function AdminEditMaterial() {
 
   const handleNonNumberInput = (input) => {
     if (isNaN(input)) {
-      setFieldError(true)
+      setFieldError(true);
       return false;
     }
-    setFieldError(false)
+    setFieldError(false);
     return true;
   }
 
@@ -49,8 +49,8 @@ function AdminEditMaterial() {
           {/* Iventory Summary */}
           <div className="flex-auto bottom-0 overflow-y-auto lg:pr-4 lg:pt-8">
 
-            <div className="bg-white rounded-md opacity-[85%] shawdow-lg m-3">
-              <div>
+            <div className="bg-white rounded-lg opacity-[85%] shawdow-lg m-3">
+              
                 <h2 className=" text-2xl text-blue-300 font-bold pl-5 pt-2 pb-2">Material Rates</h2>
                 <hr className='pb-2'></hr>
                 <div className="pl-5">
@@ -60,7 +60,7 @@ function AdminEditMaterial() {
                       <lable>$</lable>
                       <input
                         placeholder={glassRate}
-                        className='border-2 border-gray-100 focus:border-blue-200 rounded-lg pl-3'
+                        className='border-b-2 border-gray-200 focus:border-blue-200 rounded-sm pl-3'
                         type="text"
                         value={glassRate}
                         onChange={(e) => {
@@ -76,7 +76,7 @@ function AdminEditMaterial() {
                       <lable>$</lable>
                       <input
                         placeholder={PlasticRate}
-                        className='border-2 border-gray-100 focus:border-blue-200 rounded-lg pl-3'
+                        className='border-b-2 border-gray-200 focus:border-blue-200 rounded-sm pl-3'
                         type="text"
                         value={PlasticRate}
                         onChange={(e) => {
@@ -92,7 +92,7 @@ function AdminEditMaterial() {
                       <lable>$</lable>
                       <input
                         placeholder={AluminiumRate}
-                        className='border-2 border-gray-100 focus:border-blue-200 rounded-lg pl-3'
+                        className='border-b-2 border-gray-200 focus:border-blue-200 rounded-sm pl-3'
                         type="text"
                         value={AluminiumRate}
                         onChange={(e) => {
@@ -113,7 +113,6 @@ function AdminEditMaterial() {
                     </div>}
                   </div>
                 </div>
-              </div>
               <div>
               </div>
             </div>
