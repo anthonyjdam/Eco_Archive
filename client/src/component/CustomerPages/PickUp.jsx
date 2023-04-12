@@ -223,6 +223,12 @@ function PickUp() {
       return;
     }
 
+    if (date < new Date()) {
+      setFieldError(true);
+      setFieldErrorMessage("Pick up date cannot be in the past");
+      return;
+    }
+
     const formattedDate = `${date.getUTCFullYear()}-${
       date.getUTCMonth() + 1
     }-${date.getUTCDate()} ${time}`;
@@ -282,7 +288,6 @@ function PickUp() {
         ""
       )}
 
-
       <div className="content flex flex-col gap-8 lg:ml-64 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-50 via-indigo-100 to-emerald-50 p-8 min-h-[140vh]">
         <div className="header flex items-center h-12 py-8 gap-4 lg:hidden ">
           <button
@@ -301,7 +306,7 @@ function PickUp() {
             Request Pick Up
           </h2>
           <select
-            className="w-full border-2 border-gray-400 rounded p-2"
+            className="w-full md:w-1/3 border-2 border-gray-400 rounded p-2"
             onChange={(e) => {
               setSelected_depot(e.target.value);
               setPickUpList([]);
@@ -316,20 +321,21 @@ function PickUp() {
               );
             })}
           </select>
-          {/* https://github.com/OMikkel/tailwind-datepicker-react */}
         </div>
         <div className="w-full bg-white rounded-2xl px-8 py-6 flex items-center flex-col gap-6">
           <h2 className="font-medium text-2xl border-b-2 pb-2 px-4">
             Select Date & Time
           </h2>
-          <Datepicker
-            options={datePickerOptions}
-            onChange={handleDateChange}
-            show={showDatePicker}
-            setShow={handleClose}
-          ></Datepicker>
+          <div className="w-full sm:w-1/3">
+            <Datepicker
+              options={datePickerOptions}
+              onChange={handleDateChange}
+              show={showDatePicker}
+              setShow={handleClose}
+            ></Datepicker>
+          </div>
           <select
-            className="w-full border-2 border-gray-400 rounded p-2 max-h-40"
+            className="w-full sm:w-1/3 border-2 border-gray-400 rounded p-2 max-h-40"
             onChange={(e) => {
               setTime(e.target.value);
             }}
