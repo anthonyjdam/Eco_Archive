@@ -138,10 +138,28 @@ app.get("/api/accepted_recyclable/:depotName", (req, res) => {
   );
 });
 
+// API endpoint for submitting a pickup request
+app.post("/api/pickup", (req, res) => {
+  console.log(req.body);
+
+  db.query(
+    `INSERT INTO transaction (Username, BranchName, RecyclableName, AmountOfMaterialsGiven, DateTime, ServiceType) VALUES (?, ?, ?, ?, ?, pickup)`,
+    [req.body.username, req.body.branchName, req.body.recyclableName, req.body.amountOfMaterialsGiven, req.body.dateTime],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).end();
+      } else if (results) {
+        console.log(results);
+        res.status(200).end();
+      }
+    }
+  );
+});
+
 // app.get("/api/", () => {
 //   console.log("running on port 3001");
 // })
-
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

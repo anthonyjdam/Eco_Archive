@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CustomerSidebar from "./CustomerSidebar";
 import logo from "../../newlogo.png";
 import axios from "axios";
 import Datepicker from "tailwind-datepicker-react";
+import userContext from "../userContext";
 
 const hamburger = (
   <svg
@@ -57,32 +58,32 @@ const minusCircle = (
 
 // https://github.com/OMikkel/tailwind-datepicker-react
 const datePickerOptions = {
-	title: "Pick Up Date",
-	autoHide: true,
-	todayBtn: false,
-	clearBtn: true,
-	maxDate: new Date("2030-01-01"),
-	minDate: new Date("1950-01-01"),
-	theme: {
-		background: "",
-		todayBtn: "",
-		clearBtn: "",
-		icons: "",
-		text: "",
-		disabledText: "",
-		input: "",
-		inputIcon: "",
-		selected: "",
-	},
-	icons: {
-		// () => ReactElement | JSX.Element
-		prev: () => <span>Previous</span>,
-		next: () => <span>Next</span>,
-	},
-	datepickerClassNames: "top-12",
-	defaultDate: new Date("2022-01-01"),
-	language: "en",
-}
+  title: "Pick Up Date",
+  autoHide: true,
+  todayBtn: false,
+  clearBtn: true,
+  maxDate: new Date("2030-01-01"),
+  minDate: new Date("1950-01-01"),
+  theme: {
+    background: "",
+    todayBtn: "",
+    clearBtn: "",
+    icons: "",
+    text: "",
+    disabledText: "",
+    input: "",
+    inputIcon: "",
+    selected: "",
+  },
+  icons: {
+    // () => ReactElement | JSX.Element
+    prev: () => <span>Previous</span>,
+    next: () => <span>Next</span>,
+  },
+  datepickerClassNames: "top-12",
+  defaultDate: new Date(),
+  language: "en",
+};
 
 function PickUp() {
   const [nav, setNav] = useState(false);
@@ -98,7 +99,11 @@ function PickUp() {
   const [fieldErrorMessage, setFieldErrorMessage] = useState(""); // Error message
   const [showDatePicker, setShowDatePicker] = useState(false); // State for showing the date picker
 
-  let date;
+  const [date, setDate] = useState(new Date());
+  const [time, setTime] = useState("");
+
+
+  const { currentUser, setCurrentUser } = useContext(userContext);
 
   // On page load get a list of all the recycling depots
   useEffect(() => {
@@ -147,8 +152,7 @@ function PickUp() {
   }
 
   function handleDateChange(selectedDate) {
-    date = selectedDate;
-    console.log(date);
+    setDate(selectedDate);
   }
 
   function handleClose(state) {
@@ -160,7 +164,9 @@ function PickUp() {
       if (pickUpList.length > 0) {
         if (pickUpItem.RecyclableName === recyclableName) {
           const newCount = { ...pickUpCounts };
-          newCount[recyclableName] = e.target.value;
+          +e.target.value > 0
+            ? (newCount[recyclableName] = +e.target.value)
+            : (newCount[recyclableName] = 1);
           setPickUpCounts(newCount);
         }
       }
@@ -179,6 +185,11 @@ function PickUp() {
       1
     );
     setAccepted_recyclables(remainingRecyclables);
+
+    // Initialize the count to be zero for the recyclable added to the pick-up list
+    const newCount = { ...pickUpCounts };
+    newCount[recyclableToAdd.RecyclableName] = 1;
+    setPickUpCounts(newCount);
   }
 
   function handlePickUpListRemove(recyclableToRemove) {
@@ -190,9 +201,27 @@ function PickUp() {
       1
     );
     setPickUpList(remainingRecyclables);
+
+    // Remove the count for the recyclable removed from the pick-up list
+    const newCount = {
+      ...pickUpCounts,
+    };
+    delete newCount[recyclableToRemove.RecyclableName];
+    setPickUpCounts(newCount);
   }
 
-  function handlePickUpSubmit() {}
+  async function handlePickUpSubmit(e) {
+    e.preventDefault();
+    setFieldError(false);
+
+    if (!date || time === "") {
+      setFieldError(true);
+      setFieldErrorMessage("Please select a date and time");
+      return;
+    }
+
+
+  }
 
   return (
     <div>
@@ -207,7 +236,7 @@ function PickUp() {
         ""
       )}
 
-      <div className="content flex flex-col gap-8 lg:ml-64 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-50 via-indigo-100 to-emerald-50 p-8 min-h-screen">
+      <div className="content flex flex-col gap-8 lg:ml-64 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-50 via-indigo-100 to-emerald-50 p-8 min-h-[120vh]">
         <div className="header flex items-center h-12 py-8 gap-4 lg:hidden ">
           <button
             className="bg-white rounded-2xl p-4 hover:scale-110 transition-transform"
@@ -241,12 +270,33 @@ function PickUp() {
             })}
           </select>
           {/* https://github.com/OMikkel/tailwind-datepicker-react */}
+        </div>
+        <div className="w-full bg-white rounded-2xl px-8 py-6 flex items-center flex-col gap-6">
+          <h2 className="font-medium text-2xl border-b-2 pb-2 px-4">
+            Select Date & Time
+          </h2>
           <Datepicker
             options={datePickerOptions}
             onChange={handleDateChange}
             show={showDatePicker}
             setShow={handleClose}
           ></Datepicker>
+          <select
+            className="w-full border-2 border-gray-400 rounded p-2 max-h-40"
+            onChange={(e) => {
+              setTime(e.target.value);
+            }}
+          >
+            <option value={""}>Select Time</option>
+            <option value="10:00">10:00</option>
+            <option value="11:00">11:00</option>
+            <option value="12:00">12:00</option>
+            <option value="13:00">13:00</option>
+            <option value="14:00">14:00</option>
+            <option value="15:00">15:00</option>
+            <option value="16:00">16:00</option>
+            <option value="17:00">17:00</option>
+          </select>
         </div>
         {selected_depot !== "" && (
           <div className="w-full bg-white rounded-2xl px-8 py-6 flex items-center flex-col gap-6">
@@ -303,15 +353,15 @@ function PickUp() {
         )}
 
         {pickUpList.length > 0 && (
-          <form className="w-full bg-white rounded-2xl px-8 py-6 flex items-center flex-col gap-6">
+          <form
+            className="w-full bg-white rounded-2xl px-8 py-6 flex items-center flex-col gap-6"
+            onSubmit={(e) => {
+              handlePickUpSubmit(e);
+            }}
+          >
             <h2 className="font-medium text-2xl border-b-2 pb-4">
               Pick Up List
             </h2>
-            {fieldError && (
-              <div className="bg-red-500 px-3 py-3 rounded text-gray-100 mb-5">
-                <p>{fieldErrorMessage}</p>
-              </div>
-            )}
             {pickUpList.map((recyclable) => {
               return (
                 <div
@@ -333,7 +383,11 @@ function PickUp() {
                     className="w-16 border-2 rounded text-center border-gray-400"
                     placeholder="Count"
                     type="number"
-                    value={pickUpCounts[recyclable.RecyclableName] | 0}
+                    value={
+                      pickUpCounts[recyclable.RecyclableName]
+                        ? pickUpCounts[recyclable.RecyclableName]
+                        : 1
+                    }
                     onClick={(e) => e.target.select()}
                     onChange={(e) => {
                       handleCountChange(e, recyclable.RecyclableName);
@@ -342,6 +396,11 @@ function PickUp() {
                 </div>
               );
             })}
+            {fieldError && (
+              <div className="bg-red-500 px-3 py-3 rounded text-gray-100 mb-5">
+                <p>{fieldErrorMessage}</p>
+              </div>
+            )}
             <button
               className="bg-blue-400 w-full sm:w-1/2 text-gray-100 py-2 rounded hover:bg-blue-500 transition-colors"
               type="submit"
