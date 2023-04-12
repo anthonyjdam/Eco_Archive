@@ -39,7 +39,6 @@ export default function LoginField({ userType }) {
     }
 
     if (!doNotSend) {
-      
       const submitObject = {
         userType: userType.isCustomer
           ? "customer"
@@ -50,11 +49,9 @@ export default function LoginField({ userType }) {
         password: password,
       };
 
-
       axios
         .post("http://localhost:5000/api/processLogin", submitObject)
         .then((response) => {
-          
           setCurrentUser(username);
           console.log("currentUser");
           console.log(currentUser);
@@ -66,7 +63,6 @@ export default function LoginField({ userType }) {
           } else if (userType.isAdmin) {
             redirect("/admin");
           }
-
         })
         .catch((error) => {
           if (error.response) {
@@ -119,17 +115,19 @@ export default function LoginField({ userType }) {
             handlePasswordChange(e);
           }}
         ></input>
-        <div className="mb-4 flex justify-center gap-1">
-          <span className="text-xs w-1/3 text-gray-400 flex-grow text-right">
-            Don't have an account yet?
-          </span>
-          <Link
-            to="/signup"
-            className="text-xs hover:text-blue-400 transition-colors flex-grow"
-          >
-            Sign up
-          </Link>
-        </div>
+        {userType.isCustomer === true && (
+          <div className="mb-4 flex justify-center gap-1">
+            <span className="text-xs w-1/3 text-gray-400 flex-grow text-right">
+              Don't have an account yet?
+            </span>
+            <Link
+              to="/signup"
+              className="text-xs hover:text-blue-400 transition-colors flex-grow"
+            >
+              Sign up
+            </Link>
+          </div>
+        )}
         <button
           className="bg-blue-400 w-full text-gray-100 py-2 rounded hover:bg-blue-500 transition-colors"
           type="submit"
