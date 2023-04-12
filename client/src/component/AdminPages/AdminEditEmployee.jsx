@@ -1,8 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AdminSidebar from './AdminSidebar'
 import AdminProfileBar from "./AdminProfileBar"
 import AdminTable from './AdminTable'
 import axios from 'axios';
+import AdminTableRow from './AdminTableRow';
+
+//TODO: useEffect to acheive the clearAll button
+//TODO: reimploment unique rows
 
 
 function AdminEditEmployee() {
@@ -15,30 +19,25 @@ function AdminEditEmployee() {
   const [empLName, setEmpLName] = useState("");
   const [empUsername, setEmpUsername] = useState("");
   const [empPassword, setEmpPassword] = useState("");
-  const [data, setData] = useState([]);
 
-  const [count, setCount] = useState(0);
+  //Functional State variables
+  const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
+  const [rowSelection, setRowSelection] = useState([]);
 
   //TODO: Error Checking
   //TODO: Romove Table row on new search
-  //TODO: Disallow duplicate searches
 
-  //Other state variables
+  const handleDelete = (index) => {
+    console.log(index);
+    const newData = [...data];
+    newData.splice(index, 1);
+    setData(newData);
+  };
 
-  const handleReload = () => {
-    setCount(count + 1);
-  }
 
   async function handleEmpSearch(e) {
     e.preventDefault();
-    // setData([]);
-
-    //Split the username delimited by a space
-    // const [yo, momma] = search.split(" ");
-
-    // setEmpFName(yo)
-    // setEmpLName(momma)
 
     console.log("Search " + search);
     console.log("First name " + empFName);
@@ -50,53 +49,52 @@ function AdminEditEmployee() {
       lastName: empLName
     }
 
-    // console.log(userType);
-    // console.log(empFName);
-
-
     const response = await axios.post("http://localhost:5000/api/selectEmpWithName", searchObject);// returns an array of matching employee names
+    console.log("Sandwich");
     console.log(response);
     const responseData = response.data;
-    // console.log(data);
-    // console.log(data.length);
 
-
-
-    /**
-     * If there is one or more employees found, 
-     * iterate through the ARRAY of employees containing that name
-     */
     if (responseData.length > 0) {
-      // for (let i = 0; i < responseData.length; i++) {
-      //   console.log("Enter loop")
-      //   const element = responseData[i];
-      //   console.log(element);
-      //   handleAddData(element);
-      //   console.log(element.LName);
-      // }
-      setData([]);
+      const newData = [];
+      setData(newData);
       setData(data.concat(responseData));
-
     }
     else {
       console.log("No results found")
     }
   }
 
-  /**
-   *  Uses the spread operator to create a new array 
-   *  that includes all the previous elements of the data array, 
-   *  as well as a new element newData at the end
-   * 
-   * @param {object} newData 
-   */
-  function handleAddData(newData) {
-    console.log("HANDLE DATA");
-    console.log(data);
-    console.log(newData);
-    setData([data.concat(newData)]);
-    console.log(data.length);
-    console.log(data);
+  async function handleRowSelection(empSelected) {
+
+    const selectedEmployee = data.filter(emp => (emp.Username === empSelected)); //creates a new array that contains only the elements that are present in both empUsername and rowSelection  
+    setRowSelection(rowSelection.concat(selectedEmployee))
+    
+    console.log("sandwich");
+    console.log("Username " + selectedEmployee);
+    console.log(rowSelection);
+    console.log(selectedEmployee);
+
+    for (let i = 0; i < selectedEmployee.length; i++) {
+      console.log("Username: " + selectedEmployee[i]);
+    }
+
+    const searchObject = {
+      userType: "employee",
+      firstName: empFName,
+      lastName: empLName
+    }
+
+
+
+
+  }
+
+  async function handleRowDelete() {
+
+    // handleDelete();
+    const response = await axios.post("http://localhost:5000/api/deleteEmpWithUsername", searchObject);// returns an array of matching employee names
+    console.log(response);
+
   }
 
 
@@ -183,11 +181,6 @@ function AdminEditEmployee() {
                     {/* Search User Button */}
                     <div className='relative'>
                       <form onSubmit={(e) => {
-                        // setData([]);
-                        console.log("DATTATATTATDA");
-                        console.log(data);
-                        console.log("DATTATATTATDA");
-                        handleReload;
                         handleEmpSearch(e);
                       }}>
                         <div className='flex relative items-start justify-start'>
@@ -202,7 +195,14 @@ function AdminEditEmployee() {
                             }}
                           ></input>
                           <div className='flex absolute items-start place-self-center'>
-                            <button className='flex p-1.5 rounded-lg active:bg-blue-300 hover:bg-blue-200 hover:text-black transition-all text-gray-800'>
+                            <button
+                              onClick={() => {
+                                let arr = [];
+                                setData(arr)
+                                console.log("Clear " + data.length);
+                              }}
+                              className='flex p-1.5 rounded-lg active:bg-blue-300 hover:bg-blue-200 hover:text-black transition-all text-gray-800'
+                            >
                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                               </svg>
@@ -216,15 +216,22 @@ function AdminEditEmployee() {
                     </div>
 
                     <div className='flex items-end justify-end gap-1'>
-                      {/* Delete User Button */}
+                      {/* Update User Button */}
                       <button className='flex gap-2 p-1 pr-3 pl-3 rounded-lg bg-gray-200 active:bg-green-300 hover:bg-green-200 hover:text-black transition-all text-gray-800'>
                         <label className="font-semibold text-sm">
                           Update
                         </label>
                       </button>
 
-                      {/* Update User Button */}
-                      <button className='flex gap-2 p-1 pr-3 pl-3 rounded-lg bg-gray-200 active:bg-red-300 hover:bg-red-200 hover:text-black transition-all text-gray-800'>
+                      {/* Delete User Button */}
+                      <button
+                        className='flex gap-2 p-1 pr-3 pl-3 rounded-lg bg-gray-200 active:bg-red-300 hover:bg-red-200 hover:text-black transition-all text-gray-800'
+                        onClick={() => {
+                          let arr = [];
+                          setData(arr)
+                          console.log("Clear " + data.length);
+                        }}
+                      >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                         </svg>
@@ -236,7 +243,12 @@ function AdminEditEmployee() {
                 </div>
 
                 {/* Admin Table */}
-                <AdminTable data={data} />
+                <AdminTable
+                  data={data}
+                  deleteEmployee={handleRowDelete}
+                  onSelect={handleRowSelection}
+                />
+
 
               </div>
             </div>

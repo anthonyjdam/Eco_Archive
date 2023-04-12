@@ -41,6 +41,7 @@ CREATE TABLE `customer` (
   -- Dump data into employee table
   LOCK TABLES `employee` WRITE;
   INSERT INTO `employee` VALUES 
+
   ("mairakhan419", "Khan", "Mirah", "cheeto", "Sage Hill"), 
   ("anthonyjdam", "Dam", "Anthony", "password", "University"), 
   ("jRaimuu", "Sarjeant", "Liam", "someReallyLongPassword", "Sage Hill"), 

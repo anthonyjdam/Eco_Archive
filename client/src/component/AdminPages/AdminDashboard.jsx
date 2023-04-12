@@ -50,7 +50,7 @@ export default function AdminDashboard() {
                         {/* Admin Table */}
                         <div>
                             <div className="text-center relative m-3">
-                                <AdminTable />
+                                {/* <AdminTable /> */}
                             </div>
                         </div>
 
