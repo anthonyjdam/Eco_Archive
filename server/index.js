@@ -414,6 +414,43 @@ app.get("/api/ngo", (req, res) => {
   });
 });
 
+// API endpoint for adding a NGO to the database
+app.post("/api/ngo/add", (req, res) => {
+  console.log(req.body);
+
+  db.query(
+    `INSERT INTO ngo (NGOName, Username) VALUES (?, ?)`,
+    [req.body.ngoName, req.body.adminUsername],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).end();
+      } else if (results) {
+        console.log(results);
+      }
+    }
+  );
+});
+
+// API endpoint for deleting a NGO from the database
+app.post("/api/ngo/delete", (req, res) => {
+  console.log(req.body);
+
+  db.query(
+    `DELETE FROM ngo WHERE NGOName =?`,
+    [req.body.ngoName],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).end();
+      } else if (results) {
+        console.log(results);
+      }
+    }
+  );
+});
+
+
 // API endpoint for making a donation to a specific NGO
 app.post("/api/donate", (req, res) => {
   // Update amountRaised for the NGO after the donation
