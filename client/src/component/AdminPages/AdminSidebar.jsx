@@ -1,14 +1,16 @@
-import React from 'react'
 import logo from "../../newlogo.png";
 import { NavLink } from "react-router-dom";
+import userContext from "../userContext";
+import React, { useContext } from "react";
+
 
 
 /**<h1 className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-600">
                                 Logout
                             </h1>*/
 export default function AdminSidebar() {
+    const { setCurrentUser } = useContext(userContext);
     return (
-
         <div>
             <nav>
                 <div className="fixed top-0 bottom-0 lg:left-0 p-0 w-48 flex-auto z-10 overflow-y-auto text-center bg-gray-900">
@@ -80,15 +82,17 @@ export default function AdminSidebar() {
                             Edit Profile
                         </label>
                     </button>
-                    <button className="p-2.5 mt-3 w-full flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-500 text-white">
+                    <NavLink className="p-2.5 mt-3 w-full flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-red-500 text-white"
+                        to="/"
+                        onClick={() => setCurrentUser("")}
+                    >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6 mr-1">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
                         </svg>
                         <label className="font-semibold">
                             Logout
                         </label>
-
-                    </button>
+                    </NavLink>
                 </div>
             </nav>
         </div>
