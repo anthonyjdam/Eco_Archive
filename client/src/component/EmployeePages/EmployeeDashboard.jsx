@@ -8,7 +8,7 @@ import { NavLink } from "react-router-dom";
 function EmployeeDashboard() {
 
   const [nav, setNav] = useState(false)
-  const { setCurrentUser } = useContext(userContext);
+  // const { setCurrentUser } = useContext(userContext);
 
 
   return (
@@ -26,14 +26,14 @@ function EmployeeDashboard() {
 
     
       <div>
-        <div class="flex flex-row gap-4 relative m-3 px-1">
+        <div className="flex flex-row gap-4 relative m-3 px-1">
           <EmployeeTable />
         </div>
       </div>
 
 
     {/* Side menu */}
-      {nav ? <div class="bg-black/60 fixed w-full h-screen z-10 top-0 left-0"></div> : ""}
+      {nav ? <div className="bg-black/60 fixed w-full h-screen z-10 top-0 left-0"></div> : ""}
 
       <div className={nav ? 'fixed top-0 left-0 w-[250px] h-screen bg-white z-10 duration-300' : "fixed top-0 left-[-100%] w-[250] h-screen bg-white z-10 duration-300"}>
         <AiOutlineClose onClick={()=> setNav(!nav)} size={30} className="absolute right-4 top-4 cursor-pointer"

@@ -173,6 +173,16 @@ function CustomerDashboard() {
               ? `Total contrabutions: $${customerContributions}.00`
               : `Total contrabutions: $${customerContributions}`}
           </div>
+          {fieldError && (
+            <div className="bg-red-500 px-3 py-3 rounded text-gray-100 mb-5">
+              <p className="text-center">{fieldErrorMessage}</p>
+            </div>
+          )}
+          {showSuccessRequest && (
+            <div className="bg-green-400 px-3 py-3 rounded text-gray-100 mb-5">
+              <p className="text-center">Thank you for donating!</p>
+            </div>
+          )}
           <form
             className="flex flex-col lg:flex-row items-center gap-4 justify-center"
             onSubmit={(e) => {
@@ -209,16 +219,6 @@ function CustomerDashboard() {
                 }}
               ></input>
             </div>
-            {fieldError && (
-              <div className="bg-red-500 px-3 py-3 rounded text-gray-100 mb-5">
-                <p>{fieldErrorMessage}</p>
-              </div>
-            )}
-            {showSuccessRequest && (
-              <div className="bg-green-400 px-3 py-3 rounded text-gray-100 mb-5">
-                <p>Thank you for donating!</p>
-              </div>
-            )}
             <button
               type="submit"
               className="bg-blue-400 w-48 text-gray-100 py-2 rounded hover:bg-blue-500 transition-colors"

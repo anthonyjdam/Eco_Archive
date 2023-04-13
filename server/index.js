@@ -13,7 +13,7 @@ const db = mysql.createConnection({
   host: "localhost",
   port: "33061",
   user: "root",
-  password: "password", // Set to cheetos for Maira
+  password: "password", // Set to Ch33tos! for Maira
   database: "eco_archive",
 });
 
@@ -51,6 +51,145 @@ app.post("/api/processLogin", (req, res) => {
         } else {
           res.status(401).end();
         }
+      }
+    }
+  );
+});
+
+// API endpoint to Get the material rate and material type of the recyclable
+app.get("/api/recyclable/:recyclableName", (req, res) => {
+  db.query(
+    `SELECT MaterialRate, MaterialType FROM recyclable WHERE RecyclableName = ?`,
+    [req.params.recyclableName],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
+        console.log(results);
+        res.status(200).json(results);
+      }
+    }
+  );
+});
+
+// API endpoint to Get the material rate for EVERY material type
+app.get("/api/materialRate", (req, res) => {
+  db.query(
+    `SELECT DISTINCT MaterialRate, MaterialType FROM recyclable`,
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
+        console.log(results);
+        res.status(200).json(results);
+      }
+    }
+  );
+});
+
+// API endpoint to complete a transaction
+app.post("/api/complete", (req, res) => {
+  console.log(req.body);
+
+  // Update the balance of the customer
+  // Calculate the amountEarned
+
+  db.query(
+    `UPDATE customer SET AccountBal = AccountBal + ? WHERE Username = ?`,
+    [req.body.amountearned, req.body.username],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).end();
+      } else if (results) {
+        console.log("000000000");
+        console.log(results);
+      }
+    }
+  );
+
+  // Update the status of the transaction and the amountEarned column
+  db.query(
+    `UPDATE transaction SET Status = ?, AmountEarned = ? WHERE Username = ? AND BranchName = ? AND RecyclableName = ? AND DateTime = ?`,
+    [
+      req.body.status,
+      req.body.amountearned,
+      req.body.username,
+      req.body.branchname,
+      req.body.recyclablename,
+      req.body.datetime,
+    ],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).end();
+      } else if (results) {
+        console.log("2222222222222");
+        console.log(results);
+      }
+    }
+  );
+
+  res.status(200).end();
+});
+
+// API endpoint to update inventory counts
+app.post("/api/updateInventory", (req, res) => {
+  console.log(req.body);
+  db.query(
+    `UPDATE inventory SET Lifetime${req.body.materialtype} = Lifetime${req.body.materialtype} + ?, Concurrent${req.body.materialtype} = Concurrent${req.body.materialtype} + ? WHERE BranchName = ?`,
+    [req.body.materialcount, req.body.materialcount, req.body.branchname],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).end();
+      } else if (results) {
+        console.log("3333333333");
+        console.log(results);
+        res.status(200).end();
+      }
+    }
+  );
+});
+
+// API endpoint to update inventory counts for multiple materials
+app.post("/api/updateInventoryMultiple", (req, res) => {
+  console.log(req.body);
+
+  const materialCounts = req.body.materialtypeandcount;
+
+  db.query(
+    `UPDATE inventory 
+    SET LifetimeGlass = LifetimeGlass + ?, 
+    LifetimePaper = LifetimePaper + ?, 
+    LifetimeMetal = LifetimeMetal + ?, 
+    LifetimePlastic = LifetimePlastic + ?, 
+    ConcurrentGlass = ConcurrentGlass + ?, 
+    ConcurrentPaper = ConcurrentPaper + ?, 
+    ConcurrentMetal = ConcurrentMetal + ?, 
+    ConcurrentPlastic = ConcurrentPlastic + ? 
+    WHERE BranchName = ?`,
+    [
+      +materialCounts.Glass,
+      +materialCounts.Paper,
+      +materialCounts.Metal,
+      +materialCounts.Plastic,
+      +materialCounts.Glass,
+      +materialCounts.Paper,
+      +materialCounts.Metal,
+      +materialCounts.Plastic,
+      req.body.branchname,
+    ],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).end();
+      } else if (results) {
+        console.log("1111111");
+        console.log(results);
+        res.status(200).end();
       }
     }
   );
@@ -98,6 +237,53 @@ app.get("/api/customer/:username", (req, res) => {
       } else if (results) {
         console.log(results);
         res.json(results);
+      }
+    }
+  );
+});
+
+// API endpoint for getting employee
+app.get("/api/employee/:username", (req, res) => {
+  console.log(req.params.username);
+
+  db.query(
+    `SELECT * FROM employee WHERE Username = ?`,
+    [req.params.username],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
+        console.log(results);
+        res.json(results);
+      }
+    }
+  );
+});
+
+// app.post("/api/employee/:username", (req,res) => {
+//   const {Username, BranchName} = req.body;
+//   const sqlInsert =
+//     "INSERT INTO employee_workstation (Username, BranchName) VALUES (?, ?)";
+//   db.query(sqlInsert, [Username, BranchName], (error, result) => {
+//     if(error) {
+//       console.log(error);
+//     }
+//   });
+// });
+
+app.post("/api/employee/:username", (req, res) => {
+  // console.log(req.body);
+
+  db.query(
+    "INSERT INTO employee_workstation (BranchName, Username) VALUES (?, ?)",
+    [req.body.branchname, req.body.username],
+    (error, results) => {
+      if (error) {
+        console.log(error.code);
+        res.send(error.code);
+      } else if (results) {
+        console.log(results);
       }
     }
   );
@@ -171,13 +357,9 @@ app.post("/api/pickup", (req, res) => {
 //       console.log(results);
 //       res.status(200).send(results);
 
-
 // API endpoint for submitting a drop off appointment
 app.post("/api/dropoff", (req, res) => {
   console.log(req.body);
-
-
-
 
   db.query(
     `INSERT INTO transaction (Username, BranchName, RecyclableName, DateTime, ServiceType) VALUES (?, ?, ?, ?, ?)`,
@@ -205,7 +387,7 @@ app.get("/api/transaction/:username", (req, res) => {
   console.log(req.params.username);
 
   db.query(
-    `SELECT * FROM transaction WHERE Username = ? AND AmountEarned IS NOT NULL ORDER BY DateTime DESC LIMIT 3`,
+    `SELECT * FROM transaction WHERE Username = ? AND AmountEarned IS NOT NULL ORDER BY DateTime DESC LIMIT 5`,
     [req.params.username],
     (error, results) => {
       if (error) {
@@ -214,7 +396,6 @@ app.get("/api/transaction/:username", (req, res) => {
       } else if (results) {
         console.log(results);
         res.json(results);
-
       }
     }
   );
@@ -232,6 +413,43 @@ app.get("/api/ngo", (req, res) => {
     }
   });
 });
+
+// API endpoint for adding a NGO to the database
+app.post("/api/ngo/add", (req, res) => {
+  console.log(req.body);
+
+  db.query(
+    `INSERT INTO ngo (NGOName, Username) VALUES (?, ?)`,
+    [req.body.ngoName, req.body.adminUsername],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).end();
+      } else if (results) {
+        console.log(results);
+      }
+    }
+  );
+});
+
+// API endpoint for deleting a NGO from the database
+app.post("/api/ngo/delete", (req, res) => {
+  console.log(req.body.NGOToDelete.NGOName);
+
+  db.query(
+    `DELETE FROM ngo WHERE NGOName = ?`,
+    [req.body.NGOToDelete.NGOName],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).end();
+      } else if (results) {
+        console.log(results);
+      }
+    }
+  );
+});
+
 
 // API endpoint for making a donation to a specific NGO
 app.post("/api/donate", (req, res) => {
@@ -274,6 +492,28 @@ app.post("/api/donate", (req, res) => {
       } else if (results) {
         console.log(results);
         res.status(200).end();
+      }
+    }
+  );
+});
+
+// API endpoint for getting all transaction in the database with current employee branch
+app.get("/api/get_transaction/:username", (req, res) => {
+  // console.log(req.params.username);
+
+  db.query(
+    `SELECT transaction.*
+    FROM transaction, employee 
+    WHERE employee.Username = ? AND transaction.BranchName = employee.BranchName
+    `,
+    [req.params.username],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
+        console.log(results);
+        res.json(results);
       }
     }
   );

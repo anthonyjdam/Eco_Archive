@@ -53,6 +53,8 @@ export default function LoginField({ userType }) {
         .post("http://localhost:5000/api/processLogin", submitObject)
         .then((response) => {
           setCurrentUser(username);
+          console.log("currentUser");
+          console.log(currentUser);
 
           if (userType.isCustomer) {
             redirect("/customerDashboard");

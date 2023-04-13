@@ -1,3 +1,5 @@
+
+
 SET foreign_key_checks = 0;
 -- Create the customer table
 DROP TABLE IF EXISTS `customer`;
@@ -25,27 +27,27 @@ CREATE TABLE `customer` (
 DROP TABLE IF EXISTS `employee`;
 
 
-  CREATE TABLE `employee` (
+ CREATE TABLE `employee` (
   `Username` varchar(255) NOT NULL,
   `LName` varchar(255) NOT NULL,
   `FName` varchar(255) NOT NULL,
   `Password` varchar(255) NOT NULL,
-  PRIMARY KEY (`Username`)
-  );
+  `BranchName` varchar(255) NOT NULL,
+
+  PRIMARY KEY (`Username`),
+  CONSTRAINT `fk_EmployeeBranch` FOREIGN KEY (`BranchName`) REFERENCES `recycling_depot` (`BranchName`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
   -- Dump data into employee table
   LOCK TABLES `employee` WRITE;
   INSERT INTO `employee` VALUES 
-  ("mairakhan419", "Khan", "Mirah", "cheeto"), 
-  ("anthonyjdam", "Dam", "Anthony", "password"), 
-  ("jRaimuu", "Sarjeant", "Liam", "someReallyLongPassword"), 
-  ("Casper", "Phan", "Tom", "54321"), 
-  ("Ghost", "Phantano", "Tommy", "12345"),
-  ("Specter", "Prankster", "Tina", "67890"),
-  ("Phantasma", "Perry", "Johnny", "54321"),
-  ("Polterguy", "Poltergeist", "Samantha", "24680");
-  UNLOCK TABLES;
 
+  ("mairakhan419", "Khan", "Mirah", "cheeto", "Sage Hill"), 
+  ("anthonyjdam", "Dam", "Anthony", "password", "University"), 
+  ("jRaimuu", "Sarjeant", "Liam", "someReallyLongPassword", "Sage Hill"), 
+  ("Casper", "Phan", "Tom", "54321", "University"), 
+  ("Ghost", "Phantano", "Tommy", "12345", "University");
+  UNLOCK TABLES;
 
 
 
@@ -187,10 +189,10 @@ CREATE TABLE `recyclable` (
 -- Dump data into the recyclable table
 LOCK TABLES `recyclable` WRITE;
 INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('Beer bottles', 'Glass', '0.75', 'janedoe');
-INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('Aluminium soda cans', 'Metal', '0.40', 'admin');
+INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('Aluminium soda cans', 'Metal', '0.30', 'admin');
 INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('2L Milk cartons', 'Paper', '0.25', 'admin');
-INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('4L Milk jugs', 'Plastic', '0.45', 'janedoe');
-INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('Wine bottles', 'Glass', '1.15', 'admin');
+INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('4L Milk jugs', 'Plastic', '0.20', 'janedoe');
+INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('Wine bottles', 'Glass', '0.75', 'admin');
 INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('Plastic water bottles', 'Plastic', '0.20', 'admin');
 INSERT INTO `eco_archive`.`recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('PLACEHOLDER', 'PLACEHOLDER', '0', 'admin');
 UNLOCK TABLES;
@@ -231,9 +233,10 @@ DROP TABLE IF EXISTS `employee_workstation`;
 
 CREATE TABLE `employee_workstation` (
   `BranchName` varchar(255) NOT NULL,
-  `WorkstationID` int NOT NULL,
-  `Username` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`BranchName`,`WorkstationID`),
+  `Username` varchar(255) NOT NULL,
+  PRIMARY KEY (`BranchName`,`Username`),
+  KEY `fk_BranchName_idx` (`BranchName`),
+  KEY `fk_Username_idx` (`Username`),  
   CONSTRAINT `fk_BranchWorkstation` FOREIGN KEY (`BranchName`) REFERENCES `recycling_depot` (`BranchName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -252,6 +255,7 @@ CREATE TABLE `transaction` (
   `DateTime` datetime NOT NULL,
   `ServiceType` varchar(255) NOT NULL,
   `AmountEarned` decimal(15,2) DEFAULT NULL,
+  `Status` varchar(255) DEFAULT 'PENDING', 
   PRIMARY KEY (`Username`,`BranchName`,`RecyclableName`,`DateTime`),
   KEY `fk_RecyclableTransaction_idx` (`RecyclableName`),
   KEY `fk_BranchTransaction_idx` (`BranchName`),
@@ -283,4 +287,3 @@ CREATE TABLE `ship` (
 
 
 SET foreign_key_checks = 1;
-
