@@ -48,9 +48,7 @@ export default function AdminEditCharities() {
 
   function handleNGODelete(NGOToDelete) {
     axios
-      .post("http://localhost:5000/api/ngo/delete", {
-        ngoName: NGOToDelete,
-      })
+      .post("http://localhost:5000/api/ngo/delete", { NGOToDelete })
       .catch((err) => {
         console.log(err);
       });

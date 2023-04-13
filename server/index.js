@@ -434,11 +434,11 @@ app.post("/api/ngo/add", (req, res) => {
 
 // API endpoint for deleting a NGO from the database
 app.post("/api/ngo/delete", (req, res) => {
-  console.log(req.body);
+  console.log(req.body.NGOToDelete.NGOName);
 
   db.query(
-    `DELETE FROM ngo WHERE NGOName =?`,
-    [req.body.ngoName],
+    `DELETE FROM ngo WHERE NGOName = ?`,
+    [req.body.NGOToDelete.NGOName],
     (error, results) => {
       if (error) {
         console.log(error);
