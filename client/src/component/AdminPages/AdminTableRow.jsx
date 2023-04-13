@@ -1,14 +1,31 @@
 import React, { useState, useEffect } from 'react'
 
-function AdminTableRow({ row, onDelete, key, onSelect }) {
+function AdminTableRow({ row, onDelete, onSelect }) {
 
-  const [empInfo, setEmpInfo] = useState([]);
+  const [isChecked, setIsChecked] = useState(false);
 
+  useEffect(() => {
+    // console.log('Row changed:', row);
+  }, [row]);
+
+  const handleCheckboxChange = (event) => {
+    const { checked } = event.target;
+    setIsChecked(checked);
+    
+    if (checked) {
+      onSelect(row.Username);
+      console.log("Selected: " + row.Username);
+    }
+    else {
+      onSelect("");
+      console.log("Deselected: " + row.Username);
+    }
+  };
 
 
 
   useEffect(() => {
-    console.log('Row changed:', row);
+    // console.log('Row changed:', row);
   }, [row]);
 
 
@@ -22,15 +39,11 @@ function AdminTableRow({ row, onDelete, key, onSelect }) {
           <td className="w-4 p-4">
             <div className="flex items-center">
               <input
-                id="checkbox-table-search-1"
-                type="checkbox"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                onClick={(e) => {
-                  if (e.target.checked) {
-                    onSelect(row.Username)
-                    console.log("Blah" + row.Username);
-                  }
-                }}
+                id={`checkbox-table-search-${row.Username}`}
+                type="checkbox"
+                onChange={handleCheckboxChange}
+                checked={isChecked}
               />
               <label htmlFor="checkbox-table-search-1" className="sr-only">
                 checkbox

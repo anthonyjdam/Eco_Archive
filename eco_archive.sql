@@ -1,7 +1,6 @@
 SET foreign_key_checks = 0;
 -- Create the customer table
 DROP TABLE IF EXISTS `customer`;
-DROP TABLE IF EXISTS `employee`;
 
 CREATE TABLE `customer` (
   `Username` varchar(255) NOT NULL,
@@ -23,6 +22,7 @@ CREATE TABLE `customer` (
   UNLOCK TABLES;
 
 
+DROP TABLE IF EXISTS `employee`;
 
 
   CREATE TABLE `employee` (

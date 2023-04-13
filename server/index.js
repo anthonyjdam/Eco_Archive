@@ -164,12 +164,12 @@ app.post("/api/pickup", (req, res) => {
   );
 });
 
-  // // try {
-  //   //Query to the database
-  //   db.query(query, (error, results) => {
-  //     if (results) {
-  //       console.log(results);
-  //       res.status(200).send(results);
+// // try {
+//   //Query to the database
+//   db.query(query, (error, results) => {
+//     if (results) {
+//       console.log(results);
+//       res.status(200).send(results);
 
 
 // API endpoint for submitting a drop off appointment
@@ -312,6 +312,96 @@ app.post("/api/selectEmpWithName", (req, res) => {
   //     res.status(500).send({error});
   //   }
 });
+
+app.post("/api/updateEmpWithUsername", (req, res) => {
+  console.log(req.body);
+
+  /*Create query variable*/
+  const sql = (
+    `DELETE
+    FROM ?? 
+    WHERE Username = ?`
+  ); //search employee query
+  const placeHolder = [req.body.userType, `%${req.body.username}%`]; //placeholders into '?' and '??' parameters
+  const query = mysql.format(sql, placeHolder);//insert the placeholders into the query
+
+  console.log(query);
+  console.log(typeof req.body.username)
+
+  //Query to the database
+  db.query(query, (error, results) => {
+    if (error) {
+      console.log("Error " + error);
+      res.status(500).end();
+    }
+  });
+
+});
+
+app.post("/api/deleteEmpWithUsername", (req, res) => {
+  console.log(req.body);
+
+  for (let i = 0; i < req.body.employeesToDelete.length; i++) {
+
+    /*Create query variable*/
+    const sql = (
+      `DELETE
+      FROM ?? 
+      WHERE Username = ?`
+    ); //search employee query
+    const placeHolder = [req.body.userType, `${req.body.employeesToDelete[i].Username}`]; //placeholders into '?' and '??' parameters
+    const query = mysql.format(sql, placeHolder);//insert the placeholders into the query
+
+    console.log(query);
+    // console.log(typeof req.body.username)
+
+    //Query to the database
+    db.query(query, (error, results) => {
+      if (results) {
+        res.status(200).send(results);
+      } else if (error) {
+        console.log("Error " + error);
+        res.status(500).end();
+      }
+    });
+  }
+});
+
+app.post("/api/addEmpCred", (req, res) => {
+  console.log(req.body);
+
+  /*Create query variable*/
+  const sql = (
+    `INSERT INTO ??
+      VALUES (?, ?, ?, ?)`
+  ); //search employee query
+  const placeHolder = [
+    req.body.userType, 
+    req.body.username,
+    req.body.lastName,
+    req.body.firstName,
+    req.body.password
+  
+  ]; //placeholders into '?' and '??' parameters
+  const query = mysql.format(sql, placeHolder);//insert the placeholders into the query
+
+  console.log(query);
+  // console.log(typeof req.body.username)
+
+  //Query to the database
+  db.query(query, (error, results) => {
+    if (results) {
+      res.status(200).send(results);
+    } else if (error) {
+      console.log("Error " + error);
+      res.status(500).end();
+    }
+  });
+
+});
+
+
+
 
 // app.get("/api/", () => {
 //   console.log("running on port 3001");

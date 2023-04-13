@@ -15,27 +15,94 @@ function AdminEditEmployee() {
   const pageRoute = "http://localhost:5000/api/processSearchEmployee";
 
   //Employee state variables
-  const [empFName, setEmpFName] = useState("");
-  const [empLName, setEmpLName] = useState("");
+  const [empFirst, setEmpFirst] = useState("");
+  const [empLast, setEmpLast] = useState("");
   const [empUsername, setEmpUsername] = useState("");
   const [empPassword, setEmpPassword] = useState("");
+  
+  
+  const [empFName, setEmpFName] = useState("");
+  const [empLName, setEmpLName] = useState("");
 
   //Functional State variables
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
-  const [rowSelection, setRowSelection] = useState([]);
+  const [empSelected, setEmpSelected] = useState([]);
 
   //TODO: Error Checking
   //TODO: Romove Table row on new search
 
-  const handleDelete = (index) => {
-    console.log(index);
-    const newData = [...data];
-    newData.splice(index, 1);
-    setData(newData);
-  };
+  // const handleDeleteRow = (index) => {
+  //   console.log(index);
+  //   const newData = [...data];
+  //   newData.splice(index, 1);
+  //   setData(newData);
+  // };
 
 
+
+  //Only the elements whose Username is not equal to empSelected will be included in the new array
+  function handleDeleteRow() {
+    console.log("Enter handleDeleteRow");
+
+    const includedEmp = data.filter(emp => (emp.Username !== empSelected));
+    let arr = [];
+    setData([]);
+    console.log(data);
+    arr = includedEmp;
+    setData(arr);
+    console.log("Brufsdsdfsd");
+    console.log(data);
+    console.log(arr);
+    console.log("Brufsdsdfsd");
+  }
+
+  /**
+   * Handles when the user presses the DELETE button after selecting the corresponding rows
+   */
+  async function handleDeleteEmployee() {
+    console.log("Enter handleDeleteEmployee");
+
+    console.log(empSelected);
+
+    const deleteObject = {
+      userType: "employee",
+      employeesToDelete: empSelected,
+    };
+
+
+    const response = axios.post("http://localhost:5000/api/deleteEmpWithUsername", deleteObject);// returns an array of matching employee names
+
+    for (let i = 0; i < response.length; i++) {
+      if (response[i].status === 500) {
+        console.log("Request failed");
+      }
+    }
+  }
+
+  /**
+   * Handles when the user SELECTS a row in AdminTableRow
+   */
+  async function handleSelectRow(temp) {
+
+    console.log("helll0" + temp);
+
+    const selectedEmployee = data.filter(emp => (emp.Username === temp)); //creates a new array that contains only the elements that are present in both empUsername and rowSelection  
+    console.log("Another sandwich");
+    console.log(selectedEmployee);
+    console.log("Another sandwich");
+
+    setEmpSelected(empSelected.concat(selectedEmployee))
+
+    console.log("sandwich");
+    console.log(empSelected);
+    console.log("sandwich");
+
+  }
+
+  /**
+   * Employee SEARCH
+   */
   async function handleEmpSearch(e) {
     e.preventDefault();
 
@@ -64,38 +131,39 @@ function AdminEditEmployee() {
     }
   }
 
-  async function handleRowSelection(empSelected) {
+  /**
+   * ADDs new employee to databse
+   */
+  async function handleAddEmployee(e) {
+    e.preventDefault();
 
-    const selectedEmployee = data.filter(emp => (emp.Username === empSelected)); //creates a new array that contains only the elements that are present in both empUsername and rowSelection  
-    setRowSelection(rowSelection.concat(selectedEmployee))
-    
-    console.log("sandwich");
-    console.log("Username " + selectedEmployee);
-    console.log(rowSelection);
-    console.log(selectedEmployee);
-
-    for (let i = 0; i < selectedEmployee.length; i++) {
-      console.log("Username: " + selectedEmployee[i]);
-    }
-
-    const searchObject = {
+    const addObject = {
       userType: "employee",
-      firstName: empFName,
-      lastName: empLName
+      firstName: empFirst,
+      lastName: empLast,
+      username: empUsername,
+      password: empPassword,
+    }
+
+    const response = await axios.post("http://localhost:5000/api/addEmpCred", addObject)
+
+    for (let i = 0; i < response.length; i++) {
+      if (response[i].status === 500) {
+        console.log("Request failed");
+      }
+      else if (response === 200) {
+        console.log("Success");
+      }
     }
 
 
 
-
   }
+  // useEffect(() => {
+  //   console.log(data);
+  //   handleDeleteRow();
 
-  async function handleRowDelete() {
-
-    // handleDelete();
-    const response = await axios.post("http://localhost:5000/api/deleteEmpWithUsername", searchObject);// returns an array of matching employee names
-    console.log(response);
-
-  }
+  // }, [data]);
 
 
   return (
@@ -133,13 +201,19 @@ function AdminEditEmployee() {
                         <input
                           className='border-b-2 border-gray-200 focus:border-blue-200 rounded-sm'
                           type="text"
-                        // value={empFName}
+                          value={empFirst}
+                          onChange={(e) => {
+                            setEmpFirst(e.target.value);
+                          }}
                         ></input>
                         <h3 className='font-semibold'>Last Name</h3>
                         <input
                           className='border-b-2 border-gray-200 focus:border-blue-200 rounded-sm'
                           type="text"
-                        // value={empLName}
+                          value={empLast}
+                          onChange={(e) => {
+                            setEmpLast(e.target.value);
+                          }}
                         ></input>
                       </div>
 
@@ -150,17 +224,38 @@ function AdminEditEmployee() {
                           <input
                             className='border-b-2 border-gray-200 focus:border-blue-200 rounded-sm pr-1'
                             type="text"
-                          // value={empFName}
+                            value={empUsername}
+                            onChange={(e) => {
+                              setEmpUsername(e.target.value);
+                            }}
                           ></input>
                         </div>
                         <div className='flex gap-4 items-center'>
                           <h3 className='font-semibold'>Password</h3>
                           <input
                             className='border-b-2 border-gray-200 focus:border-blue-200 rounded-sm pr-2'
-                            type="text"
-                          // value={empLName}
+                            type="password"
+                            value={empPassword}
+                            onChange={(e) => {
+                              setEmpPassword(e.target.value);
+                            }}
                           ></input>
                         </div>
+                      </div>
+                      <div className='pt-6'>
+                        <button
+                          className='font-semibold flex gap-2 p-1 pr-3 pl-3 rounded-lg bg-gray-200 active:bg-blue-300 hover:bg-blue-200'
+                          onClick={(e) => {
+                            console.log("Clicked Submit");
+                            handleAddEmployee(e);
+                            setEmpFirst("");
+                            setEmpLast("");
+                            setEmpUsername("");
+                            setEmpUsername("");
+                            setEmpPassword("");
+                          }}>
+                          Add
+                        </button>
                       </div>
                     </div>
                   </form>
@@ -199,7 +294,6 @@ function AdminEditEmployee() {
                               onClick={() => {
                                 let arr = [];
                                 setData(arr)
-                                console.log("Clear " + data.length);
                               }}
                               className='flex p-1.5 rounded-lg active:bg-blue-300 hover:bg-blue-200 hover:text-black transition-all text-gray-800'
                             >
@@ -227,9 +321,9 @@ function AdminEditEmployee() {
                       <button
                         className='flex gap-2 p-1 pr-3 pl-3 rounded-lg bg-gray-200 active:bg-red-300 hover:bg-red-200 hover:text-black transition-all text-gray-800'
                         onClick={() => {
-                          let arr = [];
-                          setData(arr)
-                          console.log("Clear " + data.length);
+                          console.log("Clicked Delete");
+                          handleDeleteRow();
+                          handleDeleteEmployee();
                         }}
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
@@ -245,8 +339,8 @@ function AdminEditEmployee() {
                 {/* Admin Table */}
                 <AdminTable
                   data={data}
-                  deleteEmployee={handleRowDelete}
-                  onSelect={handleRowSelection}
+                  // deleteRow={handleDeleteRow}
+                  onSelect={handleSelectRow}
                 />
 
 
