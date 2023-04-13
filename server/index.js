@@ -13,7 +13,7 @@ const db = mysql.createConnection({
   host: "localhost",
   port: "33061",
   user: "root",
-  password: "Ch33tos!", // Set to cheetos for Maira
+  password: "password", // Set to Ch33tos! for Maira
   database: "eco_archive",
 });
 
@@ -56,29 +56,144 @@ app.post("/api/processLogin", (req, res) => {
   );
 });
 
+// API endpoint to Get the material rate and material type of the recyclable
+app.get("/api/recyclable/:recyclableName", (req, res) => {
+  db.query(
+    `SELECT MaterialRate, MaterialType FROM recyclable WHERE RecyclableName = ?`,
+    [req.params.recyclableName],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
+        console.log(results);
+        res.status(200).json(results);
+      }
+    }
+  );
+});
+
+// API endpoint to Get the material rate for EVERY material type
+app.get("/api/materialRate", (req, res) => {
+  db.query(
+    `SELECT DISTINCT MaterialRate, MaterialType FROM recyclable`,
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
+        console.log(results);
+        res.status(200).json(results);
+      }
+    }
+  );
+});
+
+// API endpoint to complete a transaction
 app.post("/api/complete", (req, res) => {
   console.log(req.body);
+
+  // Update the balance of the customer
+  // Calculate the amountEarned
+
   db.query(
-    `UPDATE transaction
-    SET Status = ? 
-    WHERE Username = ? AND BranchName = ? AND DateTime = ?`,
-    [req.body.status, 
-      req.body.username, 
-      req.body.branchname, 
-      req.body.datetime
+    `UPDATE customer SET AccountBal = AccountBal + ? WHERE Username = ?`,
+    [req.body.amountearned, req.body.username],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).end();
+      } else if (results) {
+        console.log("000000000");
+        console.log(results);
+      }
+    }
+  );
+
+  // Update the status of the transaction and the amountEarned column
+  db.query(
+    `UPDATE transaction SET Status = ?, AmountEarned = ? WHERE Username = ? AND BranchName = ? AND RecyclableName = ? AND DateTime = ?`,
+    [
+      req.body.status,
+      req.body.amountearned,
+      req.body.username,
+      req.body.branchname,
+      req.body.recyclablename,
+      req.body.datetime,
     ],
     (error, results) => {
       if (error) {
         console.log(error);
         res.status(500).end();
       } else if (results) {
+        console.log("2222222222222");
         console.log(results);
       }
     }
   );
-})
 
+  res.status(200).end();
+});
 
+// API endpoint to update inventory counts
+app.post("/api/updateInventory", (req, res) => {
+  console.log(req.body);
+  db.query(
+    `UPDATE inventory SET Lifetime${req.body.materialtype} = Lifetime${req.body.materialtype} + ?, Concurrent${req.body.materialtype} = Concurrent${req.body.materialtype} + ? WHERE BranchName = ?`,
+    [req.body.materialcount, req.body.materialcount, req.body.branchname],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).end();
+      } else if (results) {
+        console.log("3333333333");
+        console.log(results);
+        res.status(200).end();
+      }
+    }
+  );
+});
+
+// API endpoint to update inventory counts for multiple materials
+app.post("/api/updateInventoryMultiple", (req, res) => {
+  console.log(req.body);
+
+  const materialCounts = req.body.materialtypeandcount;
+
+  db.query(
+    `UPDATE inventory 
+    SET LifetimeGlass = LifetimeGlass + ?, 
+    LifetimePaper = LifetimePaper + ?, 
+    LifetimeMetal = LifetimeMetal + ?, 
+    LifetimePlastic = LifetimePlastic + ?, 
+    ConcurrentGlass = ConcurrentGlass + ?, 
+    ConcurrentPaper = ConcurrentPaper + ?, 
+    ConcurrentMetal = ConcurrentMetal + ?, 
+    ConcurrentPlastic = ConcurrentPlastic + ? 
+    WHERE BranchName = ?`,
+    [
+      +materialCounts.Glass,
+      +materialCounts.Paper,
+      +materialCounts.Metal,
+      +materialCounts.Plastic,
+      +materialCounts.Glass,
+      +materialCounts.Paper,
+      +materialCounts.Metal,
+      +materialCounts.Plastic,
+      req.body.branchname,
+    ],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).end();
+      } else if (results) {
+        console.log("1111111");
+        console.log(results);
+        res.status(200).end();
+      }
+    }
+  );
+});
 
 // Sign Up endpoint
 app.post("/api/processSignup", (req, res) => {
@@ -127,7 +242,6 @@ app.get("/api/customer/:username", (req, res) => {
   );
 });
 
-
 // API endpoint for getting employee
 app.get("/api/employee/:username", (req, res) => {
   console.log(req.params.username);
@@ -147,10 +261,9 @@ app.get("/api/employee/:username", (req, res) => {
   );
 });
 
-
 // app.post("/api/employee/:username", (req,res) => {
 //   const {Username, BranchName} = req.body;
-//   const sqlInsert = 
+//   const sqlInsert =
 //     "INSERT INTO employee_workstation (Username, BranchName) VALUES (?, ?)";
 //   db.query(sqlInsert, [Username, BranchName], (error, result) => {
 //     if(error) {
@@ -164,10 +277,7 @@ app.post("/api/employee/:username", (req, res) => {
 
   db.query(
     "INSERT INTO employee_workstation (BranchName, Username) VALUES (?, ?)",
-    [
-      req.body.branchname,
-      req.body.username
-    ],
+    [req.body.branchname, req.body.username],
     (error, results) => {
       if (error) {
         console.log(error.code);
@@ -178,7 +288,6 @@ app.post("/api/employee/:username", (req, res) => {
     }
   );
 });
-
 
 // API endpoint for getting all recycling depots in the database
 app.get("/api/recycling_depot", (req, res) => {
@@ -241,20 +350,16 @@ app.post("/api/pickup", (req, res) => {
   );
 });
 
-  // // try {
-  //   //Query to the database
-  //   db.query(query, (error, results) => {
-  //     if (results) {
-  //       console.log(results);
-  //       res.status(200).send(results);
-
+// // try {
+//   //Query to the database
+//   db.query(query, (error, results) => {
+//     if (results) {
+//       console.log(results);
+//       res.status(200).send(results);
 
 // API endpoint for submitting a drop off appointment
 app.post("/api/dropoff", (req, res) => {
   console.log(req.body);
-
-
-
 
   db.query(
     `INSERT INTO transaction (Username, BranchName, RecyclableName, DateTime, ServiceType) VALUES (?, ?, ?, ?, ?)`,
@@ -282,7 +387,7 @@ app.get("/api/transaction/:username", (req, res) => {
   console.log(req.params.username);
 
   db.query(
-    `SELECT * FROM transaction WHERE Username = ? AND AmountEarned IS NOT NULL ORDER BY DateTime DESC LIMIT 3`,
+    `SELECT * FROM transaction WHERE Username = ? AND AmountEarned IS NOT NULL ORDER BY DateTime DESC LIMIT 5`,
     [req.params.username],
     (error, results) => {
       if (error) {
@@ -291,7 +396,6 @@ app.get("/api/transaction/:username", (req, res) => {
       } else if (results) {
         console.log(results);
         res.json(results);
-
       }
     }
   );
@@ -356,30 +460,27 @@ app.post("/api/donate", (req, res) => {
   );
 });
 
-
-// API endpoint for getting all transaction in the database with current employee branch 
+// API endpoint for getting all transaction in the database with current employee branch
 app.get("/api/get_transaction/:username", (req, res) => {
   // console.log(req.params.username);
 
   db.query(
-    `SELECT transaction.Username, transaction.BranchName, transaction.AmountOfMaterialsGiven, transaction.DateTime, transaction.ServiceType, transaction.AmountEarned, transaction.Status
+    `SELECT transaction.*
     FROM transaction, employee 
     WHERE employee.Username = ? AND transaction.BranchName = employee.BranchName
-    GROUP BY transaction.Username, transaction.BranchName, transaction.AmountOfMaterialsGiven, transaction.DateTime, transaction.ServiceType, transaction.AmountEarned, transaction.Status;
-    `, 
+    `,
     [req.params.username],
     (error, results) => {
-    if (error) {
-      console.log(error);
-      res.status(404).end();
-    } else if (results) {
-      console.log(results);
-      res.json(results);
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
+        console.log(results);
+        res.json(results);
+      }
     }
-  });
+  );
 });
-
-
 
 app.post("/api/selectEmpWithName", (req, res) => {
   console.log(req.body);

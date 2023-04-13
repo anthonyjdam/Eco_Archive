@@ -29,7 +29,7 @@ export default function AdminEditCharities() {
               <hr className='pb-2'></hr>
               <div className="pl-5">
                 <div className='pl-3 pt-3 pb-3 text-gray-600 justify-around'>
-                  {/* enter here */}
+                  
                 
                 
                 

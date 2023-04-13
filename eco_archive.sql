@@ -189,10 +189,10 @@ CREATE TABLE `recyclable` (
 -- Dump data into the recyclable table
 LOCK TABLES `recyclable` WRITE;
 INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('Beer bottles', 'Glass', '0.75', 'janedoe');
-INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('Aluminium soda cans', 'Metal', '0.40', 'admin');
+INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('Aluminium soda cans', 'Metal', '0.30', 'admin');
 INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('2L Milk cartons', 'Paper', '0.25', 'admin');
-INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('4L Milk jugs', 'Plastic', '0.45', 'janedoe');
-INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('Wine bottles', 'Glass', '1.15', 'admin');
+INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('4L Milk jugs', 'Plastic', '0.20', 'janedoe');
+INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('Wine bottles', 'Glass', '0.75', 'admin');
 INSERT INTO `recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('Plastic water bottles', 'Plastic', '0.20', 'admin');
 INSERT INTO `eco_archive`.`recyclable` (`RecyclableName`, `MaterialType`, `MaterialRate`, `Username`) VALUES ('PLACEHOLDER', 'PLACEHOLDER', '0', 'admin');
 UNLOCK TABLES;
