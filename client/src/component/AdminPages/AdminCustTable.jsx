@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import AdminTableRow from './AdminTableRow';
+import AdminCustTableRow from './AdminCustTableRow';
 
-function AdminTable({ data, deleteRow, onSelect, onUpdate }) {
+function AdminCustTable({ data, deleteRow, onSelect, onUpdate }) {
   const [renderedData, setRenderedData] = useState([]);
 
   useEffect(() => {
@@ -33,13 +33,19 @@ function AdminTable({ data, deleteRow, onSelect, onUpdate }) {
               Username
             </th>
             <th scope="col" className="px-6 py-3">
-              Action
+              Province
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Province
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Donation Amount
             </th>
           </tr>
         </thead>
         <tbody>
           {renderedData.map((row) => (
-            <AdminTableRow
+            <AdminCustTableRow
               key={row.Username}
               row={row}
               onDelete={() => handleDelete(row.Username)}
@@ -55,4 +61,4 @@ function AdminTable({ data, deleteRow, onSelect, onUpdate }) {
   );
 }
 
-export default AdminTable;
+export default AdminCustTable;

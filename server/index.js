@@ -313,7 +313,7 @@ app.post("/api/selectEmpWithName", (req, res) => {
   //   }
 });
 
-app.post("/api/updateEmpWithUsername", (req, res) => {
+app.post("/api/updateEmpCred", (req, res) => {
   console.log(req.body);
 
   /*Create query variable*/
@@ -398,6 +398,40 @@ app.post("/api/addEmpCred", (req, res) => {
     }
   });
 
+});
+
+app.post("/api/selectCustWithName", (req, res) => {
+  console.log(req.body);
+
+  /*Create query variable*/
+  const sql = `SELECT *
+    FROM ??
+    WHERE LName LIKE ? AND FName LIKE ?`; //search employee query
+  const placeHolder = [
+    req.body.userType,
+    `%${req.body.lastName}%`,
+    `%${req.body.firstName}%`,
+  ]; //placeholders into '?' and '??' parameters
+  const query = mysql.format(sql, placeHolder); //insert the placeholders into the query
+
+  console.log(query);
+  // console.log(typeof req.body.firstName + typeof req.body.lastName);
+
+  // try {
+  //Query to the database
+  db.query(query, (error, results) => {
+    if (results) {
+      res.status(200).send(results);
+    } else if (error) {
+      console.log("Error " + error);
+      res.status(500).end();
+    }
+  });
+  //   }
+  //   catch (error) {
+  //     console.log("Error " + error);
+  //     res.status(500).send({error});
+  //   }
 });
 
 

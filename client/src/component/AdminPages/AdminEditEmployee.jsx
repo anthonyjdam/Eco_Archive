@@ -19,8 +19,8 @@ function AdminEditEmployee() {
   const [empLast, setEmpLast] = useState("");
   const [empUsername, setEmpUsername] = useState("");
   const [empPassword, setEmpPassword] = useState("");
-  
-  
+
+
   const [empFName, setEmpFName] = useState("");
   const [empLName, setEmpLName] = useState("");
 
@@ -28,6 +28,7 @@ function AdminEditEmployee() {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [empSelected, setEmpSelected] = useState([]);
+  
 
   //TODO: Error Checking
   //TODO: Romove Table row on new search
@@ -70,7 +71,6 @@ function AdminEditEmployee() {
       employeesToDelete: empSelected,
     };
 
-
     const response = axios.post("http://localhost:5000/api/deleteEmpWithUsername", deleteObject);// returns an array of matching employee names
 
     for (let i = 0; i < response.length; i++) {
@@ -80,23 +80,62 @@ function AdminEditEmployee() {
     }
   }
 
+  async function handleUpdateEmployee(temp) {
+    console.log("Enter handleUpdateEmployee");
+
+
+
+    console.log(empSelected);
+
+    const deleteObject = {
+      userType: "employee",
+      employeesToDelete: empSelected,
+    };
+
+    const response = axios.post("http://localhost:5000/api/updateEmpCred", deleteObject);// returns an array of matching employee names
+
+    for (let i = 0; i < response.length; i++) {
+      if (response[i].status === 500) {
+        console.log("Request failed");
+      }
+    }
+
+
+  }
+
+
   /**
    * Handles when the user SELECTS a row in AdminTableRow
    */
   async function handleSelectRow(temp) {
 
-    console.log("helll0" + temp);
+    // if (temp === "revert") {
+    //   console.log("Enter revert");
+    //   // let index = empSelected.length
+    //   const arr = [...empSelected]; // create a copy of the original array
+    //   arr.splice(arr.length-1, 1)
+    //   setEmpSelected(arr);
+    // }
+    // else {
 
-    const selectedEmployee = data.filter(emp => (emp.Username === temp)); //creates a new array that contains only the elements that are present in both empUsername and rowSelection  
-    console.log("Another sandwich");
-    console.log(selectedEmployee);
-    console.log("Another sandwich");
+      console.log("helll0" + temp);
+      const selectedEmployee = data.filter(emp => (emp.Username === temp)); //creates a new array that contains only the elements that are present in both empUsername and rowSelection  
+      console.log("Another sandwich");
+      console.log(selectedEmployee);
+      console.log("Another sandwich");
 
-    setEmpSelected(empSelected.concat(selectedEmployee))
+      setEmpSelected(empSelected.concat(selectedEmployee))
 
-    console.log("sandwich");
-    console.log(empSelected);
-    console.log("sandwich");
+      console.log("sandwich");
+      console.log(empSelected);
+      console.log("sandwich");
+
+    // }
+
+    // console.log("best sandwich");
+    // console.log(empSelected);
+    // console.log("best sandwich");
+
 
   }
 
@@ -341,6 +380,7 @@ function AdminEditEmployee() {
                   data={data}
                   // deleteRow={handleDeleteRow}
                   onSelect={handleSelectRow}
+                  onUpdate={handleUpdateEmployee}
                 />
 
 

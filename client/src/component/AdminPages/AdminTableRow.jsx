@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react'
 
-function AdminTableRow({ row, onDelete, onSelect }) {
-
+function AdminTableRow({ row, onDelete, onSelect, onUpdate }) {
   const [isChecked, setIsChecked] = useState(false);
+
+  const [empFirst, setEmpFirst] = useState("");
+  const [empLast, setEmpLast] = useState("");
+  const [empUsername, setEmpUsername] = useState("");
+  const [empCred, setEmpCred] = useState([]);
 
   useEffect(() => {
     // console.log('Row changed:', row);
@@ -11,16 +15,33 @@ function AdminTableRow({ row, onDelete, onSelect }) {
   const handleCheckboxChange = (event) => {
     const { checked } = event.target;
     setIsChecked(checked);
-    
+
     if (checked) {
       onSelect(row.Username);
       console.log("Selected: " + row.Username);
     }
     else {
-      onSelect("");
+      onSelect("revert");
       console.log("Deselected: " + row.Username);
     }
   };
+
+  function handleAddEmpInfo(e) {
+    
+    const emp = {
+      firstname: empFirst,
+      lastname: empLast,
+      username: empUsername,
+    };
+
+    setEmpCred(emp);
+    console.log("Oreos");
+    console.log(empCred);
+    console.log("Oreos");
+
+    // onUpdate(empCred);
+
+  }
 
 
 
@@ -54,27 +75,46 @@ function AdminTableRow({ row, onDelete, onSelect }) {
             <input
               className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white bg-transparent hover:border-b-2 focus:border-b-2 focus:border-blue-300 focus:outline-none"
               placeholder={row.LName}
+              type="text"
+              value={empLast}
+              onChange={(e) => {
+                setEmpLast(e.target.value);
+              }}
             />
           </td>
           <td className="px-6 py-4">
             <input
               className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white bg-transparent hover:border-b-2 focus:border-b-2 focus:border-blue-300 focus:outline-none"
               placeholder={row.FName}
+              type="text"
+              value={empFirst}
+              onChange={(e) => {
+                setEmpFirst(e.target.value);
+              }}
             />
           </td>
           <td className="px-6 py-4">
             <input
               className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white bg-transparent hover:border-b-2 focus:border-b-2 focus:border-blue-300 focus:outline-none"
               placeholder={row.Username}
+              type="text"
+              value={empUsername}
+              onChange={(e) => {
+                setEmpUsername(e.target.value);
+              }}
             />
           </td>
           <td className="px-6 py-4">
             <button
-              onClick={onDelete}
-              className="font-medium text-blue-400 hover:underline bg-transparent">
+              className="font-medium text-blue-400 hover:underline bg-transparent active:text-blue-700"
+              onClick={(e) => {
+                handleAddEmpInfo(e)
+              }}
+            >
               Edit
             </button>
           </td>
+
         </tr>
       )}
 
