@@ -112,45 +112,21 @@ function AdminEditEmployee() {
   /**
    * Handles when the user SELECTS a row in AdminTableRow
    */
-  async function handleSelectRow(temp, bruh) {
+  async function handleSelectRow(temp) {
 
-    if (bruh === "revert") {
-      console.log("Enter revert");
-      // let index = empSelected.length
-      // const arr = [...empSelected]; // create a copy of the original array
-      // arr.splice(arr.length-1, 1)
-      // setEmpSelected(arr);
+    
+    console.log("helll0" + temp);
+    const selectedEmployee = data.filter(emp => (emp.Username === temp)); //creates a new array that contains only the elements that are present in both empUsername and rowSelection
+    console.log("Another sandwich");
+    console.log(selectedEmployee);
+    console.log("Another sandwich");
 
-      // for (let i = 0; i < empSelected.length; i++) {
+    setEmpSelected(empSelected.concat(selectedEmployee))
 
-        const arr = [...empSelected];
-        arr.splice(temp, 1);
-        setEmpSelected(arr);
-      // }
+    console.log("sandwich");
+    console.log(empSelected);
+    console.log("sandwich");
 
-    } else {
-
-      console.log("helll0" + temp);
-      // const selectedEmployee = data.filter(emp => (emp.Username === temp)); //creates a new array that contains only the elements that are present in both empUsername and rowSelection  
-      
-      // console.log("Another sandwich");
-      // console.log(selectedEmployee);
-      // console.log("Another sandwich");
-
-      // setEmpSelected(empSelected.concat(selectedEmployee))
-
-      // for (let i = 0; i < data.length; i++) {
-
-        const arr = [...empSelected];
-        setEmpSelected(arr.concat(temp));
-
-      // }
-
-      // console.log("sandwich");
-      // console.log(empSelected);
-      // console.log("sandwich");
-
-    }
 
     console.log("best sandwich");
     console.log(empSelected);
