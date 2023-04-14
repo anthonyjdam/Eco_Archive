@@ -8,17 +8,23 @@ function AdminTableRow({ row, onDelete, onSelect, onUpdate }) {
   const [empUsername, setEmpUsername] = useState("");
   const [empCred, setEmpCred] = useState([]);
 
-  useEffect(() => {
-    // console.log('Row changed:', row);
-  }, [row]);
+  // useEffect(() => {
+  //   if (isChecked) {
+  //     onSelect(row, "revert")
+  //   }
+  //   else {
+  //     onSelect(row, "");
+  //   }
+  //   // console.log('Row changed:', row);
+  // }, [isChecked]);
 
   const handleCheckboxChange = (event) => {
     const { checked } = event.target;
     setIsChecked(checked);
 
     if (checked) {
-      onSelect(row.Username);
       console.log("Selected: " + row.Username);
+      onSelect(row.Username);
     }
     else {
       onSelect("revert");
@@ -26,28 +32,30 @@ function AdminTableRow({ row, onDelete, onSelect, onUpdate }) {
     }
   };
 
+
   function handleAddEmpInfo(e) {
-    
+
     const emp = {
       firstname: empFirst,
       lastname: empLast,
       username: empUsername,
+      original: row.Username
     };
 
-    setEmpCred(emp);
+    // setEmpCred(emp);
     console.log("Oreos");
-    console.log(empCred);
+    console.log(emp);
     console.log("Oreos");
 
-    // onUpdate(empCred);
+    onUpdate(emp);
 
   }
 
 
 
-  useEffect(() => {
-    // console.log('Row changed:', row);
-  }, [row]);
+  // useEffect(() => {
+  //   // console.log('Row changed:', row);
+  // }, [row]);
 
 
   return (

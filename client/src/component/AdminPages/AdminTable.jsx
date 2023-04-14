@@ -9,10 +9,10 @@ function AdminTable({ data, deleteRow, onSelect, onUpdate }) {
   }, [data]);
 
   const handleDelete = (index) => {
-    // const newData = [...renderedData];
-    // newData.splice(index, 1);
-    // setRenderedData(newData);
-    // deleteRow(newData);
+    const newData = [...renderedData];
+    newData.splice(index, 1);
+    setRenderedData(newData);
+    deleteRow(newData);
   };
 
   return (

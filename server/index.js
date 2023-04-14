@@ -592,10 +592,11 @@ app.post("/api/updateEmpCred", (req, res) => {
   console.log(req.body);
 
   /*Create query variable*/
-  const sql = `DELETE
-    FROM ?? 
+  const sql =
+    `Update ??
+    SET  Username =?, LName = ?, FName = ?
     WHERE Username = ?`; //search employee query
-  const placeHolder = [req.body.userType, `%${req.body.username}%`]; //placeholders into '?' and '??' parameters
+  const placeHolder = [req.body.userType, req.body.employeesToDelete.username, req.body.employeesToDelete.lastname, req.body.employeesToDelete.firstname, req.body.employeesToDelete.original]; //placeholders into '?' and '??' parameters
   const query = mysql.format(sql, placeHolder); //insert the placeholders into the query
 
   console.log(query);
@@ -776,7 +777,7 @@ app.post("/api/updateMetalRate", (req, res) => {
   );
   const placeHolder = [req.body.userType, req.body.mRate, req.body.metalMat]; //placeholders into '?' and '??' parameters
   const query = mysql.format(sql, placeHolder);//insert the placeholders into the query
- 
+
   console.log(query);
 
   //Query to the database
@@ -805,7 +806,7 @@ app.post("/api/updatePaperRate", (req, res) => {
   );
   const placeHolder = [req.body.userType, req.body.ppRate, req.body.paperMat]; //placeholders into '?' and '??' parameters
   const query = mysql.format(sql, placeHolder);//insert the placeholders into the query
- 
+
   console.log(query);
 
   //Query to the database

@@ -19,7 +19,12 @@ function AdminEditCustomer() {
   const [custLast, setCustLast] = useState("");
   const [custUsername, setCustUsername] = useState("");
   const [custPassword, setCustPassword] = useState("");
+  const [custCity, setCustCity] = useState("");
   const [custProvince, setCustProvince] = useState("");
+  const [custPostal, setCustPostal] = useState("");
+
+
+
   const [custDonation, setCustDonation] = useState("");
 
 
@@ -31,7 +36,7 @@ function AdminEditCustomer() {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [custSelected, setCustSelected] = useState([]);
-  
+
 
   //TODO: Error Checking
   //TODO: Romove Table row on new search
@@ -49,15 +54,20 @@ function AdminEditCustomer() {
   function handleDeleteRow() {
     console.log("Enter handleDeleteRow");
 
-    const includedEmp = data.filter(emp => (emp.Username !== custSelected));
-    let arr = [];
-    setData([]);
-    console.log(data);
-    arr = includedEmp;
-    setData(arr);
+    // const includedEmp = data.filter(emp => (emp.Username !== empSelected));
+
+    for (let i = 0; i < custSelected.length; i++) {
+
+      const arr = [...data];
+      arr.splice(custSelected[i], 1);
+      setData(arr);
+    }
+
+    // console.log(data);
+    // arr = includedEmp;
     console.log("Brufsdsdfsd");
     console.log(data);
-    console.log(arr);
+    // console.log(arr);
     console.log("Brufsdsdfsd");
   }
 
@@ -83,6 +93,9 @@ function AdminEditCustomer() {
     }
   }
 
+  /**
+   * Update Customer Credentials
+   */
   async function handleUpdateCustomer(temp) {
     console.log("Enter handleUpdateEmployee");
 
@@ -121,17 +134,17 @@ function AdminEditCustomer() {
     // }
     // else {
 
-      console.log("helll0" + temp);
-      const selectedEmployee = data.filter(emp => (emp.Username === temp)); //creates a new array that contains only the elements that are present in both empUsername and rowSelection  
-      console.log("Another sandwich");
-      console.log(selectedEmployee);
-      console.log("Another sandwich");
+    console.log("helll0" + temp);
+    const selectedCustomer = data.filter(emp => (emp.Username === temp)); //creates a new array that contains only the elements that are present in both empUsername and rowSelection  
+    console.log("Another sandwich");
+    console.log(selectedCustomer);
+    console.log("Another sandwich");
 
-      setCustSelected(custSelected.concat(selectedEmployee))
+    setCustSelected(custSelected.concat(selectedCustomer))
 
-      console.log("sandwich");
-      console.log(custSelected);
-      console.log("sandwich");
+    console.log("sandwich");
+    console.log(custSelected);
+    console.log("sandwich");
 
     // }
 
@@ -258,6 +271,37 @@ function AdminEditCustomer() {
                           }}
                         ></input>
                       </div>
+
+                      {/* Address information */}
+                      {/* <div className='flex items-start justify-start gap-5 pt-5'>
+                        <h3 className='font-semibold'>City</h3>
+                        <input
+                          className='border-b-2 border-gray-200 focus:border-blue-200 rounded-sm'
+                          type="text"
+                          value={custFirst}
+                          onChange={(e) => {
+                            setCustFirst(e.target.value);
+                          }}
+                        ></input>
+                        <h3 className='font-semibold'>Province</h3>
+                        <input
+                          className='border-b-2 border-gray-200 focus:border-blue-200 rounded-sm'
+                          type="text"
+                          value={custLast}
+                          onChange={(e) => {
+                            setCustLast(e.target.value);
+                          }}
+                        ></input>
+                        <h3 className='font-semibold'>Postal Code</h3>
+                        <input
+                          className='border-b-2 border-gray-200 focus:border-blue-200 rounded-sm'
+                          type="text"
+                          value={custLast}
+                          onChange={(e) => {
+                            setCustLast(e.target.value);
+                          }}
+                        ></input>
+                      </div> */}
 
                       {/*Usrname Password Fields */}
                       <div className='flex flex-col items-start justify-start gap-5 pt-5'>
