@@ -70,7 +70,7 @@ function AdminEditCustomer() {
     console.log(custSelected);
 
     const deleteObject = {
-      userType: "employee",
+      userType: "customer",
       employeesToDelete: custSelected,
     };
 
@@ -91,7 +91,7 @@ function AdminEditCustomer() {
     console.log(custSelected);
 
     const deleteObject = {
-      userType: "employee",
+      userType: "customer",
       employeesToDelete: custSelected,
     };
 
@@ -153,7 +153,7 @@ function AdminEditCustomer() {
     console.log("Last name " + custLName);
 
     const searchObject = {
-      userType: "employee",
+      userType: "customer",
       firstName: cusFName,
       lastName: custLName,
     }

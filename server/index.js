@@ -650,7 +650,8 @@ app.post("/api/addEmpCred", (req, res) => {
     req.body.username,
     req.body.lastName,
     req.body.firstName,
-    req.body.password,
+    req.body.password
+
   ]; //placeholders into '?' and '??' parameters
   const query = mysql.format(sql, placeHolder); //insert the placeholders into the query
 
@@ -685,7 +686,6 @@ app.post("/api/selectCustWithName", (req, res) => {
   console.log(query);
   // console.log(typeof req.body.firstName + typeof req.body.lastName);
 
-  // try {
   //Query to the database
   db.query(query, (error, results) => {
     if (results) {
@@ -695,11 +695,124 @@ app.post("/api/selectCustWithName", (req, res) => {
       res.status(500).end();
     }
   });
-  //   }
-  //   catch (error) {
-  //     console.log("Error " + error);
-  //     res.status(500).send({error});
-  //   }
+
+});
+
+
+/**
+ * Update Plastic
+ */
+app.post("/api/updatePlasticRate", (req, res) => {
+  console.log(req.body);
+
+  /*Create query variable*/
+  const sql = (
+    `Update ??
+      SET MaterialRate = ?
+      WHERE MaterialType = ?`
+  );
+  const placeHolder = [req.body.userType, req.body.pRate, req.body.plasticMat]; //placeholders into '?' and '??' parameters
+  const query = mysql.format(sql, placeHolder);//insert the placeholders into the query
+
+  console.log(query);
+
+  //Query to the database
+  db.query(query, (error, results) => {
+    if (results) {
+      res.status(200).send(results);
+    } else if (error) {
+      console.log("Error " + error);
+      res.status(500).end();
+    }
+  });
+
+});
+
+/**
+ * Update GLASS
+ */
+app.post("/api/updateGlassRate", (req, res) => {
+  console.log(req.body);
+
+  /*Create query variable*/
+  const sql = (
+    `Update ??
+      SET MaterialRate = ?
+      WHERE MaterialType = ?`
+  );
+  const placeHolder = [req.body.userType, req.body.gRate, req.body.glassMat]; //placeholders into '?' and '??' parameters
+  const query = mysql.format(sql, placeHolder);//insert the placeholders into the query
+
+  console.log(query);
+
+  //Query to the database
+  db.query(query, (error, results) => {
+    if (results) {
+      res.status(200).send(results);
+    } else if (error) {
+      console.log("Error " + error);
+      res.status(500).end();
+    }
+  });
+
+});
+
+/**
+ * Update Metal
+ */
+app.post("/api/updateMetalRate", (req, res) => {
+  console.log(req.body);
+
+  /*Create query variable*/
+  const sql = (
+    `Update ??
+      SET MaterialRate = ?
+      WHERE MaterialType = ?`
+  );
+  const placeHolder = [req.body.userType, req.body.mRate, req.body.metalMat]; //placeholders into '?' and '??' parameters
+  const query = mysql.format(sql, placeHolder);//insert the placeholders into the query
+ 
+  console.log(query);
+
+  //Query to the database
+  db.query(query, (error, results) => {
+    if (results) {
+      res.status(200).send(results);
+    } else if (error) {
+      console.log("Error " + error);
+      res.status(500).end();
+    }
+  });
+
+});
+
+/**
+ * Update Paper
+ */
+app.post("/api/updatePaperRate", (req, res) => {
+  console.log(req.body);
+
+  /*Create query variable*/
+  const sql = (
+    `Update ??
+      SET MaterialRate = ?
+      WHERE MaterialType = ?`
+  );
+  const placeHolder = [req.body.userType, req.body.ppRate, req.body.paperMat]; //placeholders into '?' and '??' parameters
+  const query = mysql.format(sql, placeHolder);//insert the placeholders into the query
+ 
+  console.log(query);
+
+  //Query to the database
+  db.query(query, (error, results) => {
+    if (results) {
+      res.status(200).send(results);
+    } else if (error) {
+      console.log("Error " + error);
+      res.status(500).end();
+    }
+  });
+
 });
 
 // app.get("/api/", () => {

@@ -107,18 +107,21 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            {/* <div className="flex-auto bottom-0 overflow-y-auto lg:pl-52 lg:pr-4 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-50 via-indigo-100 to-emerald-50"> */}
-            <div className="opacity-[85%] text-center relative m-3">
-              <form>
-                <input
-                  className="w-full h-10 rounded-md shadow-md pl-3"
-                  placeholder="Enter Query"
-                ></input>
-              </form>
-            </div>
-          </div>
-        </div>
-      </main>
-    </>
-  );
+                        {/* <div className="flex-auto bottom-0 overflow-y-auto lg:pl-52 lg:pr-4 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-50 via-indigo-100 to-emerald-50"> */}
+                        <div className="opacity-[85%] text-center relative m-3">
+                            <form>
+                                {/* <input className='w-full h-10 rounded-md shadow-md pl-3' placeholder='Enter Query'></input> */}
+
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+
+
+        </>
+
+    )
 }
