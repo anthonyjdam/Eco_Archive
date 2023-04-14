@@ -19,7 +19,7 @@ function AdminEditEmployee() {
   const [empLast, setEmpLast] = useState("");
   const [empUsername, setEmpUsername] = useState("");
   const [empPassword, setEmpPassword] = useState("");
-
+  const [empBranch, setEmpBranch] = useState("");
 
   const [empFName, setEmpFName] = useState("");
   const [empLName, setEmpLName] = useState("");
@@ -28,7 +28,7 @@ function AdminEditEmployee() {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [empSelected, setEmpSelected] = useState([]);
-  
+
 
   //TODO: Error Checking
   //TODO: Romove Table row on new search
@@ -118,17 +118,17 @@ function AdminEditEmployee() {
     // }
     // else {
 
-      console.log("helll0" + temp);
-      const selectedEmployee = data.filter(emp => (emp.Username === temp)); //creates a new array that contains only the elements that are present in both empUsername and rowSelection  
-      console.log("Another sandwich");
-      console.log(selectedEmployee);
-      console.log("Another sandwich");
+    console.log("helll0" + temp);
+    const selectedEmployee = data.filter(emp => (emp.Username === temp)); //creates a new array that contains only the elements that are present in both empUsername and rowSelection  
+    console.log("Another sandwich");
+    console.log(selectedEmployee);
+    console.log("Another sandwich");
 
-      setEmpSelected(empSelected.concat(selectedEmployee))
+    setEmpSelected(empSelected.concat(selectedEmployee))
 
-      console.log("sandwich");
-      console.log(empSelected);
-      console.log("sandwich");
+    console.log("sandwich");
+    console.log(empSelected);
+    console.log("sandwich");
 
     // }
 
@@ -182,6 +182,7 @@ function AdminEditEmployee() {
       lastName: empLast,
       username: empUsername,
       password: empPassword,
+      branchName: empBranch
     }
 
     const response = await axios.post("http://localhost:5000/api/addEmpCred", addObject)
@@ -194,8 +195,6 @@ function AdminEditEmployee() {
         console.log("Success");
       }
     }
-
-
 
   }
   // useEffect(() => {
@@ -270,6 +269,17 @@ function AdminEditEmployee() {
                           ></input>
                         </div>
                         <div className='flex gap-4 items-center'>
+                          <h3 className='font-semibold'>Branch</h3>
+                          <input
+                            className='border-b-2 border-gray-200 focus:border-blue-200 rounded-sm pr-4'
+                            type="text"
+                            value={empBranch}
+                            onChange={(e) => {
+                              setEmpBranch(e.target.value);
+                            }}
+                          ></input>
+                        </div>
+                        <div className='flex gap-4 items-center'>
                           <h3 className='font-semibold'>Password</h3>
                           <input
                             className='border-b-2 border-gray-200 focus:border-blue-200 rounded-sm pr-2'
@@ -292,6 +302,7 @@ function AdminEditEmployee() {
                             setEmpUsername("");
                             setEmpUsername("");
                             setEmpPassword("");
+                            setEmpBranch("");
                           }}>
                           Add
                         </button>
@@ -300,7 +311,12 @@ function AdminEditEmployee() {
                   </form>
 
                 </div>
-
+                
+                <div className='pl-3 flex'>
+                  <div className="text-red-500 pb-5 ">
+                    <p className='text-sm'>Please enter a number value</p>
+                  </div>
+                </div>
 
               </div>
             </div>
@@ -370,6 +386,7 @@ function AdminEditEmployee() {
                         </svg>
                       </button>
                     </div>
+                    
 
                   </div>
 

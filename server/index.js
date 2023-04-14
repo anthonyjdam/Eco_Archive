@@ -613,14 +613,15 @@ app.post("/api/addEmpCred", (req, res) => {
   /*Create query variable*/
   const sql = (
     `INSERT INTO ??
-      VALUES (?, ?, ?, ?)`
+      VALUES (?, ?, ?, ?, ?)`
   ); //search employee query
   const placeHolder = [
     req.body.userType,
     req.body.username,
     req.body.lastName,
     req.body.firstName,
-    req.body.password
+    req.body.password,
+    req.body.branchName
 
   ]; //placeholders into '?' and '??' parameters
   const query = mysql.format(sql, placeHolder);//insert the placeholders into the query
