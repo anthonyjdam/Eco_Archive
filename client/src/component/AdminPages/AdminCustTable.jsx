@@ -29,11 +29,8 @@ function AdminCustTable({ data, deleteRow, onSelect, onUpdate }) {
             <th scope="col" className="px-6 py-3">
               First Name
             </th>
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="px-10 py-3">
               Username
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Province
             </th>
             <th scope="col" className="px-6 py-3">
               Province

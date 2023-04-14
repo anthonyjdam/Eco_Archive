@@ -786,37 +786,6 @@ app.post("/api/updatePaperRate", (req, res) => {
 
 });
 
-
-// app.post("/api/updatePlasticType", (req, res) => {
-//   console.log(req.body);
-
-//   for (let i = 0; i < req.body.employeesToDelete.length; i++) {
-
-//     /*Create query variable*/
-//     const sql = (
-//       `Update ??
-//       SET MaterialRate
-//       WHERE MaterialType = ?`
-//     ); //search employee query
-//     const placeHolder = [req.body.userType, `${req.body.employeesToDelete[i].Username}`]; //placeholders into '?' and '??' parameters
-//     const query = mysql.format(sql, placeHolder);//insert the placeholders into the query
-
-//     console.log(query);
-//     // console.log(typeof req.body.username)
-
-//     //Query to the database
-//     db.query(query, (error, results) => {
-//       if (results) {
-//         res.status(200).send(results);
-//       } else if (error) {
-//         console.log("Error " + error);
-//         res.status(500).end();
-//       }
-//     });
-//   }
-// });
-
-
 // app.get("/api/", () => {
 //   console.log("running on port 3001");
 // })

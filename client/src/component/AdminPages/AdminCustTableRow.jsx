@@ -86,7 +86,7 @@ function AdminCustTableRow({ row, onDelete, onSelect, onUpdate }) {
                             }}
                         />
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-5 py-4">
                         <input
                             className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white bg-transparent hover:border-b-2 focus:border-b-2 focus:border-blue-300 focus:outline-none"
                             placeholder={row.Username}
@@ -97,7 +97,7 @@ function AdminCustTableRow({ row, onDelete, onSelect, onUpdate }) {
                             }}
                         />
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-2 py-4">
                         <input
                             className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white bg-transparent hover:border-b-2 focus:border-b-2 focus:border-blue-300 focus:outline-none"
                             placeholder={row.Province}
@@ -108,7 +108,7 @@ function AdminCustTableRow({ row, onDelete, onSelect, onUpdate }) {
                             }}
                         />
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-2 py-4">
                         <input
                             className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white bg-transparent hover:border-b-2 focus:border-b-2 focus:border-blue-300 focus:outline-none"
                             placeholder={row.DonationAmt}
@@ -119,17 +119,6 @@ function AdminCustTableRow({ row, onDelete, onSelect, onUpdate }) {
                             }}
                         />
                     </td>
-                    <td className="px-6 py-4">
-                        <button
-                            className="font-medium text-blue-400 hover:underline bg-transparent active:text-blue-700"
-                            onClick={(e) => {
-                                handleAddCustInfo(e)
-                            }}
-                        >
-                            Edit
-                        </button>
-                    </td>
-
                 </tr>
             )}
 
