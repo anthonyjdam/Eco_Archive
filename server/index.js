@@ -135,6 +135,23 @@ app.post("/api/complete", (req, res) => {
   res.status(200).end();
 });
 
+
+// API endpoint to get the inventory counts
+app.get("/api/inventoryCounts/:BranchName", (req, res) => {
+  db.query(
+    "SELECT * FROM inventory WHERE BranchName =?",
+    [req.params.BranchName],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
+        res.status(200).json(results);
+      }
+    }
+  );
+});
+
 // API endpoint to update inventory counts
 app.post("/api/updateInventory", (req, res) => {
   console.log(req.body);
@@ -255,6 +272,25 @@ app.get("/api/employee/:username", (req, res) => {
         res.status(404).end();
       } else if (results) {
         console.log(results);
+        res.json(results);
+      }
+    }
+  );
+});
+
+
+// API endpoint for getting admin info
+app.get("/api/admin/:username", (req, res) => {
+  console.log(req.params.username);
+
+  db.query(
+    `SELECT * FROM administrator WHERE Username =?`,
+    [req.params.username],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
         res.json(results);
       }
     }
@@ -450,7 +486,6 @@ app.post("/api/ngo/delete", (req, res) => {
   );
 });
 
-
 // API endpoint for making a donation to a specific NGO
 app.post("/api/donate", (req, res) => {
   // Update amountRaised for the NGO after the donation
@@ -557,16 +592,14 @@ app.post("/api/updateEmpCred", (req, res) => {
   console.log(req.body);
 
   /*Create query variable*/
-  const sql = (
-    `DELETE
+  const sql = `DELETE
     FROM ?? 
-    WHERE Username = ?`
-  ); //search employee query
+    WHERE Username = ?`; //search employee query
   const placeHolder = [req.body.userType, `%${req.body.username}%`]; //placeholders into '?' and '??' parameters
-  const query = mysql.format(sql, placeHolder);//insert the placeholders into the query
+  const query = mysql.format(sql, placeHolder); //insert the placeholders into the query
 
   console.log(query);
-  console.log(typeof req.body.username)
+  console.log(typeof req.body.username);
 
   //Query to the database
   db.query(query, (error, results) => {
@@ -575,22 +608,21 @@ app.post("/api/updateEmpCred", (req, res) => {
       res.status(500).end();
     }
   });
-
 });
 
 app.post("/api/deleteEmpWithUsername", (req, res) => {
   console.log(req.body);
 
   for (let i = 0; i < req.body.employeesToDelete.length; i++) {
-
     /*Create query variable*/
-    const sql = (
-      `DELETE
+    const sql = `DELETE
       FROM ?? 
-      WHERE Username = ?`
-    ); //search employee query
-    const placeHolder = [req.body.userType, `${req.body.employeesToDelete[i].Username}`]; //placeholders into '?' and '??' parameters
-    const query = mysql.format(sql, placeHolder);//insert the placeholders into the query
+      WHERE Username = ?`; //search employee query
+    const placeHolder = [
+      req.body.userType,
+      `${req.body.employeesToDelete[i].Username}`,
+    ]; //placeholders into '?' and '??' parameters
+    const query = mysql.format(sql, placeHolder); //insert the placeholders into the query
 
     console.log(query);
     // console.log(typeof req.body.username)
@@ -611,19 +643,16 @@ app.post("/api/addEmpCred", (req, res) => {
   console.log(req.body);
 
   /*Create query variable*/
-  const sql = (
-    `INSERT INTO ??
-      VALUES (?, ?, ?, ?)`
-  ); //search employee query
+  const sql = `INSERT INTO ??
+      VALUES (?, ?, ?, ?)`; //search employee query
   const placeHolder = [
-    req.body.userType, 
+    req.body.userType,
     req.body.username,
     req.body.lastName,
     req.body.firstName,
-    req.body.password
-  
+    req.body.password,
   ]; //placeholders into '?' and '??' parameters
-  const query = mysql.format(sql, placeHolder);//insert the placeholders into the query
+  const query = mysql.format(sql, placeHolder); //insert the placeholders into the query
 
   console.log(query);
   // console.log(typeof req.body.username)
@@ -637,7 +666,6 @@ app.post("/api/addEmpCred", (req, res) => {
       res.status(500).end();
     }
   });
-
 });
 
 app.post("/api/selectCustWithName", (req, res) => {
@@ -673,9 +701,6 @@ app.post("/api/selectCustWithName", (req, res) => {
   //     res.status(500).send({error});
   //   }
 });
-
-
-
 
 // app.get("/api/", () => {
 //   console.log("running on port 3001");

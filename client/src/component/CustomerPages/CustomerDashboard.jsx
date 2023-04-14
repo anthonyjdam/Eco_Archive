@@ -170,8 +170,8 @@ function CustomerDashboard() {
           </div>
           <div className="text-center py-8 font-medium text-2xl">
             {customerContributions % Math.floor(customerContributions) === 0
-              ? `Total contrabutions: $${customerContributions}.00`
-              : `Total contrabutions: $${customerContributions}`}
+              ? `Total contributions: $${customerContributions}.00`
+              : `Total contributions: $${customerContributions}`}
           </div>
           {fieldError && (
             <div className="bg-red-500 px-3 py-3 rounded text-gray-100 mb-5">
