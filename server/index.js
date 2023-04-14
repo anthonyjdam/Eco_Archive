@@ -630,13 +630,15 @@ app.post("/api/deleteEmpWithUsername", (req, res) => {
     //Query to the database
     db.query(query, (error, results) => {
       if (results) {
-        res.status(200).send(results);
+        console.log(results);
       } else if (error) {
         console.log("Error " + error);
         res.status(500).end();
       }
     });
   }
+
+  res.status(200).end();
 });
 
 app.post("/api/addEmpCred", (req, res) => {
