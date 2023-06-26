@@ -22,11 +22,11 @@ function AdminEditCustomer() {
   const [custCity, setCustCity] = useState("");
   const [custProvince, setCustProvince] = useState("");
   const [custPostal, setCustPostal] = useState("");
+  const [custAddress, setCustAdress] = useState("");
 
 
 
   const [custDonation, setCustDonation] = useState("");
-
 
 
   const [cusFName, setCustFName] = useState("");
@@ -193,14 +193,17 @@ function AdminEditCustomer() {
     e.preventDefault();
 
     const addObject = {
-      userType: "employee",
       firstName: custFirst,
       lastName: custLast,
+      addressLine: custAddress,
+      city: custCity,
+      province: custProvince,
+      postalCode: custPostal,
       username: custUsername,
       password: custPassword,
     }
 
-    const response = await axios.post("http://localhost:5000/api/addEmpCred", addObject)
+    const response = await axios.post("http://localhost:5000/api/processSignup", addObject)
 
     for (let i = 0; i < response.length; i++) {
       if (response[i].status === 500) {
@@ -272,36 +275,65 @@ function AdminEditCustomer() {
                         ></input>
                       </div>
 
+                      <div className='flex items-start justify-start gap-5 pt-5'>
+                        <h3 className='font-semibold'>Address Line</h3>
+                        <input
+                          className='border-b-2 border-gray-200 focus:border-blue-200 rounded-sm'
+                          type="text"
+                          value={custAddress}
+                          onChange={(e) => {
+                            setCustAdress(e.target.value);
+                          }}
+                        ></input>
+                      </div>
+
                       {/* Address information */}
-                      {/* <div className='flex items-start justify-start gap-5 pt-5'>
+                      <div className='flex items-start justify-start gap-5 pt-5'>
                         <h3 className='font-semibold'>City</h3>
                         <input
-                          className='border-b-2 border-gray-200 focus:border-blue-200 rounded-sm'
+                          className='border-b-2 ml-16 border-gray-200 focus:border-blue-200 rounded-sm'
                           type="text"
-                          value={custFirst}
+                          value={custCity}
                           onChange={(e) => {
-                            setCustFirst(e.target.value);
+                            setCustCity(e.target.value);
                           }}
                         ></input>
-                        <h3 className='font-semibold'>Province</h3>
-                        <input
-                          className='border-b-2 border-gray-200 focus:border-blue-200 rounded-sm'
-                          type="text"
-                          value={custLast}
-                          onChange={(e) => {
-                            setCustLast(e.target.value);
-                          }}
-                        ></input>
+                        <h3 className="font-semibold">Province</h3>
+                        <div>
+                          <select
+                            className="w-full py-2 bg-gray-100 text-gray-500 rounded-md px-1 max-h-80 overflow-y-auto"
+                            type="text"
+                            value={custProvince}
+                            onChange={(e) => {
+                              setCustProvince(e.target.value);
+                            }}
+                          >
+                            <option></option>
+                            <option>AB</option>
+                            <option>BC</option>
+                            <option>MB</option>
+                            <option>NB</option>
+                            <option>NL</option>
+                            <option>NT</option>
+                            <option>NS</option>
+                            <option>NU</option>
+                            <option>ON</option>
+                            <option>PE</option>
+                            <option>QC</option>
+                            <option>SK</option>
+                            <option>YT</option>
+                          </select>
+                        </div>
                         <h3 className='font-semibold'>Postal Code</h3>
                         <input
-                          className='border-b-2 border-gray-200 focus:border-blue-200 rounded-sm'
+                          className='border-b-2 w-20 border-gray-200 focus:border-blue-200 rounded-sm'
                           type="text"
-                          value={custLast}
+                          value={custPostal}
                           onChange={(e) => {
-                            setCustLast(e.target.value);
+                            setCustPostal(e.target.value);
                           }}
                         ></input>
-                      </div> */}
+                      </div>
 
                       {/*Usrname Password Fields */}
                       <div className='flex flex-col items-start justify-start gap-5 pt-5'>
@@ -336,7 +368,10 @@ function AdminEditCustomer() {
                             handleAddCustomer(e);
                             setCustFirst("");
                             setCustLast("");
-                            setCustUsername("");
+                            setCustAdress("");
+                            setCustCity("");
+                            setCustProvince("");
+                            setCustPostal("");
                             setCustUsername("");
                             setCustPassword("");
                           }}>
