@@ -5,6 +5,9 @@ import AdminTable from "./AdminTable";
 import axios from "axios";
 import userContext from "../userContext";
 
+import LinePlot from "./LinePlot";
+import * as d3 from "d3";
+
 export default function AdminDashboard() {
   const { currentUser } = useContext(userContext);
   const [concurrentGlassCount, setConcurrentGlassCount] = useState(0);
@@ -15,6 +18,9 @@ export default function AdminDashboard() {
   const [lifetimePlasticCount, setLifetimePlasticCount] = useState(0);
   const [lifetimeMetalCount, setLifetimeMetalCount] = useState(0);
   const [lifetimePaperCount, setLifetimePaperCount] = useState(0);
+
+  const [data, setData] = useState(() => d3.ticks(-2, 2, 200).map(Math.sin));
+
 
   useEffect(() => {
     axios
@@ -42,6 +48,8 @@ export default function AdminDashboard() {
 
   return (
     <>
+
+
       {/* Sidebar */}
       <div className="sticky flex-auto w-48 shadow-md z-50 ">
         <aside>
@@ -53,32 +61,41 @@ export default function AdminDashboard() {
         {/* Top Bar */}
         <AdminProfileBar />
 
+
         <div className="lg:pl-52">
           {/* Iventory Summary */}
           <div className="flex-auto bottom-0 overflow-y-auto lg:pr-4 lg:pt-8">
-            <div>
-              <div className="bg-white rounded-lg opacity-[85%] shawdow-lg m-3">
-                <h2 className=" text-2xl text-blue-300 font-bold pl-5 pt-2 pb-2">
-                  Inventory
-                </h2>
-                <hr className="pb-2"></hr>
+            <div className="bg-white rounded-lg opacity-[85%] shawdow-lg m-3">
+              <h2 className=" text-2xl text-blue-300 font-bold pl-5 pt-2 pb-2">
+                Inventory
+              </h2>
+              <hr className="pb-2"></hr>
+              <div className="flex-row">
                 <h3 className="pl-5 font-semibold text-md text-gray-700">
                   Concurrent Total
                 </h3>
                 <div className="pl-5 flex">
-                  <div className="pl-3 pt-3 pb-3 text-gray-600">
-                    <p>Glass</p>
-                    <p>Plastic</p>
-                    <p>Metal</p>
-                    <p>Paper</p>
+                  <div className="flex justify-start">
+                    <div className="pl-3 pt-3 pb-3 text-gray-600">
+                      <p>Glass</p>
+                      <p>Plastic</p>
+                      <p>Metal</p>
+                      <p>Paper</p>
+                    </div>
+                    <div className="pl-10 pt-3 pb-3 text-gray-600">
+                      <p>{concurrentGlassCount}</p>
+                      <p>{concurrentPlasticCount}</p>
+                      <p>{concurrentMetalCount}</p>
+                      <p>{concurrentPaperCount}</p>
+                    </div>
                   </div>
-                  <div className="pl-10 pt-3 pb-3 text-gray-600">
-                    <p>{concurrentGlassCount}</p>
-                    <p>{concurrentPlasticCount}</p>
-                    <p>{concurrentMetalCount}</p>
-                    <p>{concurrentPaperCount}</p>
+
+                  <div className="flex flex-grow justify-center pr-5">
+                    <LinePlot data={data} />
                   </div>
                 </div>
+
+
                 <hr className="pt-2 pb-2"></hr>
                 <h3 className="font-semibold text-md text-gray-700 pl-5">
                   Lifetime Total
@@ -107,21 +124,21 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-                        {/* <div className="flex-auto bottom-0 overflow-y-auto lg:pl-52 lg:pr-4 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-50 via-indigo-100 to-emerald-50"> */}
-                        <div className="opacity-[85%] text-center relative m-3">
-                            <form>
-                                {/* <input className='w-full h-10 rounded-md shadow-md pl-3' placeholder='Enter Query'></input> */}
+            {/* <div className="flex-auto bottom-0 overflow-y-auto lg:pl-52 lg:pr-4 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-50 via-indigo-100 to-emerald-50"> */}
+            <div className="opacity-[85%] text-center relative m-3">
+              <form>
+                {/* <input className='w-full h-10 rounded-md shadow-md pl-3' placeholder='Enter Query'></input> */}
 
 
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </main>
+              </form>
+            </div>
+          </div>
+        </div>
+      </main>
 
 
 
-        </>
+    </>
 
-    )
+  )
 }
