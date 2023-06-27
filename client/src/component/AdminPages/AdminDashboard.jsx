@@ -19,10 +19,10 @@ export default function AdminDashboard() {
   const [lifetimeMetalCount, setLifetimeMetalCount] = useState(0);
   const [lifetimePaperCount, setLifetimePaperCount] = useState(0);
   const [currentMonth, setCurrentMonth] = useState("");
-  const [series, setSeries] = useState([]);
+  const [series, setSeries] = useState();
 
-  const [data, setData] = useState(() => d3.ticks(-2, 2, 200).map(Math.sin));
-
+  // const [data, setData] = useState(() => d3.ticks(-2, 2, 200).map(Math.sin));
+  const [data, setData] = useState();
 
   useEffect(() => {
     axios
@@ -53,14 +53,31 @@ export default function AdminDashboard() {
     const month = (currentDate.getMonth() + 1).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false });
     setCurrentMonth(month);
 
-    console.log("Month " + currentMonth); // Output: "06" (if the current month is June)
-  
+    // console.log("Month " + currentMonth);
+
     axios
       .get(`http://localhost:5000/api/transactionDates/${currentMonth}`)
       .then((response) => {
         setSeries(response.data);
-        console.log(response.data)
-        // setRecentTransactions(response.data);
+        console.log(series);
+
+        //apply the lambda function, which makes an array tuple from the date and amount earned,
+        //and apply the lambda function to each [temporary] elmnt in the response.data object array
+        const dataPoint = response.data.map((elmnt) => ([
+          new Date(elmnt.DateTime).getDate(),
+          elmnt.AmountEarned
+        ]));
+
+        console.log(dataPoint);
+        setData(dataPoint);
+
+
+        // for (let i = 0; i < response.data.length; i++) {
+        //   const date = response.data[i].DateTime; 
+        //   console.log(date)
+        // }
+        // const arr = [response.data[1].RecyclableName]
+        // console.log(arr)
       });
 
   }, []);
