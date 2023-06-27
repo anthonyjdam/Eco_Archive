@@ -113,7 +113,7 @@ export default function AdminEditCharities() {
                     type="text"
                     value={NGOToAddName}
                     placeholder="Add NGO name"
-                    className="mb-6 text-center border-2 border-gray-400 rounded"
+                    className="mb-6 text-center border-2 py-1 border-gray-400 rounded-lg"
                     onChange={(e) => {
                       setNGOToAddName(e.target.value);
                     }}
@@ -122,7 +122,7 @@ export default function AdminEditCharities() {
                     onClick={() => {
                       handleNGOAdd();
                     }}
-                    className="hover:cursor-pointer bg-blue-400 w-1/6 rounded text-white p-2"
+                    className="hover:cursor-pointer bg-blue-400 w-1/6 rounded-lg text-white p-2"
                   >
                     Add NGO
                   </button>

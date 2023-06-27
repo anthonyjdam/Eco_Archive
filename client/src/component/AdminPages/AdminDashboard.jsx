@@ -18,6 +18,8 @@ export default function AdminDashboard() {
   const [lifetimePlasticCount, setLifetimePlasticCount] = useState(0);
   const [lifetimeMetalCount, setLifetimeMetalCount] = useState(0);
   const [lifetimePaperCount, setLifetimePaperCount] = useState(0);
+  const [currentMonth, setCurrentMonth] = useState("");
+  const [series, setSeries] = useState([]);
 
   const [data, setData] = useState(() => d3.ticks(-2, 2, 200).map(Math.sin));
 
@@ -44,6 +46,23 @@ export default function AdminDashboard() {
       .catch((error) => {
         console.log(error);
       });
+  }, []);
+
+  useEffect(() => {
+    const currentDate = new Date();
+    const month = (currentDate.getMonth() + 1).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false });
+    setCurrentMonth(month);
+
+    console.log("Month " + currentMonth); // Output: "06" (if the current month is June)
+  
+    axios
+      .get(`http://localhost:5000/api/transactionDates/${currentMonth}`)
+      .then((response) => {
+        setSeries(response.data);
+        console.log(response.data)
+        // setRecentTransactions(response.data);
+      });
+
   }, []);
 
   return (
