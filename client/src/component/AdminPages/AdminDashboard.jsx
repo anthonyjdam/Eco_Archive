@@ -6,9 +6,10 @@ import AdminTable from "./AdminTable";
 import axios from "axios";
 import userContext from "../userContext";
 
-import LinePlot from "./LinePlot";
-import * as d3 from "d3";
+// import LinePlot from "./LinePlot";
+// import * as d3 from "d3";
 import CurrentMatGraph from "./CurrentMatGraph";
+// import CurrentMatGraph from "./CurrentMatGraphOld";
 
 export default function AdminDashboard() {
   const { currentUser } = useContext(userContext);
@@ -64,20 +65,70 @@ export default function AdminDashboard() {
     axios
       .get(`http://localhost:5000/api/transactionDates/${month}`)
       .then((response) => {
-        setSeries(response.data);
-        console.log(series);
 
-        //apply the lambda function, which makes an array tuple from the date and amount earned,
-        //and apply the lambda function to each [temporary] elmnt in the response.data object array
-        const dataPoint = response.data.map((elmnt) => ([
-          new Date(elmnt.DateTime).getDate(),
-          elmnt.AmountOfMaterialsGiven
-        ]));
+        // apply the lambda function, which makes an array tuple from the date and amount earned,
+        // and apply the lambda function to each [temporary] elmnt in the response.data object array
+        // const dataPoint = response.data.map((elmnt) => ([
+        //   new Date(elmnt.DateTime).getDate(),
+        //   elmnt.AmountOfMaterialsGiven
+        // ]));
 
-        console.log("Sandwich")
-        console.log(dataPoint);
-        console.log("Sandwich")
-        setData(dataPoint);
+        // console.log("Sandwich")
+        // console.log(dataPoint);
+        // console.log("Sandwich")
+
+        // const formattedData = [
+        //   {
+        //     id: 'series1',
+        //     data: response.data.map((row) => ({
+        //       x: new Date(row.DateTime).getDate(),
+        //       y: row.AmountOfMaterialsGiven,
+        //     })),
+        //   },
+        //   {
+        //     id: 'series2',
+        //     data: response.data.map((row) => ({
+        //       x: row.AmountEarned,
+        //       y: row.AmountOfMaterialsGiven,
+        //     })),
+        //   },
+        // ];
+
+        // const formattedData = [
+        //   response.data.map((row) => ([
+        //     { x: new Date(row.DateTime).getDate(), y: row.AmountOfMaterialsGiven },
+        //   ])),
+        //   response.data.map((row) => ([
+        //     { x: row.AmountEarned, y: row.AmountOfMaterialsGiven },
+        //   ])),
+        // ];
+
+        const formattedData = [
+          response.data.map((row) => ({ x: new Date(row.DateTime).getDate(), y: row.AmountOfMaterialsGiven })),
+          response.data.map((row) => ({ x: new Date(row.DateTime).getDate(), y: row.AmountEarned})),
+        ];
+
+      //   const formattedData = [
+      //     [{
+      //       id: 'series1',
+      //       data: response.data.map((row) => ({
+      //         x: new Date(row.DateTime).getDate(),
+      //         y: row.AmountOfMaterialsGiven,
+      //       })),
+      // }],
+      //     [{
+      //       id: 'series2',
+      //       data: response.data.map((row) => ({
+      //         x: row.AmountEarned,
+      //         y: row.AmountOfMaterialsGiven,
+      //       })),
+      // }],
+      //   ];
+
+        setData(formattedData);
+        // console.log("Sandwich")
+        // console.log(data);
+        // console.log("Sandwich")
 
       });
 
@@ -112,7 +163,7 @@ export default function AdminDashboard() {
                   Concurrent Total
                 </h3>
                 <div className="pl-5 flex">
-                  <div className="flex justify-start  bg-red-50">
+                  <div className="flex justify-start">
                     <div className="pl-3 pt-3 pb-3 text-gray-600">
                       <p>Glass</p>
                       <p>Plastic</p>
@@ -127,7 +178,15 @@ export default function AdminDashboard() {
                     </div>
                   </div>
 
-                  <div className="w-full flex justify-center">
+                  <div className="w-full ">
+                    {data && data.length > 0 ? (
+                      <CurrentMatGraph data={data}/>
+                    ) : (
+                      <p>Loading...</p>
+                    )}
+                  </div>
+                  
+                  {/* <div className="w-full flex justify-center">
                     <div className="h-full w-fit pr-5" ref={ref}>
                       {bounds.width > 0 && data && data.length > 0 ? (
                         <CurrentMatGraph data={data} width={bounds.width} height={bounds.height} />
@@ -135,7 +194,7 @@ export default function AdminDashboard() {
                         <p>Loading...</p>
                       )}
                     </div>
-                  </div>
+                  </div> */}
                 </div>
 
 
