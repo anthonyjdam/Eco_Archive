@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import useMeasure from 'react-use-measure';
 import AdminSidebar from "./AdminSidebar";
 import AdminProfileBar from "./AdminProfileBar";
 import AdminTable from "./AdminTable";
@@ -7,6 +8,7 @@ import userContext from "../userContext";
 
 import LinePlot from "./LinePlot";
 import * as d3 from "d3";
+import CurrentMatGraph from "./CurrentMatGraph";
 
 export default function AdminDashboard() {
   const { currentUser } = useContext(userContext);
@@ -20,11 +22,14 @@ export default function AdminDashboard() {
   const [lifetimePaperCount, setLifetimePaperCount] = useState(0);
   const [currentMonth, setCurrentMonth] = useState("");
   const [series, setSeries] = useState();
-
   // const [data, setData] = useState(() => d3.ticks(-2, 2, 200).map(Math.sin));
   const [data, setData] = useState();
 
+  let [ref, bounds] = useMeasure();
+
+
   useEffect(() => {
+    console.log("width: " + bounds.width + " height: " + bounds.height)
     axios
       .get(`http://localhost:5000/api/admin/${currentUser}`)
       .then((response) => {
@@ -49,14 +54,15 @@ export default function AdminDashboard() {
   }, []);
 
   useEffect(() => {
+
     const currentDate = new Date();
     const month = (currentDate.getMonth() + 1).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false });
-    setCurrentMonth(month);
 
-    // console.log("Month " + currentMonth);
+    console.log("Making Database get request with ");
+    console.log("AdminDash: Month " + month);
 
     axios
-      .get(`http://localhost:5000/api/transactionDates/${currentMonth}`)
+      .get(`http://localhost:5000/api/transactionDates/${month}`)
       .then((response) => {
         setSeries(response.data);
         console.log(series);
@@ -65,19 +71,14 @@ export default function AdminDashboard() {
         //and apply the lambda function to each [temporary] elmnt in the response.data object array
         const dataPoint = response.data.map((elmnt) => ([
           new Date(elmnt.DateTime).getDate(),
-          elmnt.AmountEarned
+          elmnt.AmountOfMaterialsGiven
         ]));
 
+        console.log("Sandwich")
         console.log(dataPoint);
+        console.log("Sandwich")
         setData(dataPoint);
 
-
-        // for (let i = 0; i < response.data.length; i++) {
-        //   const date = response.data[i].DateTime; 
-        //   console.log(date)
-        // }
-        // const arr = [response.data[1].RecyclableName]
-        // console.log(arr)
       });
 
   }, []);
@@ -111,7 +112,7 @@ export default function AdminDashboard() {
                   Concurrent Total
                 </h3>
                 <div className="pl-5 flex">
-                  <div className="flex justify-start">
+                  <div className="flex justify-start  bg-red-50">
                     <div className="pl-3 pt-3 pb-3 text-gray-600">
                       <p>Glass</p>
                       <p>Plastic</p>
@@ -126,8 +127,14 @@ export default function AdminDashboard() {
                     </div>
                   </div>
 
-                  <div className="flex flex-grow justify-center pr-5">
-                    <LinePlot data={data} />
+                  <div className="w-full flex justify-center">
+                    <div className="h-full w-fit pr-5" ref={ref}>
+                      {bounds.width > 0 && data && data.length > 0 ? (
+                        <CurrentMatGraph data={data} width={bounds.width} height={bounds.height} />
+                      ) : (
+                        <p>Loading...</p>
+                      )}
+                    </div>
                   </div>
                 </div>
 

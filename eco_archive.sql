@@ -263,6 +263,13 @@ CREATE TABLE `transaction` (
   CONSTRAINT `fk_CustomerTransaction` FOREIGN KEY (`Username`) REFERENCES `customer` (`Username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+LOCK TABLES `transaction` WRITE;
+INSERT INTO `transaction` (`Username`, `BranchName`, `RecyclableName`, `AmountOfMaterialsGiven`, `DateTime`, `ServiceType`, `AmountEarned`, `Status`) VALUES ('jRaimuu', 'University', 'Beer bottles', '20', '2023-06-30 13:00:00', 'pickup', '3.00', 'COMPLETE');
+INSERT INTO `transaction` (`Username`, `BranchName`, `RecyclableName`, `AmountOfMaterialsGiven`, `DateTime`, `ServiceType`, `AmountEarned`, `Status`) VALUES ('jRaimuu', 'University', 'Beer bottles', '50', '2023-06-29 13:00:00', 'pickup', '37.50', 'COMPLETE');
+INSERT INTO `transaction` (`Username`, `BranchName`, `RecyclableName`, `AmountOfMaterialsGiven`, `DateTime`, `ServiceType`, `AmountEarned`, `Status`) VALUES ('anthony', 'University', 'Beer bottles', '50', '2023-06-30 13:00:00', 'pickup', '37.50', 'COMPLETE');
+
+
+UNLOCK TABLES;
 
 
 -- Create the ship table

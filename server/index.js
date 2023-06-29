@@ -439,13 +439,13 @@ app.get("/api/transaction/:username", (req, res) => {
 
 // API endpoint for getting all recent transactions for a specific customer
 app.get("/api/transactionDates/:currentMonth", (req, res) => {
-  console.log("Monthssss" + req.params.currentMonth);
+  console.log("Months" + req.params.currentMonth);
 
   //MONTH function extracts the month from DateTime
   db.query(
     `SELECT * FROM transaction 
-     WHERE MONTH(DateTime) = ? AND AmountEarned IS NOT NULL
-     ORDER BY DateTime DESC`,
+     WHERE MONTH(DateTime) = ? AND AmountOfMaterialsGiven IS NOT NULL
+     ORDER BY DateTime `,
     [req.params.currentMonth],
     (error, results) => {
       if (error) {
