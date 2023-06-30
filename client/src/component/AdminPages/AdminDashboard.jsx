@@ -94,36 +94,11 @@ export default function AdminDashboard() {
         //   },
         // ];
 
-        // const formattedData = [
-        //   response.data.map((row) => ([
-        //     { x: new Date(row.DateTime).getDate(), y: row.AmountOfMaterialsGiven },
-        //   ])),
-        //   response.data.map((row) => ([
-        //     { x: row.AmountEarned, y: row.AmountOfMaterialsGiven },
-        //   ])),
-        // ];
-
         const formattedData = [
           response.data.map((row) => ({ x: new Date(row.DateTime).getDate(), y: row.AmountOfMaterialsGiven })),
           response.data.map((row) => ({ x: new Date(row.DateTime).getDate(), y: row.AmountEarned})),
         ];
 
-      //   const formattedData = [
-      //     [{
-      //       id: 'series1',
-      //       data: response.data.map((row) => ({
-      //         x: new Date(row.DateTime).getDate(),
-      //         y: row.AmountOfMaterialsGiven,
-      //       })),
-      // }],
-      //     [{
-      //       id: 'series2',
-      //       data: response.data.map((row) => ({
-      //         x: row.AmountEarned,
-      //         y: row.AmountOfMaterialsGiven,
-      //       })),
-      // }],
-      //   ];
 
         setData(formattedData);
         // console.log("Sandwich")
@@ -178,7 +153,7 @@ export default function AdminDashboard() {
                     </div>
                   </div>
 
-                  <div className="w-full ">
+                  <div className="w-full">
                     {data && data.length > 0 ? (
                       <CurrentMatGraph data={data}/>
                     ) : (

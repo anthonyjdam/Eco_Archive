@@ -25,36 +25,56 @@ function CurrentMatGraph({ data }) {
     console.log("Oreo");
   }, []);
 
+  const newTheme = {
+    fontFamily: 'Segoe UI',
+    textColor: '#71717a'
+  };
+
   return (
     <div style={{ height: '400px' }}>
       <ResponsiveLine
-        data={data.map((series, index) => ({ id: `series${index + 1}`, data: series }))}
+        data={data.map((series, index) => ({
+          id: `series${index + 1}`, data: series
+        }))} // transforming the 'data' array by mapping over each element and creating a new object with an 'id' property that combines the text 'series' with the index plus 1, and a 'data' property set to the value of the current element
         margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
         xScale={{ type: 'linear' }}
-        yScale={{ type: 'linear', min: 0, max: 'auto' }}
-        axisTop={null}
-        axisRight={null}
-        axisBottom={{
-          tickValues: 5,
-          legend: 'Days',
-          legendOffset: 36,
-          legendPosition: 'middle',
+        yScale={{
+          type: 'linear',
+          min: '0',
+          max: 'auto',
         }}
+        yFormat='>-#.2f'
         axisLeft={{
-          tickValues: 5,
-          legend: 'Total Material DSeposited',
+          tickSize: 5,
+          tickPadding: 5,
+          legend: 'Deposited Recyclables',
           legendOffset: -40,
           legendPosition: 'middle',
         }}
+        axisBottom={{
+          tickValues: 5,
+          tickPadding: 5,
+          legend: 'Date',
+          legendOffset: 36,
+          legendPosition: 'middle',
+        }}
+
         enableGridX={false}
         enableGridY={true}
-        enablePoints={true} // Enable data points
-        pointSize={10} // Adjust the size of the data points
-        enablePointLabel={true} // Enable hoverable labels for data points
-        pointLabel="y" // Specify the value to display on hover (here, 'y' value)
-        pointLabelYOffset={-12} // Adjust the vertical offset of the hover labels
+
+        enablePoints={true}
+        pointSize={7}
+        pointColor={{ from: 'color', modifiers: [] }}
+        pointBorderWidth={2}
+        pointBorderColor={{ from: 'serieColor', modifiers: [] }}
+
         curve="cardinal"
-        colors={{ scheme: 'nivo' }}
+
+        useMesh={true}
+
+        colors={['#60a5fa', '#6366f1', '#a78bfa', '#6ee7b7']}
+
+        theme={newTheme}
       />
     </div>
   );
