@@ -36,7 +36,7 @@ function CurrentMatGraph({ data }) {
         data={data.map((series, index) => ({
           id: `series${index + 1}`, data: series
         }))} // transforming the 'data' array by mapping over each element and creating a new object with an 'id' property that combines the text 'series' with the index plus 1, and a 'data' property set to the value of the current element
-        margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+        margin={{ top: 50, right: 60, bottom: 50, left: 60 }}
         xScale={{ type: 'linear' }}
         yScale={{
           type: 'linear',
@@ -58,6 +58,13 @@ function CurrentMatGraph({ data }) {
           legendOffset: 36,
           legendPosition: 'middle',
         }}
+        // axisTop={{
+        //   tickValues: 0,
+        //   legend: 'Deposited Recyclables',
+        //   legendOffset: -40,
+        //   legendPosition: 'left',
+
+        // }}
 
         enableGridX={false}
         enableGridY={true}
@@ -68,7 +75,7 @@ function CurrentMatGraph({ data }) {
         pointBorderWidth={2}
         pointBorderColor={{ from: 'serieColor', modifiers: [] }}
 
-        curve="cardinal"
+        curve="linear"
 
         useMesh={true}
 

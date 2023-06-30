@@ -213,7 +213,7 @@ function AdminEditEmployee() {
       <main className=" min-h-screen bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-50 via-indigo-100 to-emerald-50 ">
 
         {/* Top Bar */}
-        <AdminProfileBar />
+        <AdminProfileBar directory={"> Employee"}/>
 
         <div className="lg:pl-52">
           {/* Iventory Summary */}
@@ -221,7 +221,7 @@ function AdminEditEmployee() {
 
             <div className="bg-white rounded-lg opacity-[85%] shadow-md m-3 mb-5">
 
-              <h2 className=" text-2xl text-blue-300 font-bold pl-5 pt-2 pb-2">Add New Employee</h2>
+              <h2 className=" text-md text-blue-300 font-bold pl-5 pt-2 pb-2">Add New Employee</h2>
               <hr className='pb-2'></hr>
               <div className="pl-5">
 
