@@ -280,7 +280,9 @@ VALUES
   ('jRaimuu', 'University', 'Beer bottles', '120', '2023-07-08 11:30:00', 'pickup', '30.00', 'COMPLETE'),
   ('anthonyjdam', 'University', 'Beer bottles', '70', '2023-07-08 14:30:00', 'pickup', '15.00', 'COMPLETE'),
   ('anthonyjdam', 'University', 'Beer bottles', '80', '2023-07-09 16:30:00', 'pickup', '17.50', 'COMPLETE'),
-  ('mairakhan419', 'University', 'Beer bottles', '130', '2023-07-09 12:30:00', 'pickup', '40.00', 'COMPLETE'),
+  ('mairakhan419', 'Sage Hill', 'Beer bottles', '130', '2023-07-09 12:30:00', 'pickup', '40.00', 'COMPLETE'),
+  ('jRaimuu', 'Sage Hill', 'Beer bottles', '90', '2023-07-10 12:30:00', 'pickup', '20.00', 'COMPLETE'),
+  ('anthonyjdam', 'Sage Hill', 'Beer bottles', '120', '2023-07-11 12:30:00', 'pickup', '80.00', 'COMPLETE'),
   ('anthonyjdam', 'University', 'Beer bottles', '90', '2023-07-10 13:30:00', 'pickup', '12.50', 'COMPLETE'),
   ('mairakhan419', 'University', 'Beer bottles', '100', '2023-07-11 15:30:00', 'pickup', '30.00', 'COMPLETE');
 -- INSERT INTO `transaction` (`Username`, `BranchName`, `RecyclableName`, `AmountOfMaterialsGiven`, `DateTime`, `ServiceType`, `AmountEarned`, `Status`) VALUES ('jRaimuu', 'University', 'Beer bottles', '20', '2023-06-30 13:00:00', 'pickup', '3.00', 'COMPLETE');

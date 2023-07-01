@@ -23,7 +23,7 @@ function CurrentMatGraph({ data }) {
     console.log("Oreo");
     console.log("Data:", data);
     console.log("Oreo");
-  }, []);
+  }, [data]);
 
   const newTheme = {
     fontFamily: 'Segoe UI',
@@ -36,7 +36,7 @@ function CurrentMatGraph({ data }) {
         data={data.map((series, index) => ({
           id: `series${index + 1}`, data: series
         }))} // transforming the 'data' array by mapping over each element and creating a new object with an 'id' property that combines the text 'series' with the index plus 1, and a 'data' property set to the value of the current element
-        margin={{ top: 50, right: 60, bottom: 50, left: 60 }}
+        margin={{ top: 30, right: 60, bottom: 50, left: 80 }}
         xScale={{ type: 'linear' }}
         yScale={{
           type: 'linear',
@@ -47,9 +47,9 @@ function CurrentMatGraph({ data }) {
         axisLeft={{
           tickSize: 5,
           tickPadding: 5,
-          legend: 'Deposited Recyclables',
-          legendOffset: -40,
-          legendPosition: 'middle',
+          // legend: 'Deposited Recyclables',
+          // legendOffset: -40,
+          // legendPosition: 'middle',
         }}
         axisBottom={{
           tickValues: 5,

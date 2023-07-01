@@ -34,7 +34,6 @@ export default function AdminDashboard() {
       .get(`http://localhost:5000/api/admin/${currentUser}`)
       .then((response) => {
         setBranchName(response.data[0].BranchName);
-        console.log("BranchHHHHHHHHHHHHHH: " + branchName);
         axios
           .get(
             `http://localhost:5000/api/inventoryCounts/${response.data[0].BranchName}`
@@ -110,7 +109,7 @@ export default function AdminDashboard() {
 
         // const filteredData = helper(response.data);
 
-        const summedData = Object.values(
+        const summedMat = Object.values(
           response.data.reduce((acc, row) => {
             const date = row.DateTime.slice(0, 10); // Extract the date part of the DateTime string
             if (!acc[date]) {
@@ -121,16 +120,27 @@ export default function AdminDashboard() {
           }, {})
         );
 
+        const summedEarnings = Object.values(
+          response.data.reduce((acc, row) => {
+            const date = row.DateTime.slice(0, 10); // Extract the date part of the DateTime string
+            if (!acc[date]) {
+              acc[date] = { ...row, AmountEarned: 0 };
+            }
+            acc[date].AmountEarned += row.AmountEarned;
+            return acc;
+          }, {})
+        );
+
         console.log("burger");
-        console.log(summedData);
+        console.log(summedMat);
         console.log("burger");
 
         const formattedData = [
-          summedData.map((row) => ({ x: new Date(row.DateTime).getDate(), y: row.AmountOfMaterialsGiven })),
-          // response.data.map((row) => ({ x: new Date(row.DateTime).getDate(), y: row.AmountEarned})),
+          summedMat.map((row) => ({ x: new Date(row.DateTime).getDate(), y: row.AmountOfMaterialsGiven })),
+          summedEarnings.map((row) => ({ x: new Date(row.DateTime).getDate(), y: row.AmountEarned })),
         ];
 
-
+        setSeries(formattedData)
         setData(formattedData);
         // console.log("Sandwich")
         // console.log(data);
@@ -162,13 +172,13 @@ export default function AdminDashboard() {
 
             {/* Heading */}
             {/* <div className="bg-white rounded-lg opacity-[85%] shawdow-lg m-3"> */}
-              {/* <h2 className=" text-2xl text-slate-700 font-bold pl-5 pt-2 pb-2">
+            {/* <h2 className=" text-2xl text-slate-700 font-bold pl-5 pt-2 pb-2">
                 Inventory
               </h2> */}
             {/* </div> */}
 
             <div className="grid grid-cols-1 sm:grid-cols-4 grid-flow-row-dense gap-5 m-3 pt-1">
-              <div className="bg-white rounded-lg min-w-[100px] opacity-[85%]">
+              <div className="bg-white rounded-lg shadow-md min-w-[100px] opacity-[85%]">
                 <div className="m-4">
                   <h3 className="font-bold text-sm text-slate-500">
                     Concurrent Total
@@ -191,17 +201,44 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              <div className="bg-white min-h-[50px] col-span-3 row-span-2 rounded-lg opacity-[85%]">
-                <div className="m-3">
+              <div className="bg-white col-span-3 row-span-2 rounded-lg shadow-md opacity-[85%]">
+                <div className="flex justify-end mt-3 mx-3">
+                  <select
+                    className="bg-gray-200 text-gray-400 font-bold text-sm py-1 px-3 rounded-full hover:bg-gray-300 hover:text-gray-500"
+                    type="text"
+                    // value={series}
+                    onChange={(e) => {
+                        if(e.target.value == "Total Earned") {
+                          setSeries([data[1]])
+                          console.log("Earned", [data[1]]);
+                        }
+                        else if (e.target.value == "Total Recyclables"){
+                          setSeries([data[0]])
+                          console.log("Earned", [data[0]]);
+                        }
+                        else {
+                          setSeries([data[0]].concat([data[1]]))
+                          console.log("Earned", [data]);
+                        }
+                    }}
+                  >
+                    {/* <option></option> */}
+                    <option>Multi Series</option>
+                    <option>Total Recyclables</option>
+                    <option>Total Earned</option>
+                  </select>
+
+                </div>
+                <div className="mb-3 mx-3">
                   {data && data.length > 0 ? (
-                    <CurrentMatGraph data={data} />
+                    <CurrentMatGraph data={series} />
                   ) : (
-                    <p>Loading...</p>
+                    <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/bc0c6b69321565.5b7d0cbe723b5.gif" className="opacity-30 flex justify-center" />
                   )}
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg min-w-[100px] opacity-[85%]">
+              <div className="bg-white rounded-lg shadow-md min-w-[100px] opacity-[85%]">
                 <div className="m-4">
                   <h3 className="font-bold text-sm text-slate-500">
                     Lifetime Total
