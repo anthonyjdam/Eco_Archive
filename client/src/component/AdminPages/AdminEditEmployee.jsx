@@ -114,7 +114,7 @@ function AdminEditEmployee() {
    */
   async function handleSelectRow(temp) {
 
-    
+
     console.log("helll0" + temp);
     const selectedEmployee = data.filter(emp => (emp.Username === temp)); //creates a new array that contains only the elements that are present in both empUsername and rowSelection
     console.log("Another sandwich");
@@ -213,7 +213,7 @@ function AdminEditEmployee() {
       <main className=" min-h-screen bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-50 via-indigo-100 to-emerald-50 ">
 
         {/* Top Bar */}
-        <AdminProfileBar />
+        <AdminProfileBar directory={"> Employee"}/>
 
         <div className="lg:pl-52">
           {/* Iventory Summary */}
@@ -221,7 +221,7 @@ function AdminEditEmployee() {
 
             <div className="bg-white rounded-lg opacity-[85%] shadow-md m-3 mb-5">
 
-              <h2 className=" text-2xl text-blue-300 font-bold pl-5 pt-2 pb-2">Add New Employee</h2>
+              <h2 className=" text-md text-blue-300 font-bold pl-5 pt-2 pb-2">Add New Employee</h2>
               <hr className='pb-2'></hr>
               <div className="pl-5">
 
@@ -266,14 +266,18 @@ function AdminEditEmployee() {
                         </div>
                         <div className='flex gap-4 items-center'>
                           <h3 className='font-semibold'>Branch</h3>
-                          <input
-                            className='border-b-2 border-gray-200 focus:border-blue-200 rounded-sm pr-4'
+                          <select
+                            className="w-full py-2 bg-gray- text-gray-500 rounded-md mx-5 px-14 max-h-80 overflow-y-auto"
                             type="text"
                             value={empBranch}
                             onChange={(e) => {
                               setEmpBranch(e.target.value);
                             }}
-                          ></input>
+                          >
+                            <option></option>
+                            <option>University</option>
+                            <option>Sage Hill</option>
+                          </select>
                         </div>
                         <div className='flex gap-4 items-center'>
                           <h3 className='font-semibold'>Password</h3>

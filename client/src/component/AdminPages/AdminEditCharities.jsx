@@ -70,13 +70,13 @@ export default function AdminEditCharities() {
 
       <main className=" min-h-screen bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-50 via-indigo-100 to-emerald-50 ">
         {/* Top Bar */}
-        <AdminProfileBar />
+        <AdminProfileBar directory={"> Charities"} />
 
         <div className="lg:pl-52">
           {/* Iventory Summary */}
           <div className="flex-auto bottom-0 overflow-y-auto lg:pr-4 lg:pt-8">
             <div className="bg-white rounded-md opacity-[85%] shawdow-lg m-3">
-              <h2 className=" text-2xl text-blue-300 font-bold pl-5 pt-2 pb-2">
+              <h2 className=" text-md text-blue-300 font-bold pl-5 pt-2 pb-2">
                 Charities and Non Governmental Organizations
               </h2>
               <hr className="pb-2"></hr>
@@ -113,7 +113,7 @@ export default function AdminEditCharities() {
                     type="text"
                     value={NGOToAddName}
                     placeholder="Add NGO name"
-                    className="mb-6 text-center border-2 border-gray-400 rounded"
+                    className="mb-6 text-center border-2 py-1 border-gray-400 rounded-lg"
                     onChange={(e) => {
                       setNGOToAddName(e.target.value);
                     }}
@@ -122,7 +122,7 @@ export default function AdminEditCharities() {
                     onClick={() => {
                       handleNGOAdd();
                     }}
-                    className="hover:cursor-pointer bg-blue-400 w-1/6 rounded text-white p-2"
+                    className="hover:cursor-pointer bg-blue-400 w-1/6 rounded-lg text-white p-2"
                   >
                     Add NGO
                   </button>

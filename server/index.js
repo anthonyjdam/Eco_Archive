@@ -437,6 +437,29 @@ app.get("/api/transaction/:username", (req, res) => {
   );
 });
 
+// API endpoint for getting all recent transactions for a specific customer
+app.get("/api/transactionDates/:currentMonth/:currentBranch", (req, res) => {
+  console.log("Months" + req.params.currentMonth);
+
+  //MONTH function extracts the month from DateTime
+  db.query(
+    `SELECT * FROM transaction 
+     WHERE MONTH(DateTime) = ? AND BranchName = ? AND AmountOfMaterialsGiven IS NOT NULL
+     ORDER BY DateTime ASC`,
+    [req.params.currentMonth, req.params.currentBranch],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
+        console.log(results);
+        res.json(results);
+      }
+    }
+  );
+});
+
+
 // API endpoint for getting all the NGOs in the database
 app.get("/api/ngo", (req, res) => {
   db.query(`SELECT * FROM ngo`, (error, results) => {
