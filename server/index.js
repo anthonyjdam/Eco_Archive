@@ -577,6 +577,26 @@ app.get("/api/get_transaction/:username", (req, res) => {
   );
 });
 
+/**
+ * Get all Shipment facility detail
+ */
+app.get("/api/shipmentFacility", (req, res) => {
+  
+  db.query(
+    `SELECT *
+    FROM shipment_facility`,
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
+        console.log(results);
+        res.json(results);
+      }
+    }
+  );
+});
+
 app.post("/api/selectEmpWithName", (req, res) => {
   console.log(req.body);
 
@@ -843,6 +863,7 @@ app.post("/api/updatePaperRate", (req, res) => {
   });
 
 });
+
 
 // app.get("/api/", () => {
 //   console.log("running on port 3001");
