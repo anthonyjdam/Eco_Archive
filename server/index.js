@@ -597,6 +597,32 @@ app.get("/api/shipmentFacility", (req, res) => {
   );
 });
 
+app.post("/api/requestShipment", (req, res) => {
+  console.log(req.body);
+
+  /*Create query variable*/
+  const sql = 
+   `INSERT INTO ship (FacilityName, BranchName, Username, ShipmentDate)
+    VALUES (?, ?, ?, ?)`
+  const placeHolder = [
+    `%${req.body.FacilityName}%`,
+    `%${req.body.BranchName}%`,
+    `%${req.body.Username}%`,
+    `${req.body.ShipmentDate}`,
+  ]; //placeholders into '?' and '??' parameters
+  const query = mysql.format(sql, placeHolder); //insert the placeholders into the query
+  console.log(query);
+
+  db.query(query, (error, results) => {
+    if (results) {
+      res.status(200).send(results);
+    } else if (error) {
+      console.log("Error " + error);
+      res.status(500).end();
+    }
+  });
+});
+
 app.post("/api/selectEmpWithName", (req, res) => {
   console.log(req.body);
 

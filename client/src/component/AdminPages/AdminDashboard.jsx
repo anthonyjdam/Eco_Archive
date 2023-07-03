@@ -39,14 +39,14 @@ export default function AdminDashboard() {
             `http://localhost:5000/api/inventoryCounts/${response.data[0].BranchName}`
           )
           .then((res) => {
-            setConcurrentGlassCount(res.data[0].ConcurrentGlass);
-            setConcurrentPlasticCount(res.data[0].ConcurrentPlastic);
-            setConcurrentMetalCount(res.data[0].ConcurrentMetal);
-            setConcurrentPaperCount(res.data[0].ConcurrentPaper);
-            setLifetimeGlassCount(res.data[0].LifetimeGlass);
-            setLifetimePlasticCount(res.data[0].LifetimePlastic);
-            setLifetimeMetalCount(res.data[0].LifetimeMetal);
-            setLifetimePaperCount(res.data[0].LifetimePaper);
+            setConcurrentGlassCount(res.data[0].ConcurrentGlass.toLocaleString());
+            setConcurrentPlasticCount(res.data[0].ConcurrentPlastic.toLocaleString());
+            setConcurrentMetalCount(res.data[0].ConcurrentMetal.toLocaleString());
+            setConcurrentPaperCount(res.data[0].ConcurrentPaper.toLocaleString());
+            setLifetimeGlassCount(res.data[0].LifetimeGlass.toLocaleString());
+            setLifetimePlasticCount(res.data[0].LifetimePlastic.toLocaleString());
+            setLifetimeMetalCount(res.data[0].LifetimeMetal.toLocaleString());
+            setLifetimePaperCount(res.data[0].LifetimePaper.toLocaleString());
           });
       })
       .catch((error) => {
@@ -86,6 +86,7 @@ export default function AdminDashboard() {
             if (!acc[date]) {
               acc[date] = { ...row, AmountOfMaterialsGiven: 0 };
             }
+
             acc[date].AmountOfMaterialsGiven += row.AmountOfMaterialsGiven;
             return acc;
           }, {})
@@ -97,6 +98,7 @@ export default function AdminDashboard() {
             if (!acc[date]) {
               acc[date] = { ...row, AmountEarned: 0 };
             }
+
             acc[date].AmountEarned += row.AmountEarned;
             return acc;
           }, {})
@@ -148,9 +150,9 @@ export default function AdminDashboard() {
               </h2> */}
             {/* </div> */}
 
-            <div className="grid grid-cols-1 sm:grid-cols-4 grid-flow-row-dense gap-5 m-3 pt-1 opacity-[85%]">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-5 m-3 pt-1 opacity-[85%]">
 
-              <div className="col-span-1 row-span-1 bg-white rounded-lg shadow-md min-w-[100px] opacity-[85%]">
+              <div className="col-span-3 sm:col-span-1 row-span-1 bg-white rounded-lg shadow-md min-w-[100px] opacity-[85%]">
                 <div className="m-4">
                   <h3 className="font-bold text-sm text-slate-500">
                     Lifetime Total
@@ -210,7 +212,7 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              <div className="col-span-1 row-span-1 bg-white rounded-lg shadow-md min-w-[100px] opacity-[85%]">
+              <div className="col-span-3 sm:col-span-1 row-span-1 bg-white rounded-lg shadow-md min-w-[100px] opacity-[85%]">
                 <div className="m-4">
                   <h3 className="font-bold text-sm text-slate-500">
                     Concurrent Total
@@ -233,7 +235,7 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              <div className="col-span-3 row-span-1 bg-white rounded-lg shadow-md min-w-[100px] opacity-[85%]">
+              <div className="col-span-3 row-span-2 bg-white rounded-lg shadow-md min-w-[100px] opacity-[85%]">
                 <div className="m-4">
                   <h3 className="font-bold text-sm text-slate-500">
                     Monthly Overview
@@ -241,21 +243,21 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              <div className="col-span-1 row-span-1 bg-white rounded-lg shadow-md min-w-[100px] opacity-[85%]">
+              <div className="col-span-3 sm:col-span-1 row-span-2 bg-white rounded-lg shadow-md min-w-[100px] opacity-[85%]">
                 <div className="m-4">
                   <h3 className="font-bold text-sm text-slate-500">
                     Daily Capacity
                   </h3>
                   <NavLink
-                    className="p-1 mt-3 w-fit flex items-center rounded-lg px-4 bg-gray-200 text-gray-400 duration-300 cursor-pointer hover:bg-gray-300 hover:text-gray-600 "
+                    className="p-1 mt-3 w-fit flex items-center rounded-lg px-2 bg-gray-200 text-gray-400 duration-300 cursor-pointer hover:bg-blue-300 hover:text-gray-600 "
                     to="/shipments"
                   >
 
-                    <label className="font-semibold">
+                    <label className="font-semibold text-sm">
                       Request Shipment
                     </label>
 
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" class="w-6 h-6 ml-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.4" stroke="currentColor" class="w-5 h-5 ml-1">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
                     </svg>
 
