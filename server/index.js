@@ -578,6 +578,26 @@ app.get("/api/get_transaction/:username", (req, res) => {
 });
 
 /**
+ * Get MAX order number
+ */
+app.get("/api/maxOrderNumber", (req, res) => {
+  
+  db.query(
+    `SELECT MAX(OrderNumber) AS MaxOrderNumber 
+    FROM orders`,
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
+        console.log(results);
+        res.json(results);
+      }
+    }
+  );
+});
+
+/**
  * Get all Shipment facility detail
  */
 app.get("/api/shipmentFacility", (req, res) => {
@@ -602,9 +622,10 @@ app.post("/api/requestShipment", (req, res) => {
 
   /*Create query variable*/
   const sql = 
-   `INSERT INTO ship (FacilityName, BranchName, Username, ShipmentDate)
-    VALUES (?, ?, ?, ?)`
+   `INSERT INTO ship (OrderNum, FacilityName, BranchName, Username, ShipmentDate)
+    VALUES (?, ?, ?, ?, ?)`
   const placeHolder = [
+    `%${req.body.OrderNum}%`,
     `%${req.body.FacilityName}%`,
     `%${req.body.BranchName}%`,
     `%${req.body.Username}%`,

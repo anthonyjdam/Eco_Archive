@@ -13,7 +13,9 @@ function AdminShipments() {
     const [shipFacility, setShipFacility] = useState();
     const [outgoingShipFacility, setOutgoingShipFacility] = useState();
     const [branchName, setBranchName] = useState();
-    const [selectError, setSelectError] = useState();
+    const [selectError, setSelectError] = useState(false);
+    const [maxOrderNum, setMaxOrderNum] = useState();
+    const [orderNum, setOrderNum] = useState();
 
 
 
@@ -21,6 +23,7 @@ function AdminShipments() {
         handleGetFacilityDetails();
         handleGetAdminDetails();
         handleGetDate();
+        handleGetOrderNumber();
     }, []);
 
 
@@ -56,42 +59,60 @@ function AdminShipments() {
             day: '2-digit'
         })
 
-        // const day = currentDate.getDate().toString().padStart(2, '0');
-        // const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Note: Months are zero-based
-        // const year = currentDate.getFullYear();
-
-        // const formattedDate = `${day}/${month}/${year}`;
-
         console.log("Current Date: ", formattedDate);
         setDate(formattedDate);
     }
 
+
+    function handleGetOrderNumber() {
+        axios
+            .get(`http://localhost:5000/api/maxOrderNumber`)
+            .then((response) => {
+                // console.log("OrderNumber: ", response.data[0].MaxOrderNumber);
+                let ordNum = parseInt(response.data[0].MaxOrderNumber, 10);
+                ordNum = ordNum + 1;
+                ordNum = ordNum.toString().padStart(8, "0");
+                // console.log("New OrderNumber: ", ordNum);
+                setMaxOrderNum(ordNum);
+            });
+    }
+
+
     function handleSubmitForm(e) {
         e.preventDefault();
 
-        const addObject = {
-            FacilityName: outgoingShipFacility,
-            BranchName: branchName,
-            Username: currentUser,
-            ShipmentDate: date,
+        if (outgoingShipFacility == undefined) {
+            setSelectError(true);
+        } else {
+
+            console.log("Success", outgoingShipFacility)
+            const addObject = {
+                OrderNum: maxOrderNum,
+                FacilityName: outgoingShipFacility,
+                BranchName: branchName,
+                Username: currentUser,
+                ShipmentDate: date,
+            }
+
+            axios
+                .post("http://localhost:5000/api/requestShipment", addObject)
+                .then((response) => {
+
+                    console.log("Successful insertion", response);
+                    for (let i = 0; i < response.length; i++) {
+                        if (response[i].status === 500) {
+                            console.log("Request failed");
+                        }
+                        else if (response === 200) {
+                            console.log("Success");
+                        }
+                    }
+
+                    // axios
+                    //     .get
+                })
         }
 
-        axios
-            .post("http://localhost:5000/api/requestShipment", addObject)
-            .then((response) => {
-
-                console.log("Successful inssertion", response);
-                for (let i = 0; i < response.length; i++) {
-                    if (response[i].status === 500) {
-                        console.log("Request failed");
-                    }
-                    else if (response === 200) {
-                        console.log("Success");
-                    }
-                }
-                // axios
-                //     .get
-            })
 
 
     }
@@ -124,19 +145,22 @@ function AdminShipments() {
                                     <h3 className="py-1.5 font-semibold">Branch Name</h3>
                                     <h3 className="py-1.5 font-semibold">Admin Username</h3>
                                     <h3 className="py-1.5 font-semibold">Date</h3>
+                                    <h3 className="py-1.5 font-semibold">Order Number</h3>
                                     <h3 className="py-1.5 font-semibold underline">Shipment Facility</h3>
                                 </div>
                                 <div className="flex-col w-full min-w-fit justify-center sm:justify-start">
                                     <p className="py-1.5 text-gray-500 font-mono">{branchName}</p>
                                     <p className="py-1.5 text-gray-500 font-mono">{currentUser}</p>
                                     <p className="py-1.5 text-gray-500 font-mono">{date}</p>
+                                    <p className="py-1.5 text-gray-500 font-mono">#{maxOrderNum}</p>
                                     <div className='w-fit ml-[-5px]'>
                                         <form>
                                             <select className='p-2 rounded-lg font-mono bg-gray-200 text-gray-500 duration-300 cursor-pointer hover:bg-gray-300 hover:text-gray-600'
                                                 onChange={(e) => {
-                                                    setOutgoingShipFacility(e.target.value)
-                                                    console.log("OutgoingShipFacility", e.target.value)
-                                                    // Error checking for empty string
+                                                    setOutgoingShipFacility(e.target.value.FacilityName);
+                                                    console.log("OutgoingShipFacility", e.target.value);
+                                                    // Error checking for empty string                                                    
+                                                    setSelectError(false)
                                                 }}
 
                                             >
@@ -157,12 +181,14 @@ function AdminShipments() {
                             </div>
                             <button
                                 className='font-semibold flex px-2 py-1 rounded-lg bg-gray-200 active:bg-blue-300 hover:bg-blue-200 hover:text-gray-800'
-                                onClick={(e) => { handleSubmitForm(e); }}
+                                onClick={(e) => {
+                                    handleSubmitForm(e);
+                                }}
                             >
                                 Submit
                             </button>
                             {selectError &&
-                                <div className='w-fit my-2'>
+                                <div className='w-fit mt-5'>
                                     <FeedbackMessage message={"Please select a valid shipment facility"} backgroundColor={"bg-red-200"} textColor={"text-rose-600"} fontStyle={"font-semibold"} />
                                 </div>
                             }

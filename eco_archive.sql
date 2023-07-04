@@ -41,7 +41,6 @@ DROP TABLE IF EXISTS `employee`;
   -- Dump data into employee table
   LOCK TABLES `employee` WRITE;
   INSERT INTO `employee` VALUES 
-
   ("mairakhan419", "Khan", "Mirah", "cheeto", "Sage Hill"), 
   ("anthonyjdam", "Dam", "Anthony", "password", "University"), 
   ("jRaimuu", "Sarjeant", "Liam", "someReallyLongPassword", "Sage Hill"), 
@@ -224,6 +223,7 @@ INSERT INTO `accepts` (`BranchName`,`RecyclableName`) VALUES ('University', 'Alu
 INSERT INTO `accepts` (`BranchName`,`RecyclableName`) VALUES ('University', 'Beer bottles');
 INSERT INTO `accepts` (`BranchName`,`RecyclableName`) VALUES ('University', 'Plastic water bottles');
 INSERT INTO `accepts` (`BranchName`,`RecyclableName`) VALUES ('University', 'Wine bottles');
+
 UNLOCK TABLES;
 
 
@@ -241,6 +241,19 @@ CREATE TABLE `employee_workstation` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
+-- Create the Order table
+DROP TABLE IF EXISTS `orders`;
+
+CREATE TABLE `orders` (
+  `OrderNumber` varchar(25) NOT NULL,
+  PRIMARY KEY (`OrderNumber`),
+  UNIQUE KEY `OrderNumber_UNIQUE` (`OrderNumber`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+LOCK TABLES `orders` WRITE;
+INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(1, 8, '0'));
+INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(2, 8, '0'));
+UNLOCK TABLES;
 
 
 -- Create the transaction table
@@ -297,18 +310,34 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ship`;
 
-CREATE TABLE `ship` (
-  `FacilityName` varchar(255) NOT NULL,
+-- CREATE TABLE `ship` (
+--   `FacilityName` varchar(255) NOT NULL,
+--   `BranchName` varchar(255) NOT NULL,
+--   `Username` varchar(255) NOT NULL,
+--   `ShipmentDate` datetime NOT NULL,
+--   PRIMARY KEY (`FacilityName`,`BranchName`,`Username`),
+--   KEY `fk_InventoryShip_idx` (`BranchName`),
+--   KEY `fk_AdminShip` (`Username`),
+--   CONSTRAINT `fk_AdminShip` FOREIGN KEY (`Username`) REFERENCES `administrator` (`Username`),
+--   CONSTRAINT `fk_FacilityShip` FOREIGN KEY (`FacilityName`) REFERENCES `shipment_facility` (`FacilityName`),
+--   CONSTRAINT `fk_InventoryShip` FOREIGN KEY (`BranchName`) REFERENCES `inventory` (`BranchName`)
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+  `OrderNum` varchar(25) NOT NULL,
+  `FacilityName` varchar(100) NOT NULL,
   `BranchName` varchar(255) NOT NULL,
   `Username` varchar(255) NOT NULL,
   `ShipmentDate` datetime NOT NULL,
-  PRIMARY KEY (`FacilityName`,`BranchName`,`Username`),
+  PRIMARY KEY (`FacilityName`,`BranchName`,`OrderNum`,`Username`),
+  UNIQUE KEY `OrderNum_UNIQUE` (`OrderNum`),
   KEY `fk_InventoryShip_idx` (`BranchName`),
   KEY `fk_AdminShip` (`Username`),
-  CONSTRAINT `fk_AdminShip` FOREIGN KEY (`Username`) REFERENCES `administrator` (`Username`),
+  KEY `sk_OrderShip_idx` (`OrderNum`),
   CONSTRAINT `fk_FacilityShip` FOREIGN KEY (`FacilityName`) REFERENCES `shipment_facility` (`FacilityName`),
-  CONSTRAINT `fk_InventoryShip` FOREIGN KEY (`BranchName`) REFERENCES `inventory` (`BranchName`)
+  CONSTRAINT `fk_InventoryShip` FOREIGN KEY (`BranchName`) REFERENCES `inventory` (`BranchName`),
+  CONSTRAINT `fk_OrderShip` FOREIGN KEY (`OrderNum`) REFERENCES `orders` (`OrderNumber`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 
 
 
