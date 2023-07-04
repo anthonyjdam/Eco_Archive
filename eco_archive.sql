@@ -112,7 +112,7 @@ CREATE TABLE `inventory` (
 
 -- Dump data into the inventory table
 LOCK TABLES `inventory` WRITE;
-INSERT INTO `inventory` VALUES ('University', '1000', '1000', '1000', '1000', '500', '500', '500', '500'), ('Sage Hill', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `inventory` VALUES ('University', '1000', '1000', '1000', '1000', '280', '430', '540', '292'), ('Sage Hill', '0', '0', '0', '0', '0', '0', '0', '0');
 UNLOCK TABLES;
 
 
@@ -284,31 +284,23 @@ VALUES
   ('mairakhan419', 'University', 'Beer bottles', '90', '2023-07-02 16:00:00', 'pickup', '15.00', 'COMPLETE'),
   ('anthonyjdam', 'University', 'Beer bottles', '100', '2023-07-03 14:00:00', 'pickup', '20.00', 'COMPLETE'),
   ('jRaimuu', 'University', 'Beer bottles', '120', '2023-07-04 11:00:00', 'pickup', '35.00', 'COMPLETE'),
-  ('anthonyjdam', 'University', 'Beer bottles', '60', '2023-07-04 12:00:00', 'pickup', '40.00', 'COMPLETE'),
-  ('anthonyjdam', 'University', 'Beer bottles', '80', '2023-07-05 10:00:00', 'pickup', '12.50', 'COMPLETE'),
-  ('jRaimuu', 'University', 'Beer bottles', '140', '2023-07-05 15:00:00', 'pickup', '30.00', 'COMPLETE'),
-  ('mairakhan419', 'University', 'Beer bottles', '110', '2023-07-06 13:30:00', 'pickup', '37.50', 'COMPLETE'),
-  ('jRaimuu', 'University', 'Beer bottles', '100', '2023-07-07 17:00:00', 'pickup', '20.00', 'COMPLETE'),
-  ('anthonyjdam', 'University', 'Beer bottles', '50', '2023-07-07 10:30:00', 'pickup', '25.00', 'COMPLETE'),
-  ('jRaimuu', 'University', 'Beer bottles', '120', '2023-07-08 11:30:00', 'pickup', '30.00', 'COMPLETE'),
-  ('anthonyjdam', 'University', 'Beer bottles', '70', '2023-07-08 14:30:00', 'pickup', '15.00', 'COMPLETE'),
-  ('anthonyjdam', 'University', 'Beer bottles', '80', '2023-07-09 16:30:00', 'pickup', '17.50', 'COMPLETE'),
-  ('mairakhan419', 'Sage Hill', 'Beer bottles', '130', '2023-07-09 12:30:00', 'pickup', '40.00', 'COMPLETE'),
-  ('jRaimuu', 'Sage Hill', 'Beer bottles', '90', '2023-07-10 12:30:00', 'pickup', '20.00', 'COMPLETE'),
-  ('anthonyjdam', 'Sage Hill', 'Beer bottles', '120', '2023-07-11 12:30:00', 'pickup', '80.00', 'COMPLETE'),
-  ('anthonyjdam', 'University', 'Beer bottles', '90', '2023-07-10 13:30:00', 'pickup', '12.50', 'COMPLETE'),
-  ('mairakhan419', 'University', 'Beer bottles', '100', '2023-07-11 15:30:00', 'pickup', '30.00', 'COMPLETE');
+  ('anthonyjdam', 'University', 'Aluminium soda cans', '60', '2023-07-04 12:00:00', 'pickup', '40.00', 'COMPLETE'),
+  ('anthonyjdam', 'University', 'Aluminium soda cans', '80', '2023-07-05 10:00:00', 'pickup', '12.50', 'COMPLETE'),
+  ('jRaimuu', 'University', 'Aluminium soda cans', '140', '2023-07-05 15:00:00', 'pickup', '30.00', 'COMPLETE'),
+  ('mairakhan419', 'University', 'Aluminium soda cans', '110', '2023-07-06 13:30:00', 'pickup', '37.50', 'COMPLETE'),
+  ('jRaimuu', 'University', 'Aluminium soda cans', '100', '2023-07-07 17:00:00', 'pickup', '20.00', 'COMPLETE'),
+  ('anthonyjdam', 'University', 'Aluminium soda cans', '50', '2023-07-07 10:30:00', 'pickup', '25.00', 'COMPLETE'),
+  ('jRaimuu', 'University', '2L Milk cartons', '120', '2023-07-08 11:30:00', 'pickup', '30.00', 'COMPLETE'),
+  ('anthonyjdam', 'University', '2L Milk cartons', '70', '2023-07-08 14:30:00', 'pickup', '15.00', 'COMPLETE'),
+  ('anthonyjdam', 'University', '2L Milk cartons', '80', '2023-07-09 16:30:00', 'pickup', '17.50', 'COMPLETE'),
+  ('mairakhan419', 'Sage Hill', '2L Milk cartons', '130', '2023-07-09 12:30:00', 'pickup', '40.00', 'COMPLETE'),
+  ('jRaimuu', 'Sage Hill', 'Plastic bottles', '90', '2023-07-10 12:30:00', 'pickup', '20.00', 'COMPLETE'),
+  ('anthonyjdam', 'Sage Hill', 'Plastic bottles', '120', '2023-07-11 12:30:00', 'pickup', '80.00', 'COMPLETE'),
+  ('anthonyjdam', 'University', 'Plastic bottles', '90', '2023-07-10 13:30:00', 'pickup', '12.50', 'COMPLETE'),
+  ('mairakhan419', 'University', 'Plastic bottles', '100', '2023-07-11 15:30:00', 'pickup', '30.00', 'COMPLETE');
 -- INSERT INTO `transaction` (`Username`, `BranchName`, `RecyclableName`, `AmountOfMaterialsGiven`, `DateTime`, `ServiceType`, `AmountEarned`, `Status`) VALUES ('jRaimuu', 'University', 'Beer bottles', '20', '2023-06-30 13:00:00', 'pickup', '3.00', 'COMPLETE');
 -- INSERT INTO `transaction` (`Username`, `BranchName`, `RecyclableName`, `AmountOfMaterialsGiven`, `DateTime`, `ServiceType`, `AmountEarned`, `Status`) VALUES ('jRaimuu', 'University', 'Beer bottles', '50', '2023-06-29 13:00:00', 'pickup', '37.50', 'COMPLETE');
 -- INSERT INTO `transaction` (`Username`, `BranchName`, `RecyclableName`, `AmountOfMaterialsGiven`, `DateTime`, `ServiceType`, `AmountEarned`, `Status`) VALUES ('anthony', 'University', 'Beer bottles', '50', '2023-06-30 13:00:00', 'pickup', '37.50', 'COMPLETE');
-
-
-UNLOCK TABLES;
-
-
--- Create the ship table
-
-DROP TABLE IF EXISTS `ship`;
 
 -- CREATE TABLE `ship` (
 --   `FacilityName` varchar(255) NOT NULL,
@@ -323,6 +315,13 @@ DROP TABLE IF EXISTS `ship`;
 --   CONSTRAINT `fk_InventoryShip` FOREIGN KEY (`BranchName`) REFERENCES `inventory` (`BranchName`)
 -- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+UNLOCK TABLES;
+
+-- Create the ship table
+
+DROP TABLE IF EXISTS `ship`;
+
+CREATE TABLE `ship` (
   `OrderNum` varchar(25) NOT NULL,
   `FacilityName` varchar(100) NOT NULL,
   `BranchName` varchar(255) NOT NULL,

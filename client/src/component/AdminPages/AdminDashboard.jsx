@@ -176,6 +176,7 @@ export default function AdminDashboard() {
               </div>
 
               <div className="bg-white col-span-3 row-span-2 rounded-lg shadow-md opacity-[85%]">
+
                 <div className="flex justify-end mt-3 mx-3">
                   <select
                     className="bg-gray-200 text-gray-400 font-bold text-sm py-1 px-3 rounded-full hover:bg-gray-300 hover:text-gray-500"
@@ -197,12 +198,12 @@ export default function AdminDashboard() {
                     }}
                   >
                     {/* <option></option> */}
-                    <option>Multi Series</option>
+                    <option>Recyclables vs Cust Earnings</option>
                     <option>Total Recyclables</option>
                     <option>Total Earned</option>
                   </select>
-
                 </div>
+
                 <div className="mb-3 mx-3">
                   {data && data.length > 0 ? (
                     <CurrentMatGraph data={series} />
