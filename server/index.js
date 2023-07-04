@@ -171,6 +171,35 @@ app.post("/api/updateInventory", (req, res) => {
   );
 });
 
+// API endpoint to update concurrent inventory
+app.post("/api/updateConcurrent", (req, res) => {
+  console.log(req.body);
+  const sql =
+    `UPDATE inventory 
+    SET ConcurrentPaper = ?, ConcurrentGlass = ?, ConcurrentMetal = ?, ConcurrentPlastic = ?
+    WHERE BranchName = ?`;
+
+  const placeHolder = [
+    `${req.body.ConcurrentPaper}`,
+    `${req.body.ConcurrentGlass}`,
+    `${req.body.ConcurrentMetal}`,
+    `${req.body.ConcurrentPlastic}`,
+    `${req.body.BranchName}`,
+  ];
+
+  const query = mysql.format(sql, placeHolder); //insert the placeholders into the query
+  console.log(query);
+
+  db.query(query, (error, results) => {
+    if (results) {
+      res.status(200).send(results);
+    } else if (error) {
+      console.log("Error " + error);
+      res.status(500).end();
+    }
+  });
+});
+
 // API endpoint to update inventory counts for multiple materials
 app.post("/api/updateInventoryMultiple", (req, res) => {
   console.log(req.body);
@@ -581,7 +610,7 @@ app.get("/api/get_transaction/:username", (req, res) => {
  * Get MAX order number
  */
 app.get("/api/maxOrderNumber", (req, res) => {
-  
+
   db.query(
     `SELECT MAX(OrderNumber) AS MaxOrderNumber 
     FROM orders`,
@@ -598,10 +627,36 @@ app.get("/api/maxOrderNumber", (req, res) => {
 });
 
 /**
+ * Add order number to OrderNumber col in orders table
+ */
+app.post("/api/addOrderNum", (req, res) => {
+  console.log(req.body);
+
+  /*Create query variable*/
+  const sql =
+    `INSERT INTO orders (OrderNumber)
+    VALUES (LPAD(?, 8, '0'))`
+  const placeHolder = [
+    `${req.body.OrderNumber}`,
+  ]; //placeholders into '?' and '??' parameters
+  const query = mysql.format(sql, placeHolder); //insert the placeholders into the query
+  console.log(query);
+
+  db.query(query, (error, results) => {
+    if (results) {
+      res.status(200).send(results);
+    } else if (error) {
+      console.log("Error " + error);
+      res.status(500).end();
+    }
+  });
+});
+
+/**
  * Get all Shipment facility detail
  */
 app.get("/api/shipmentFacility", (req, res) => {
-  
+
   db.query(
     `SELECT *
     FROM shipment_facility`,
@@ -621,14 +676,14 @@ app.post("/api/requestShipment", (req, res) => {
   console.log(req.body);
 
   /*Create query variable*/
-  const sql = 
-   `INSERT INTO ship (OrderNum, FacilityName, BranchName, Username, ShipmentDate)
-    VALUES (?, ?, ?, ?, ?)`
+  const sql =
+    `INSERT INTO ship (OrderNum, FacilityName, BranchName, Username, ShipmentDate)
+    VALUES (LPAD(?, 8, '0'), ?, ?, ?, ?)`
   const placeHolder = [
-    `%${req.body.OrderNum}%`,
-    `%${req.body.FacilityName}%`,
-    `%${req.body.BranchName}%`,
-    `%${req.body.Username}%`,
+    `${req.body.OrderNum}`,
+    `${req.body.FacilityName}`,
+    `${req.body.BranchName}`,
+    `${req.body.Username}`,
     `${req.body.ShipmentDate}`,
   ]; //placeholders into '?' and '??' parameters
   const query = mysql.format(sql, placeHolder); //insert the placeholders into the query

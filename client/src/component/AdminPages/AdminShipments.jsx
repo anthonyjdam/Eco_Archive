@@ -27,6 +27,9 @@ function AdminShipments() {
     }, []);
 
 
+    /**
+     * Get request to fetch the BranchName of the current admin
+     */
     function handleGetAdminDetails() {
         axios
             .get(`http://localhost:5000/api/admin/${currentUser}`)
@@ -36,6 +39,9 @@ function AdminShipments() {
             });
     }
 
+    /**
+     * Get request to fetch the availble facilities to ship to
+     */
     function handleGetFacilityDetails() {
         axios
             .get(`http://localhost:5000/api/shipmentFacility`)
@@ -51,6 +57,9 @@ function AdminShipments() {
             });
     }
 
+    /**
+     * Function that calculates todays date in yyyy-mm-dd format
+     */
     function handleGetDate() {
         const currentDate = new Date();
         const formattedDate = currentDate.toLocaleDateString('en-CA', {
@@ -63,7 +72,10 @@ function AdminShipments() {
         setDate(formattedDate);
     }
 
-
+    /**
+     * Get request to fetch the most recent order number. After, it will
+     * calculate the successor of the order number for the next shipment request
+     */
     function handleGetOrderNumber() {
         axios
             .get(`http://localhost:5000/api/maxOrderNumber`)
@@ -73,50 +85,82 @@ function AdminShipments() {
                 ordNum = ordNum + 1;
                 ordNum = ordNum.toString().padStart(8, "0");
                 // console.log("New OrderNumber: ", ordNum);
-                setMaxOrderNum(ordNum);
+                setMaxOrderNum(ordNum); //set Max Order Number to the successor of the previous order number
             });
     }
 
 
+    /**
+     * The function first checks if the outgoingShipFacility is defined for a value, if not, it displays an
+     * error to the user.
+     * 
+     * Otherwise, the function makes a post request to the server to establish the next order number in orders table.
+     * The purpose of this is to establish the primary key that will be used as foreign key in ship table. 
+     * Next, a post request is made to add a new entry to ship table. 
+     * Lastly, a post request is made to update the values of the concurrent materials, updating them to zero
+     * 
+     * @param {Event} e - Event object 
+     */
     function handleSubmitForm(e) {
         e.preventDefault();
 
-        if (outgoingShipFacility == undefined) {
+        if (!outgoingShipFacility) {
             setSelectError(true);
         } else {
 
-            console.log("Success", outgoingShipFacility)
+            // console.log("Success", outgoingShipFacility.FacilityName)
             const addObject = {
-                OrderNum: maxOrderNum,
-                FacilityName: outgoingShipFacility,
+                OrderNum: parseInt(maxOrderNum, 10),
+                FacilityName: outgoingShipFacility.FacilityName,
                 BranchName: branchName,
                 Username: currentUser,
                 ShipmentDate: date,
             }
+            const newOrderNum = {
+                OrderNumber: parseInt(maxOrderNum, 10),
+            }
+            const resetConcurrentInventory = {
+                ConcurrentPaper: 0,
+                ConcurrentGlass: 0,
+                ConcurrentMetal: 0,
+                ConcurrentPlastic: 0,
+                BranchName: branchName,
+            }
 
+            //Add newOrderNumber to orders table
+            axios
+                .post("http://localhost:5000/api/addOrderNum", newOrderNum)
+                .then((response) => {
+                    databaseError(response);
+                })
+
+            //Add addObject to ship table
             axios
                 .post("http://localhost:5000/api/requestShipment", addObject)
                 .then((response) => {
 
-                    console.log("Successful insertion", response);
-                    for (let i = 0; i < response.length; i++) {
-                        if (response[i].status === 500) {
-                            console.log("Request failed");
-                        }
-                        else if (response === 200) {
-                            console.log("Success");
-                        }
-                    }
+                    // console.log("Successful insertion", response);
+                    databaseError(response);
 
-                    // axios
-                    //     .get
+                    axios
+                        .post("http://localhost:5000/api/updateConcurrent", resetConcurrentInventory)
+                        .then((res) => {
+                            databaseError(res);
+                        })
                 })
         }
-
-
-
     }
 
+    function databaseError(res) {
+        for (let i = 0; i < res.length; i++) {
+            if (res[i].status === 500) {
+                console.log("Request failed");
+            }
+            else if (res === 200) {
+                console.log("Success");
+            }
+        }
+    }
 
     return (
         <>
@@ -153,14 +197,16 @@ function AdminShipments() {
                                     <p className="py-1.5 text-gray-500 font-mono">{currentUser}</p>
                                     <p className="py-1.5 text-gray-500 font-mono">{date}</p>
                                     <p className="py-1.5 text-gray-500 font-mono">#{maxOrderNum}</p>
-                                    <div className='w-fit ml-[-5px]'>
+                                    <div className='ml-[-5px]'>
                                         <form>
                                             <select className='p-2 rounded-lg font-mono bg-gray-200 text-gray-500 duration-300 cursor-pointer hover:bg-gray-300 hover:text-gray-600'
+                                                defaultValue={""}
                                                 onChange={(e) => {
-                                                    setOutgoingShipFacility(e.target.value.FacilityName);
-                                                    console.log("OutgoingShipFacility", e.target.value);
-                                                    // Error checking for empty string                                                    
-                                                    setSelectError(false)
+                                                    // console.log("ShipFacility ", shipFacility)
+                                                    const selectedFacility = shipFacility.find(item => item.FacilityName + " " + item.Location === e.target.value); //checking if the concatenated string matches the selected option value.
+                                                    setOutgoingShipFacility(selectedFacility);
+                                                    // console.log("SelectedFacility ", selectedFacility)
+                                                    setSelectError(false);
                                                 }}
 
                                             >
