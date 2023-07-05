@@ -10,6 +10,7 @@ import userContext from "../userContext";
 import CurrentMatGraph from "./CurrentMatGraph";
 import { NavLink } from "react-router-dom";
 import DailyCapacity from "./DailyCapacity";
+import MonthlyOverview from "./MonthlyOverview";
 // import CurrentMatGraph from "./CurrentMatGraphOld";
 
 export default function AdminDashboard() {
@@ -27,6 +28,7 @@ export default function AdminDashboard() {
   // const [data, setData] = useState(() => d3.ticks(-2, 2, 200).map(Math.sin));
   const [data, setData] = useState();
   const [branchName, setBranchName] = useState();
+  const [totConMat, setTotConMat] = useState();
 
   const maxCap = 5000;
 
@@ -36,6 +38,7 @@ export default function AdminDashboard() {
     axios
       .get(`http://localhost:5000/api/admin/${currentUser}`)
       .then((response) => {
+        databaseError(response);
         setBranchName(response.data[0].BranchName);
         axios
           .get(
@@ -57,21 +60,36 @@ export default function AdminDashboard() {
       });
   }, []);
 
-
-  // function helper (data) {
-  //   let acc = 0;
-  //   for(let i = 0; i < data.length; i++){
-  //     if(data[i].DateTime == data[i + 1].DatTime){
-  //       acc = sum(data.filter((numMaterial) => numMaterial.DateTime == data[i].DateTime)).concat(acc)
-  //     }
-
-  //   }
-
-
-  // }
-
+  /**
+   * Get the ship table data and create a new var formatted which contains the date and
+   * total number of recyclables for each shipment
+   */
   useEffect(() => {
+    axios.get(`http://localhost:5000/api/ship`).then((response) => {
+      databaseError(response);
 
+      let formattedShipData = response.data.map((row) => {
+        const shipmentDate = new Date(row.ShipmentDate);
+        const formattedDate = shipmentDate.toLocaleDateString('en-CA', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        });
+
+        return {
+          value: row.TotalConcurrentMaterials,
+          day: formattedDate
+        };
+      });
+
+      setTotConMat(formattedShipData);
+    });
+  }, []);
+
+  /**
+   * 
+   */
+  useEffect(() => {
     const currentDate = new Date();
     const month = (currentDate.getMonth() + 1).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false });
 
@@ -81,8 +99,9 @@ export default function AdminDashboard() {
     axios
       .get(`http://localhost:5000/api/transactionDates/${month}/${branchName}`)
       .then((response) => {
+        databaseError(response);
 
-
+        // Sum the number of recyclables for that day of a particular month, and do this for each day in a month
         const summedMat = Object.values(
           response.data.reduce((acc, row) => {
             const date = row.DateTime.slice(0, 10); // Extract the date part of the DateTime string
@@ -95,6 +114,7 @@ export default function AdminDashboard() {
           }, {})
         );
 
+        // Sum the customer earnings for that day of a particular month, and do this for each day in a month
         const summedEarnings = Object.values(
           response.data.reduce((acc, row) => {
             const date = row.DateTime.slice(0, 10); // Extract the date part of the DateTime string
@@ -125,6 +145,21 @@ export default function AdminDashboard() {
       });
 
   }, [branchName]);
+
+  /**
+   * 
+   * @param {*} res 
+   */
+  function databaseError(res) {
+    for (let i = 0; i < res.length; i++) {
+      if (res[i].status === 500) {
+        console.log("Request failed");
+      }
+      else if (res === 200) {
+        console.log("Success");
+      }
+    }
+  }
 
   return (
     <>
@@ -239,11 +274,12 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              <div className="col-span-3 row-span-2 bg-white rounded-lg shadow-md min-w-[100px] opacity-[85%]">
+              <div className="col-span-3 row-span-1 bg-white rounded-lg shadow-md min-w-[100px] opacity-[85%]">
                 <div className="m-4">
                   <h3 className="font-bold text-sm text-slate-500">
                     Monthly Overview
                   </h3>
+                  <MonthlyOverview data={totConMat} />
                 </div>
               </div>
 

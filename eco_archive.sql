@@ -254,6 +254,17 @@ CREATE TABLE `orders` (
 LOCK TABLES `orders` WRITE;
 INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(1, 8, '0'));
 INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(2, 8, '0'));
+INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(3, 8, '0'));
+INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(4, 8, '0'));
+INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(5, 8, '0'));
+INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(6, 8, '0'));
+INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(7, 8, '0'));
+INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(8, 8, '0'));
+INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(9, 8, '0'));
+INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(10, 8, '0'));
+INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(11, 8, '0'));
+INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(12, 8, '0'));
+INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(13, 8, '0'));
 UNLOCK TABLES;
 
 
@@ -333,7 +344,7 @@ CREATE TABLE `ship` (
   `FacilityName` varchar(100) NOT NULL,
   `BranchName` varchar(255) NOT NULL,
   `Username` varchar(255) NOT NULL,
-  `ShipmentDate` datetime NOT NULL,
+  `ShipmentDate` date NOT NULL,
   `TotalConcurrentMaterials` int NOT NULL,
   PRIMARY KEY (`FacilityName`,`BranchName`,`OrderNum`,`Username`),
   UNIQUE KEY `OrderNum_UNIQUE` (`OrderNum`),
@@ -344,6 +355,23 @@ CREATE TABLE `ship` (
   CONSTRAINT `fk_InventoryShip` FOREIGN KEY (`BranchName`) REFERENCES `inventory` (`BranchName`),
   CONSTRAINT `fk_OrderShip` FOREIGN KEY (`OrderNum`) REFERENCES `orders` (`OrderNumber`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+LOCK TABLES `ship` WRITE;
+INSERT INTO ship (OrderNum, FacilityName, BranchName, Username, ShipmentDate, TotalConcurrentMaterials)
+VALUES 
+  (LPAD('3', 8, '0'), 'EasyShip', 'University', 'admin', '2023-10-25', '2867'),
+  (LPAD('4', 8, '0'), 'EasyShip', 'University', 'admin', '2023-09-15', '4076'),
+  (LPAD('5', 8, '0'), 'EasyShip', 'University', 'admin', '2023-12-01', '2355'),
+  (LPAD('6', 8, '0'), 'EasyShip', 'University', 'admin', '2023-08-19', '1687'),
+  (LPAD('7', 8, '0'), 'EasyShip', 'University', 'admin', '2023-10-02', '3265'),
+  (LPAD('8', 8, '0'), 'EasyShip', 'University', 'admin', '2023-11-08', '4589'),
+  (LPAD('9', 8, '0'), 'EasyShip', 'University', 'admin', '2023-11-09', '1422'),
+  (LPAD('10', 8, '0'), 'EasyShip', 'University', 'admin', '2023-11-10', '2134'),
+  (LPAD('11', 8, '0'), 'EasyShip', 'University', 'admin', '2023-11-11', '3987'),
+  (LPAD('12', 8, '0'), 'EasyShip', 'University', 'admin', '2023-11-12', '2598'),
+  (LPAD('13', 8, '0'), 'EasyShip', 'University', 'admin', '2023-11-13', '3276');
+
+UNLOCK TABLES;
 
 
 

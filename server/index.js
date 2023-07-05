@@ -688,6 +688,26 @@ app.get("/api/shipmentFacility", (req, res) => {
   );
 });
 
+/**
+ * Get all columns from ship table
+ */
+app.get("/api/ship", (req, res) => {
+
+  db.query(
+    `SELECT *
+    FROM ship`,
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
+        console.log(results);
+        res.json(results);
+      }
+    }
+  );
+});
+
 app.post("/api/requestShipment", (req, res) => {
   console.log(req.body);
 
