@@ -9,6 +9,7 @@ import userContext from "../userContext";
 // import * as d3 from "d3";
 import CurrentMatGraph from "./CurrentMatGraph";
 import { NavLink } from "react-router-dom";
+import DailyCapacity from "./DailyCapacity";
 // import CurrentMatGraph from "./CurrentMatGraphOld";
 
 export default function AdminDashboard() {
@@ -26,6 +27,8 @@ export default function AdminDashboard() {
   // const [data, setData] = useState(() => d3.ticks(-2, 2, 200).map(Math.sin));
   const [data, setData] = useState();
   const [branchName, setBranchName] = useState();
+
+  const maxCap = 5000;
 
 
 
@@ -247,13 +250,20 @@ export default function AdminDashboard() {
               <div className="col-span-3 sm:col-span-1 row-span-2 bg-white rounded-lg shadow-md min-w-[100px] opacity-[85%]">
                 <div className="m-4">
                   <h3 className="font-bold text-sm text-slate-500">
-                    Daily Capacity
+                    Daily Capacity {" /" + maxCap}
                   </h3>
+                  <DailyCapacity
+                    currentGlass={concurrentGlassCount}
+                    currentPlastic={concurrentPlasticCount}
+                    currentMetal={concurrentMetalCount}
+                    currentPaper={concurrentPaperCount}
+                    maxCap={maxCap}
+                  />
+
                   <NavLink
-                    className="p-1 mt-3 w-fit flex items-center rounded-lg px-2 bg-gray-200 text-gray-400 duration-300 cursor-pointer hover:bg-blue-300 hover:text-gray-600 "
+                    className="p-1 w-fit flex items-center rounded-lg px-2 bg-gray-200 text-gray-400 duration-300 cursor-pointer hover:bg-blue-300 hover:text-gray-600 "
                     to="/shipments"
                   >
-
                     <label className="font-semibold text-sm">
                       Request Shipment
                     </label>
@@ -261,7 +271,6 @@ export default function AdminDashboard() {
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.4" stroke="currentColor" class="w-5 h-5 ml-1">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
                     </svg>
-
                   </NavLink>
                 </div>
               </div>

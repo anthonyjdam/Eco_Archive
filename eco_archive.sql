@@ -298,6 +298,12 @@ VALUES
   ('anthonyjdam', 'Sage Hill', 'Plastic bottles', '120', '2023-07-11 12:30:00', 'pickup', '80.00', 'COMPLETE'),
   ('anthonyjdam', 'University', 'Plastic bottles', '90', '2023-07-10 13:30:00', 'pickup', '12.50', 'COMPLETE'),
   ('mairakhan419', 'University', 'Plastic bottles', '100', '2023-07-11 15:30:00', 'pickup', '30.00', 'COMPLETE');
+  -- ('mairakhan419', 'University', 'Beer bottles', '5600', '2023-07-12 15:30:00', 'pickup', '560.00', 'COMPLETE'),
+  -- ('mairakhan419', 'University', 'Plastic bottles', '4900', '2023-07-13 15:30:00', 'pickup', '490.00', 'COMPLETE'),
+  -- ('mairakhan419', 'University', 'Aluminium soda cans', '5600', '2023-07-14 15:30:00', 'pickup', '560.00', 'COMPLETE'),
+  -- ('mairakhan419', 'University', '2L Milk cartons', '4850', '2023-07-15 15:30:00', 'pickup', '480.50', 'COMPLETE');
+
+
 -- INSERT INTO `transaction` (`Username`, `BranchName`, `RecyclableName`, `AmountOfMaterialsGiven`, `DateTime`, `ServiceType`, `AmountEarned`, `Status`) VALUES ('jRaimuu', 'University', 'Beer bottles', '20', '2023-06-30 13:00:00', 'pickup', '3.00', 'COMPLETE');
 -- INSERT INTO `transaction` (`Username`, `BranchName`, `RecyclableName`, `AmountOfMaterialsGiven`, `DateTime`, `ServiceType`, `AmountEarned`, `Status`) VALUES ('jRaimuu', 'University', 'Beer bottles', '50', '2023-06-29 13:00:00', 'pickup', '37.50', 'COMPLETE');
 -- INSERT INTO `transaction` (`Username`, `BranchName`, `RecyclableName`, `AmountOfMaterialsGiven`, `DateTime`, `ServiceType`, `AmountEarned`, `Status`) VALUES ('anthony', 'University', 'Beer bottles', '50', '2023-06-30 13:00:00', 'pickup', '37.50', 'COMPLETE');
