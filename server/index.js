@@ -152,6 +152,22 @@ app.get("/api/inventoryCounts/:BranchName", (req, res) => {
   );
 });
 
+// API endpoint to get the total concurrent materials column in inventory table
+app.get("/api/inventoryTotConcurrentMat/:BranchName", (req, res) => {
+  db.query(
+    "SELECT TotalConcurrentMaterials FROM inventory WHERE BranchName =?",
+    [req.params.BranchName],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
+        res.status(200).json(results);
+      }
+    }
+  );
+});
+
 // API endpoint to update inventory counts
 app.post("/api/updateInventory", (req, res) => {
   console.log(req.body);
@@ -677,14 +693,15 @@ app.post("/api/requestShipment", (req, res) => {
 
   /*Create query variable*/
   const sql =
-    `INSERT INTO ship (OrderNum, FacilityName, BranchName, Username, ShipmentDate)
-    VALUES (LPAD(?, 8, '0'), ?, ?, ?, ?)`
+    `INSERT INTO ship (OrderNum, FacilityName, BranchName, Username, ShipmentDate, TotalConcurrentMaterials)
+    VALUES (LPAD(?, 8, '0'), ?, ?, ?, ?, ?)`
   const placeHolder = [
     `${req.body.OrderNum}`,
     `${req.body.FacilityName}`,
     `${req.body.BranchName}`,
     `${req.body.Username}`,
     `${req.body.ShipmentDate}`,
+    `${req.body.TotalConcurrentMaterials}`,
   ]; //placeholders into '?' and '??' parameters
   const query = mysql.format(sql, placeHolder); //insert the placeholders into the query
   console.log(query);

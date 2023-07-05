@@ -16,6 +16,7 @@ function AdminShipments() {
     const [selectError, setSelectError] = useState(false);
     const [maxOrderNum, setMaxOrderNum] = useState();
     const [orderNum, setOrderNum] = useState();
+    const [totConMat, setTotConMat] = useState();
 
 
 
@@ -24,6 +25,7 @@ function AdminShipments() {
         handleGetAdminDetails();
         handleGetDate();
         handleGetOrderNumber();
+        handleGetTotConcurrentRec();
     }, []);
 
 
@@ -80,6 +82,7 @@ function AdminShipments() {
         axios
             .get(`http://localhost:5000/api/maxOrderNumber`)
             .then((response) => {
+                databaseError(response);
                 // console.log("OrderNumber: ", response.data[0].MaxOrderNumber);
                 let ordNum = parseInt(response.data[0].MaxOrderNumber, 10);
                 ordNum = ordNum + 1;
@@ -89,6 +92,16 @@ function AdminShipments() {
             });
     }
 
+    function handleGetTotConcurrentRec() {
+        axios
+            .get(`http://localhost:5000/api/inventoryTotConcurrentMat/${branchName}`)
+            .then((response) => {
+                databaseError(response);
+                // console.log("Response", response.data);
+                setTotConMat(response.data[0].TotalConcurrentMaterials)
+            })
+
+    }
 
     /**
      * The function first checks if the outgoingShipFacility is defined for a value, if not, it displays an
@@ -115,6 +128,7 @@ function AdminShipments() {
                 BranchName: branchName,
                 Username: currentUser,
                 ShipmentDate: date,
+                TotalConcurrentMaterials: totConMat,
             }
             const newOrderNum = {
                 OrderNumber: parseInt(maxOrderNum, 10),
@@ -138,10 +152,8 @@ function AdminShipments() {
             axios
                 .post("http://localhost:5000/api/requestShipment", addObject)
                 .then((response) => {
-
                     // console.log("Successful insertion", response);
                     databaseError(response);
-
                     axios
                         .post("http://localhost:5000/api/updateConcurrent", resetConcurrentInventory)
                         .then((res) => {
@@ -190,6 +202,7 @@ function AdminShipments() {
                                     <h3 className="py-1.5 font-semibold">Admin Username</h3>
                                     <h3 className="py-1.5 font-semibold">Date</h3>
                                     <h3 className="py-1.5 font-semibold">Order Number</h3>
+                                    <h3 className="py-1.5 font-semibold">Total # of Recyclables Shipped</h3>
                                     <h3 className="py-1.5 font-semibold underline">Shipment Facility</h3>
                                 </div>
                                 <div className="flex-col w-full min-w-fit justify-center sm:justify-start">
@@ -197,6 +210,7 @@ function AdminShipments() {
                                     <p className="py-1.5 text-gray-500 font-mono">{currentUser}</p>
                                     <p className="py-1.5 text-gray-500 font-mono">{date}</p>
                                     <p className="py-1.5 text-gray-500 font-mono">#{maxOrderNum}</p>
+                                    <p className="py-1.5 text-gray-500 font-mono">{totConMat}</p>
                                     <div className='ml-[-5px]'>
                                         <form>
                                             <select className='p-2 rounded-lg font-mono bg-gray-200 text-gray-500 duration-300 cursor-pointer hover:bg-gray-300 hover:text-gray-600'

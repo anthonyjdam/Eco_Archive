@@ -106,13 +106,14 @@ CREATE TABLE `inventory` (
   `ConcurrentGlass` int NOT NULL DEFAULT '0',
   `ConcurrentMetal` int NOT NULL DEFAULT '0',
   `ConcurrentPlastic` int NOT NULL DEFAULT '0',
+  `TotalConcurrentMaterials` int GENERATED ALWAYS AS ((((`ConcurrentPaper` + `ConcurrentGlass`) + `ConcurrentMetal`) + `ConcurrentPlastic`)) VIRTUAL,
   PRIMARY KEY (`BranchName`),
   CONSTRAINT `fk_InventoryDepot` FOREIGN KEY (`BranchName`) REFERENCES `recycling_depot` (`BranchName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dump data into the inventory table
 LOCK TABLES `inventory` WRITE;
-INSERT INTO `inventory` VALUES ('University', '1000', '1000', '1000', '1000', '280', '430', '540', '292'), ('Sage Hill', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `inventory` (`BranchName`, `LifetimePaper`, `LifetimeGlass`, `LifetimeMetal`, `LifetimePlastic`, `ConcurrentPaper`, `ConcurrentGlass`, `ConcurrentMetal`, `ConcurrentPlastic`) VALUES ('University', '1000', '1000', '1000', '1000', '280', '430', '540', '292'), ('Sage Hill', '0', '0', '0', '0', '0', '0', '0', '0');
 UNLOCK TABLES;
 
 
@@ -333,6 +334,7 @@ CREATE TABLE `ship` (
   `BranchName` varchar(255) NOT NULL,
   `Username` varchar(255) NOT NULL,
   `ShipmentDate` datetime NOT NULL,
+  `TotalConcurrentMaterials` int NOT NULL,
   PRIMARY KEY (`FacilityName`,`BranchName`,`OrderNum`,`Username`),
   UNIQUE KEY `OrderNum_UNIQUE` (`OrderNum`),
   KEY `fk_InventoryShip_idx` (`BranchName`),
