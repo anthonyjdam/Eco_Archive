@@ -25,8 +25,12 @@ function AdminShipments() {
         handleGetAdminDetails();
         handleGetDate();
         handleGetOrderNumber();
-        handleGetTotConcurrentRec();
     }, []);
+
+
+    useEffect(() => {
+        handleGetTotConcurrentRec();
+    }, [date, branchName]);
 
 
     /**
@@ -97,7 +101,7 @@ function AdminShipments() {
             .get(`http://localhost:5000/api/inventoryTotConcurrentMat/${branchName}`)
             .then((response) => {
                 databaseError(response);
-                // console.log("Response", response.data);
+                console.log("TotConMat", response.data);
                 setTotConMat(response.data[0].TotalConcurrentMaterials)
             })
 
@@ -205,12 +209,18 @@ function AdminShipments() {
                                     <h3 className="py-1.5 font-semibold">Total # of Recyclables Shipped</h3>
                                     <h3 className="py-1.5 font-semibold underline">Shipment Facility</h3>
                                 </div>
+
                                 <div className="flex-col w-full min-w-fit justify-center sm:justify-start">
                                     <p className="py-1.5 text-gray-500 font-mono">{branchName}</p>
                                     <p className="py-1.5 text-gray-500 font-mono">{currentUser}</p>
                                     <p className="py-1.5 text-gray-500 font-mono">{date}</p>
                                     <p className="py-1.5 text-gray-500 font-mono">#{maxOrderNum}</p>
                                     <p className="py-1.5 text-gray-500 font-mono">{totConMat}</p>
+                                    {/* {totConMat && totConMat.length > 0 ? ( 
+                                        
+                                     ) : (
+                                         <p className="py-1.5 text-gray-300">Loading...</p>
+                                    )}*/}
                                     <div className='ml-[-5px]'>
                                         <form>
                                             <select className='p-2 rounded-lg font-mono bg-gray-200 text-gray-500 duration-300 cursor-pointer hover:bg-gray-300 hover:text-gray-600'

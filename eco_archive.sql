@@ -359,17 +359,35 @@ CREATE TABLE `ship` (
 LOCK TABLES `ship` WRITE;
 INSERT INTO ship (OrderNum, FacilityName, BranchName, Username, ShipmentDate, TotalConcurrentMaterials)
 VALUES 
-  (LPAD('3', 8, '0'), 'EasyShip', 'University', 'admin', '2023-10-25', '2867'),
-  (LPAD('4', 8, '0'), 'EasyShip', 'University', 'admin', '2023-09-15', '4076'),
-  (LPAD('5', 8, '0'), 'EasyShip', 'University', 'admin', '2023-12-01', '2355'),
+  (LPAD('3', 8, '0'), 'EasyShip', 'University', 'admin', '2023-07-02', '2867'),
+  (LPAD('4', 8, '0'), 'EasyShip', 'University', 'admin', '2023-06-15', '4076'),
+  (LPAD('5', 8, '0'), 'EasyShip', 'University', 'admin', '2023-06-01', '2355'),
   (LPAD('6', 8, '0'), 'EasyShip', 'University', 'admin', '2023-08-19', '1687'),
-  (LPAD('7', 8, '0'), 'EasyShip', 'University', 'admin', '2023-10-02', '3265'),
-  (LPAD('8', 8, '0'), 'EasyShip', 'University', 'admin', '2023-11-08', '4589'),
-  (LPAD('9', 8, '0'), 'EasyShip', 'University', 'admin', '2023-11-09', '1422'),
-  (LPAD('10', 8, '0'), 'EasyShip', 'University', 'admin', '2023-11-10', '2134'),
-  (LPAD('11', 8, '0'), 'EasyShip', 'University', 'admin', '2023-11-11', '3987'),
-  (LPAD('12', 8, '0'), 'EasyShip', 'University', 'admin', '2023-11-12', '2598'),
-  (LPAD('13', 8, '0'), 'EasyShip', 'University', 'admin', '2023-11-13', '3276');
+  (LPAD('7', 8, '0'), 'EasyShip', 'University', 'admin', '2023-05-02', '3265'),
+  (LPAD('8', 8, '0'), 'EasyShip', 'University', 'admin', '2023-04-08', '4589'),
+  (LPAD('9', 8, '0'), 'EasyShip', 'University', 'admin', '2023-04-09', '1422'),
+  (LPAD('10', 8, '0'), 'EasyShip', 'University', 'admin', '2023-04-10', '2134'),
+  (LPAD('11', 8, '0'), 'EasyShip', 'University', 'admin', '2023-04-11', '3987'),
+  (LPAD('12', 8, '0'), 'EasyShip', 'University', 'admin', '2023-04-12', '2598'),
+  (LPAD('13', 8, '0'), 'EasyShip', 'University', 'admin', '2023-04-13', '3276'),
+  (LPAD('14', 8, '0'), 'EasyShip', 'University', 'admin', '2023-04-14', '4563'),
+  (LPAD('15', 8, '0'), 'EasyShip', 'University', 'admin', '2023-04-15', '2890'),
+  (LPAD('16', 8, '0'), 'EasyShip', 'University', 'admin', '2023-04-16', '1765'),
+  (LPAD('17', 8, '0'), 'EasyShip', 'University', 'admin', '2023-04-17', '3941'),
+  (LPAD('18', 8, '0'), 'EasyShip', 'University', 'admin', '2023-04-18', '2754'),
+  (LPAD('19', 8, '0'), 'EasyShip', 'University', 'admin', '2023-04-19', '3098'),
+  (LPAD('20', 8, '0'), 'EasyShip', 'University', 'admin', '2023-04-20', '4219'),
+  (LPAD('21', 8, '0'), 'EasyShip', 'University', 'admin', '2023-04-21', '3385'),
+  (LPAD('22', 8, '0'), 'EasyShip', 'University', 'admin', '2023-04-22', '3975'),
+  (LPAD('23', 8, '0'), 'EasyShip', 'University', 'admin', '2023-04-23', '2234'),
+  (LPAD('24', 8, '0'), 'EasyShip', 'University', 'admin', '2023-04-24', '3428'),
+  (LPAD('25', 8, '0'), 'EasyShip', 'University', 'admin', '2023-04-25', '4087'),
+  (LPAD('26', 8, '0'), 'EasyShip', 'University', 'admin', '2023-04-26', '2763'),
+  (LPAD('27', 8, '0'), 'EasyShip', 'University', 'admin', '2023-04-27', '3215'),
+  (LPAD('28', 8, '0'), 'EasyShip', 'University', 'admin', '2023-04-28', '3809'),
+  (LPAD('29', 8, '0'), 'EasyShip', 'University', 'admin', '2023-04-29', '1948'),
+  (LPAD('30', 8, '0'), 'EasyShip', 'University', 'admin', '2023-04-30', '3021');
+
 
 UNLOCK TABLES;
 
