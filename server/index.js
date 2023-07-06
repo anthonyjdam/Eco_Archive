@@ -17,6 +17,14 @@ const db = mysql.createConnection({
   database: "eco_archive",
 });
 
+// const db = mysql.createConnection({
+//   host: "localhost",
+//   port: "33061",
+//   user: "root",
+//   password: "password", // Set to Ch33tos! for Maira
+//   database: "eco_archive",
+// });
+
 // db.connect((err) => {
 //   if (err) {
 //     console.error("error connecting: " + err.stack);

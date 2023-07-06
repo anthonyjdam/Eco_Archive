@@ -252,19 +252,38 @@ CREATE TABLE `orders` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `orders` WRITE;
-INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(1, 8, '0'));
-INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(2, 8, '0'));
-INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(3, 8, '0'));
-INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(4, 8, '0'));
-INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(5, 8, '0'));
-INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(6, 8, '0'));
-INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(7, 8, '0'));
-INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(8, 8, '0'));
-INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(9, 8, '0'));
-INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(10, 8, '0'));
-INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(11, 8, '0'));
-INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(12, 8, '0'));
-INSERT INTO `orders` (`OrderNumber`) VALUES (LPAD(13, 8, '0'));
+INSERT INTO `orders` (`OrderNumber`) 
+VALUES 
+(LPAD(1, 8, '0')),
+(LPAD(3, 8, '0')),
+(LPAD(4, 8, '0')),
+(LPAD(2, 8, '0')),
+(LPAD(5, 8, '0')),
+(LPAD(6, 8, '0')),
+(LPAD(7, 8, '0')),
+(LPAD(8, 8, '0')),
+(LPAD(9, 8, '0')),
+(LPAD(10, 8, '0')),
+(LPAD(11, 8, '0')),
+(LPAD(12, 8, '0')),
+(LPAD(13, 8, '0')),
+(LPAD(14, 8, '0')),
+(LPAD(15, 8, '0')),
+(LPAD(16, 8, '0')),
+(LPAD(17, 8, '0')),
+(LPAD(18, 8, '0')),
+(LPAD(19, 8, '0')),
+(LPAD(20, 8, '0')),
+(LPAD(21, 8, '0')),
+(LPAD(22, 8, '0')),
+(LPAD(23, 8, '0')),
+(LPAD(24, 8, '0')),
+(LPAD(25, 8, '0')),
+(LPAD(26, 8, '0')),
+(LPAD(27, 8, '0')),
+(LPAD(28, 8, '0')),
+(LPAD(29, 8, '0')),
+(LPAD(30, 8, '0'));
 UNLOCK TABLES;
 
 

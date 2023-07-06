@@ -13,6 +13,7 @@ function MonthlyOverview() {
     let pastDate = new Date(currentDate);
 
     pastDate.setMonth(pastDate.getMonth() - 4);
+    currentDate.setDate(currentDate.getDate() + 1);
 
     let formattedCurrentDate = currentDate.toLocaleDateString('en-CA', {
         year: 'numeric',
@@ -25,6 +26,8 @@ function MonthlyOverview() {
         month: '2-digit',
         day: '2-digit',
     });
+
+    console.log(currentDate);
 
     /**
    * Get the ship table data and create a new var formatted which contains the date and
