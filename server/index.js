@@ -1,6 +1,9 @@
 import express from "express";
 import cors from "cors";
 import mysql from "mysql";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 
@@ -9,19 +12,25 @@ const PORT = 5000;
 app.use(express.json());
 app.use(cors());
 
+/**
+ * Local Host 
+ */
 const db = mysql.createConnection({
   host: "localhost",
-  port: "33061",
-  user: "root",
-  password: "password", // Set to Ch33tos! for Maira
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD, // Set to Ch33tos! for Maira
   database: "eco_archive",
 });
 
+/**
+ * AWS RDB 
+ */
 // const db = mysql.createConnection({
-//   host: "localhost",
-//   port: "33061",
-//   user: "root",
-//   password: "password", // Set to Ch33tos! for Maira
+//   host: process.env.DB_HOST,
+//   port: process.env.DB_PORT,
+//   user: process.env.DB_USER,
+//   password: process.env.DB_PASSWORD,
 //   database: "eco_archive",
 // });
 

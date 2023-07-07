@@ -128,7 +128,11 @@ function MonthlyOverview() {
                     />
                 </div>
             ) : (
-                <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/bc0c6b69321565.5b7d0cbe723b5.gif" className="opacity-30 flex justify-center" />
+                <>
+                    <div className="opacity-30 flex justify-center h-48" >
+                        <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/bc0c6b69321565.5b7d0cbe723b5.gif" />
+                    </div>
+                </>
             )}
 
 
