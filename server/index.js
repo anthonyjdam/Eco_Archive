@@ -17,8 +17,8 @@ app.use(cors());
  */
 const db = mysql.createConnection({
   host: "localhost",
-  port: process.env.DB_PORT,
-  user: process.env.DB_USER,
+  port: "33061",
+  user: "root",
   password: process.env.DB_PASSWORD, // Set to Ch33tos! for Maira
   database: "eco_archive",
 });
