@@ -1,6 +1,9 @@
 import express from "express";
 import cors from "cors";
 import mysql from "mysql";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 
@@ -9,13 +12,27 @@ const PORT = 5000;
 app.use(express.json());
 app.use(cors());
 
+/**
+ * Local Host 
+ */
 const db = mysql.createConnection({
   host: "localhost",
   port: "33061",
   user: "root",
-  password: "password", // Set to Ch33tos! for Maira
+  password: process.env.DB_PASSWORD, // Set to Ch33tos! for Maira
   database: "eco_archive",
 });
+
+/**
+ * AWS RDB 
+ */
+// const db = mysql.createConnection({
+//   host: process.env.DB_HOST,
+//   port: process.env.DB_PORT,
+//   user: process.env.DB_USER,
+//   password: process.env.DB_PASSWORD,
+//   database: "eco_archive",
+// });
 
 // db.connect((err) => {
 //   if (err) {
@@ -152,6 +169,22 @@ app.get("/api/inventoryCounts/:BranchName", (req, res) => {
   );
 });
 
+// API endpoint to get the total concurrent materials column in inventory table
+app.get("/api/inventoryTotConcurrentMat/:BranchName", (req, res) => {
+  db.query(
+    "SELECT TotalConcurrentMaterials FROM inventory WHERE BranchName =?",
+    [req.params.BranchName],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
+        res.status(200).json(results);
+      }
+    }
+  );
+});
+
 // API endpoint to update inventory counts
 app.post("/api/updateInventory", (req, res) => {
   console.log(req.body);
@@ -169,6 +202,35 @@ app.post("/api/updateInventory", (req, res) => {
       }
     }
   );
+});
+
+// API endpoint to update concurrent inventory
+app.post("/api/updateConcurrent", (req, res) => {
+  console.log(req.body);
+  const sql =
+    `UPDATE inventory 
+    SET ConcurrentPaper = ?, ConcurrentGlass = ?, ConcurrentMetal = ?, ConcurrentPlastic = ?
+    WHERE BranchName = ?`;
+
+  const placeHolder = [
+    `${req.body.ConcurrentPaper}`,
+    `${req.body.ConcurrentGlass}`,
+    `${req.body.ConcurrentMetal}`,
+    `${req.body.ConcurrentPlastic}`,
+    `${req.body.BranchName}`,
+  ];
+
+  const query = mysql.format(sql, placeHolder); //insert the placeholders into the query
+  console.log(query);
+
+  db.query(query, (error, results) => {
+    if (results) {
+      res.status(200).send(results);
+    } else if (error) {
+      console.log("Error " + error);
+      res.status(500).end();
+    }
+  });
 });
 
 // API endpoint to update inventory counts for multiple materials
@@ -577,6 +639,120 @@ app.get("/api/get_transaction/:username", (req, res) => {
   );
 });
 
+/**
+ * Get MAX order number
+ */
+app.get("/api/maxOrderNumber", (req, res) => {
+
+  db.query(
+    `SELECT MAX(OrderNumber) AS MaxOrderNumber 
+    FROM orders`,
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
+        console.log(results);
+        res.json(results);
+      }
+    }
+  );
+});
+
+/**
+ * Add order number to OrderNumber col in orders table
+ */
+app.post("/api/addOrderNum", (req, res) => {
+  console.log(req.body);
+
+  /*Create query variable*/
+  const sql =
+    `INSERT INTO orders (OrderNumber)
+    VALUES (LPAD(?, 8, '0'))`
+  const placeHolder = [
+    `${req.body.OrderNumber}`,
+  ]; //placeholders into '?' and '??' parameters
+  const query = mysql.format(sql, placeHolder); //insert the placeholders into the query
+  console.log(query);
+
+  db.query(query, (error, results) => {
+    if (results) {
+      res.status(200).send(results);
+    } else if (error) {
+      console.log("Error " + error);
+      res.status(500).end();
+    }
+  });
+});
+
+/**
+ * Get all Shipment facility detail
+ */
+app.get("/api/shipmentFacility", (req, res) => {
+
+  db.query(
+    `SELECT *
+    FROM shipment_facility`,
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
+        console.log(results);
+        res.json(results);
+      }
+    }
+  );
+});
+
+/**
+ * Get all columns from ship table
+ */
+app.get("/api/ship", (req, res) => {
+
+  db.query(
+    `SELECT *
+    FROM ship`,
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(404).end();
+      } else if (results) {
+        console.log(results);
+        res.json(results);
+      }
+    }
+  );
+});
+
+app.post("/api/requestShipment", (req, res) => {
+  console.log(req.body);
+
+  /*Create query variable*/
+  const sql =
+    `INSERT INTO ship (OrderNum, FacilityName, BranchName, Username, ShipmentDate, TotalConcurrentMaterials)
+    VALUES (LPAD(?, 8, '0'), ?, ?, ?, ?, ?)`
+  const placeHolder = [
+    `${req.body.OrderNum}`,
+    `${req.body.FacilityName}`,
+    `${req.body.BranchName}`,
+    `${req.body.Username}`,
+    `${req.body.ShipmentDate}`,
+    `${req.body.TotalConcurrentMaterials}`,
+  ]; //placeholders into '?' and '??' parameters
+  const query = mysql.format(sql, placeHolder); //insert the placeholders into the query
+  console.log(query);
+
+  db.query(query, (error, results) => {
+    if (results) {
+      res.status(200).send(results);
+    } else if (error) {
+      console.log("Error " + error);
+      res.status(500).end();
+    }
+  });
+});
+
 app.post("/api/selectEmpWithName", (req, res) => {
   console.log(req.body);
 
@@ -843,6 +1019,7 @@ app.post("/api/updatePaperRate", (req, res) => {
   });
 
 });
+
 
 // app.get("/api/", () => {
 //   console.log("running on port 3001");
