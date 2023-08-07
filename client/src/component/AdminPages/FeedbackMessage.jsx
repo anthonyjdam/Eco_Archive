@@ -1,9 +1,9 @@
 import React from 'react'
 
-function FeedbackMessage({ message, backgroundColor, textColor, fontStyle }) {
+function FeedbackMessage({ message, backgroundColor, textColor, borderStyle, fontStyle }) {
     return (
         <div className={`${textColor}`}>
-            <p className={`p-0.5 opacity-70 ${fontStyle} rounded border border-red-200 ${backgroundColor} text-sm`}>{message}</p>
+            <p className={`p-0.5 opacity-70 ${fontStyle} rounded border ${borderStyle} ${backgroundColor} text-sm`}>{message}</p>
         </div>
     )
 }

@@ -17,6 +17,7 @@ function AdminShipments() {
     const [maxOrderNum, setMaxOrderNum] = useState();
     const [orderNum, setOrderNum] = useState();
     const [totConMat, setTotConMat] = useState();
+    const [clicked, setClicked] = useState(false);
 
 
 
@@ -231,6 +232,7 @@ function AdminShipments() {
                                                     setOutgoingShipFacility(selectedFacility);
                                                     // console.log("SelectedFacility ", selectedFacility)
                                                     setSelectError(false);
+                                                    setClicked(false);
                                                 }}
 
                                             >
@@ -253,6 +255,7 @@ function AdminShipments() {
                                 className='font-semibold flex px-2 py-1 rounded-lg bg-gray-200 active:bg-blue-300 hover:bg-blue-200 hover:text-gray-800'
                                 onClick={(e) => {
                                     handleSubmitForm(e);
+                                    setClicked(true);
                                 }}
                             >
                                 Submit
@@ -260,6 +263,11 @@ function AdminShipments() {
                             {selectError &&
                                 <div className='w-fit mt-5'>
                                     <FeedbackMessage message={"Please select a valid shipment facility"} backgroundColor={"bg-red-200"} textColor={"text-rose-600"} fontStyle={"font-semibold"} />
+                                </div>
+                            }
+                            {!selectError && clicked &&
+                                <div className='w-fit mt-5'>
+                                    <FeedbackMessage message={"Shipment Request Successful"} backgroundColor={"bg-green-200"} textColor={"text-green-600"} fontStyle={"font-semibold"} />
                                 </div>
                             }
                         </div>

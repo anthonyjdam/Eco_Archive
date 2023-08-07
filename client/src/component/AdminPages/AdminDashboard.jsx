@@ -66,7 +66,7 @@ export default function AdminDashboard() {
    */
   useEffect(() => {
     const currentDate = new Date();
-    const month = (currentDate.getMonth() + 1).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false });
+    const month = (currentDate.getMonth()).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false });
 
     console.log("Making Database get request with ");
     console.log("AdminDash: Month " + month);
